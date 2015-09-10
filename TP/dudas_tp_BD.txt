@@ -1,0 +1,19 @@
+1. Siniestro es debil porque sin vehiculo no hay siniestro? En tal caso, cual es la relacion que determina la nocion padre-hijo.
+2. Denuncia es entidad?
+3.1. Nos interesa modelar bien las denuncias? (atributo vs. entidad)
+3.2. El testigo esta relacionado con el siniestro o con la denuncia?
+4. La cuasa probable es una descripcion o una entidad (lista finita de valores)?
+
+Falta "Por ejemplo, es importante conocer cuál es la cantidad de kilómetros de autopistas a nivel nacional."
+Falta "A esto se agregará información sobre licencias de conducir, infracciones de tránsito y antecedentes penales de las personas comprendidas en el siniestro."
+
+5. Nos interesa relacionar la compania de seguros con el conductor que saco el seguro (i.e. poner una ternaria)?
+
+
+Infraccion - tipo de infraccion - lugar de la infraccion - quien la comete
+antecedente penal - tipo de delito
+denuncia - nro. de denuncia y comisaria
+
+
+
+
