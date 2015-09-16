@@ -1,4 +1,4 @@
-1. Siniestro es debil porque sin vehiculo no hay siniestro? En tal caso, cual es la relacion que determina la nocion padre-hijo.
+///1. Siniestro es debil porque sin vehiculo no hay siniestro? En tal caso, cual es la relacion que determina la nocion padre-hijo.
 2. Denuncia es entidad?
 3.1. Nos interesa modelar bien las denuncias? (atributo vs. entidad)
 3.2. El testigo esta relacionado con el siniestro o con la denuncia?
@@ -15,5 +15,11 @@ antecedente penal - tipo de delito
 denuncia - nro. de denuncia y comisaria
 
 
+6. Esta bien que el atributo identificatorio de TipoDeInfraccion sea 'nombre'?
+7. Esta bien que el numero de licencia sea un atributo de las personas? (en ese caso, en algunos casos puede estar en NULL)
 
-
+hacer una ternaria entre persona, infraccion y vehiculo.
+arreglar tablas de direcciones.
+cambiar claves 'tipo' por ids y hacer el tipo un atributo no identificatorio
+herencia de persona en persona con y sin licencia
+relacion duenio
