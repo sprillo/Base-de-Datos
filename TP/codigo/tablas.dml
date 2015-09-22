@@ -1,0 +1,30 @@
+-- Provincias
+INSERT INTO provincia VALUES (0,"Buenos Aires");
+INSERT INTO provincia VALUES (1,"Cordoba");
+INSERT INTO provincia VALUES (2,"Santa Fe");
+
+-- Localidad
+INSERT INTO localidad VALUES (0,"Moron", 0);
+INSERT INTO localidad VALUES (1,"San Isidro",0);
+INSERT INTO localidad VALUES (2,"Villa Canas", 2);
+
+-- Calle
+INSERT INTO calle VALUES (0,"Rivadavia", 0);
+INSERT INTO calle VALUES (1,"Peron",1);
+INSERT INTO calle VALUES (2,"Sarmiento", 2);
+
+-- Direccion
+INSERT INTO direccion VALUES (0,123, 0);
+INSERT INTO direccion VALUES (1,456,1);
+INSERT INTO direccion VALUES (2,789, 2);
+
+-- Tipo Lugar
+INSERT INTO tipo_lugar VALUES (0,"calle");
+INSERT INTO tipo_lugar VALUES (1,"avenida");
+INSERT INTO tipo_lugar VALUES (2,"ruta");
+
+-- Tipo Tiene
+INSERT INTO tiene VALUES (0,0, 100);
+INSERT INTO tiene VALUES (0,1, 10);
+INSERT INTO tiene VALUES (1,1,50);
+
