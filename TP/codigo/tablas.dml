@@ -12,19 +12,57 @@ INSERT INTO localidad VALUES (2,"Villa Canas", 2);
 INSERT INTO calle VALUES (0,"Rivadavia", 0);
 INSERT INTO calle VALUES (1,"Peron",1);
 INSERT INTO calle VALUES (2,"Sarmiento", 2);
+INSERT INTO calle VALUES (3,"Moreno", 0);
 
 -- Direccion
 INSERT INTO direccion VALUES (0,123, 0);
 INSERT INTO direccion VALUES (1,456,1);
 INSERT INTO direccion VALUES (2,789, 2);
+INSERT INTO direccion VALUES (3,11100, 0);
+INSERT INTO direccion VALUES (4,2250, 3);
 
 -- Tipo Lugar
 INSERT INTO tipo_lugar VALUES (0,"calle");
 INSERT INTO tipo_lugar VALUES (1,"avenida");
 INSERT INTO tipo_lugar VALUES (2,"ruta");
 
--- Tipo Tiene
+-- Tiene
 INSERT INTO tiene VALUES (0,0, 100);
 INSERT INTO tiene VALUES (0,1, 10);
 INSERT INTO tiene VALUES (1,1,50);
+
+-- Comisaria
+INSERT INTO comisaria VALUES (24, "choque multiple", 0);
+INSERT INTO comisaria VALUES (10, "reversa en autopista", 2);
+
+-- Denuncia
+INSERT INTO denuncia VALUES (56, 24);
+INSERT INTO denuncia VALUES (57, 24);
+INSERT INTO denuncia VALUES (58, 10);
+
+-- Tipo Colision
+INSERT INTO tipo_colision VALUES (0, "peaton");
+INSERT INTO tipo_colision VALUES (1, "animal");
+INSERT INTO tipo_colision VALUES (2, "vehiculo");
+INSERT INTO tipo_colision VALUES (3, "edificio");
+
+-- Tipo de (Modalidad)
+INSERT INTO modalidad VALUES (0, "atropello");
+INSERT INTO modalidad VALUES (1, "vuelco");
+INSERT INTO modalidad VALUES (2, "incendio");
+INSERT INTO modalidad VALUES (3, "caida del ocupante");
+
+-- Siniestro
+INSERT INTO siniestro VALUES (0, "2013-05-11 11:30:00",56,3);
+INSERT INTO siniestro VALUES (1, "2014-08-09 16:15:00",57,4);
+
+-- Damnifica
+INSERT INTO damnifica VALUES (0, 0);
+INSERT INTO damnifica VALUES (0, 3);
+INSERT INTO damnifica VALUES (1, 2);
+
+-- Forma de (modalidad)
+INSERT INTO forma_de VALUES (0, 0);
+INSERT INTO forma_de VALUES (1, 1);
+INSERT INTO forma_de VALUES (1, 2);
 
