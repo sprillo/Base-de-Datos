@@ -66,3 +66,26 @@ INSERT INTO forma_de VALUES (0, 0);
 INSERT INTO forma_de VALUES (1, 1);
 INSERT INTO forma_de VALUES (1, 2);
 
+-- Pavimento
+INSERT INTO pavimento VALUES (0, "tierra");
+INSERT INTO pavimento VALUES (1, "asfalto");
+INSERT INTO pavimento VALUES (2, "adoquin");
+
+-- Estudio
+INSERT INTO estudio VALUES (0, "alcoholismo","via decente", "mediodia", "inseguro",0 , 1);
+INSERT INTO estudio VALUES (1, "conductor dormido","tiene baches", "si iluminacion", "aceptable",2 , 1);
+
+-- Persona
+INSERT INTO persona VALUES (36123123, "Lucas","Perez", "1990-01-01");
+INSERT INTO persona VALUES (30126129, "Maria","Garcia", "1980-07-07");
+INSERT INTO persona VALUES (26123123, "Pedro","Picapiedra", "1960-11-05");
+
+-- Testigo
+INSERT INTO testigo VALUES (36123123, 0);
+INSERT INTO testigo VALUES (30126129, 0);
+INSERT INTO testigo VALUES (26123123, 1);
+
+-- Cinturon
+INSERT INTO cinturon VALUES (0, 36123123, 0);
+INSERT INTO cinturon VALUES (1, 30126129, 1);
+

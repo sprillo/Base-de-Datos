@@ -11,6 +11,10 @@ drop table modalidad;
 drop table siniestro;
 drop table damnifica;
 drop table forma_de;
-
+drop table pavimento;
+drop table estudio;
+drop table persona;
+drop table testigo;
+drop table cinturon;
 
 

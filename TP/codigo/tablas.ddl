@@ -100,3 +100,48 @@ CREATE TABLE forma_de (
  PRIMARY KEY (idSiniestro, idTipo)
 );
 
+-- Tabla Pavimento
+CREATE TABLE pavimento (
+ idPavimento INTEGER NOT NULL PRIMARY KEY,
+ descripcion VARCHAR(255) DEFAULT NULL
+);
+
+-- Tabla Estudio
+CREATE TABLE estudio (
+ idEstudio INTEGER NOT NULL PRIMARY KEY,
+ causaProbable VARCHAR(255) DEFAULT NULL,
+ estadoVia VARCHAR(255) DEFAULT NULL,
+ estadoIluminacion VARCHAR(255) DEFAULT NULL,
+ seguridadPeatonal BOOLEAN DEFAULT NULL,
+ tipoVia INTEGER NOT NULL,
+ perita INTEGER NOT NULL,
+ FOREIGN KEY(tipoVia) REFERENCES modalidad(idTipo),
+ FOREIGN KEY(perita) REFERENCES siniestro(idSiniestro) 
+);
+
+-- Tabla Persona
+CREATE TABLE persona (
+ dni INTEGER NOT NULL PRIMARY KEY,
+ nombre VARCHAR(255) NOT NULL,
+ apellido VARCHAR(255) NOT NULL,
+ nacimiento DATE NOT NULL
+);
+
+-- Tabla Testigo
+CREATE TABLE testigo (
+ idSiniestro INTEGER NOT NULL,
+ dni INTEGER NOT NULL,
+ FOREIGN KEY(idSiniestro) REFERENCES siniestro(idSiniestro),
+ FOREIGN KEY(dni) REFERENCES persona(dni),
+ PRIMARY KEY (idSiniestro, dni)
+);
+
+-- Tabla Cinturon
+CREATE TABLE cinturon (
+ idEstudio INTEGER NOT NULL,
+ dni INTEGER NOT NULL,
+ tiene BOOLEAN NOT NULL,
+ FOREIGN KEY(idEstudio) REFERENCES estudio(idEstudio),
+ FOREIGN KEY(dni) REFERENCES persona(dni),
+ PRIMARY KEY (idEstudio, dni)
+);
