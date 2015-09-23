@@ -7,4 +7,7 @@ sin conductor (en la binaria), entones no
 aparece en la ternaria. (No tiene sentido que
 aparezca con y sin conductor)
 
+Cada persona aparece a lo sumo una vez por siniestro # OK, esto lo garantiza que vehiculo diga '1'.
+Cada vehiculo aparece a lo sumo una vez por siniestro
+
 Las personas que aparecen relacionadas con el estudio en la relacion cinturon, deben ser personas que participaron del siniestro asociado al estudio, conduciendo uno de los vehiculos de ese siniestro.
