@@ -1,7 +1,5 @@
 \section{Modelo Relacional}
 
-[PENDIENTE: Updatear con el definitivo antes de entregar!]
-
 \begin{verbatim}
 
 -- Tabla Provincia
@@ -115,7 +113,7 @@ CREATE TABLE pavimento (
 
 -- Tabla Estudio
 CREATE TABLE estudio (
- idEstudio INTEGER NOT NULL PRIMARY KEY,
+ idEstudio INTEGER NOT NULL,
  causaProbable VARCHAR(255) DEFAULT NULL,
  estadoVia VARCHAR(255) DEFAULT NULL,
  estadoIluminacion VARCHAR(255) DEFAULT NULL,
@@ -123,7 +121,8 @@ CREATE TABLE estudio (
  tipoVia INTEGER NOT NULL,
  perita INTEGER NOT NULL,
  FOREIGN KEY(tipoVia) REFERENCES modalidad(idTipo),
- FOREIGN KEY(perita) REFERENCES siniestro(idSiniestro) 
+ FOREIGN KEY(perita) REFERENCES siniestro(idSiniestro) ,
+ PRIMARY KEY (idEstudio, perita)
 );
 
 -- Tabla Persona
@@ -153,5 +152,138 @@ CREATE TABLE cinturon (
  PRIMARY KEY (idEstudio, dni)
 );
 
+-- Tabla Tipo Delito
+CREATE TABLE tipo_delito (
+ idTipo INTEGER NOT NULL PRIMARY KEY,
+ descripcion VARCHAR(255) DEFAULT NULL
+);
+
+-- Tabla Antecedente penal
+CREATE TABLE antecedente_penal (
+ idAntecedente INTEGER NOT NULL PRIMARY KEY,
+ fecha Date NOT NULL,
+ haCometido INTEGER NOT NULL,
+ es INTEGER NOT NULL,
+ FOREIGN KEY(haCometido) REFERENCES persona(dni),
+ FOREIGN KEY(es) REFERENCES tipo_delito(idTipo)
+);
+
+-- Tabla Tipo Infraccion
+CREATE TABLE tipo_infraccion (
+ idTipo INTEGER NOT NULL PRIMARY KEY,
+ descripcion VARCHAR(255) DEFAULT NULL
+);
+
+-- Tabla Antecedente penal
+CREATE TABLE infraccion_transito (
+ idInfraccion INTEGER NOT NULL PRIMARY KEY,
+ ocurreEn INTEGER NOT NULL,
+ violo INTEGER NOT NULL,
+ FOREIGN KEY(ocurreEn) REFERENCES direccion(idDireccion),
+ FOREIGN KEY(violo) REFERENCES tipo_infraccion(idTipo)
+);
+
+-- Tabla Persona con Licencia
+CREATE TABLE persona_con_licencia (
+ dni INTEGER NOT NULL PRIMARY KEY,
+ FOREIGN KEY(dni) REFERENCES persona(dni)
+);
+
+-- Licencia
+CREATE TABLE licencia (
+ nroLicencia INTEGER NOT NULL,
+ dni INTEGER NOT NULL,
+ expedicion DATE NOT NULL,
+ expiracion DATE NOT NULL,
+ FOREIGN KEY(dni) REFERENCES persona_con_licencia(dni),
+ PRIMARY KEY (nroLicencia, dni) 
+);
+
+-- Tabla Compania Seguros
+CREATE TABLE compania_seguro (
+ cuit INTEGER NOT NULL PRIMARY KEY,
+ nombre VARCHAR(255) NOT NULL
+);
+
+-- Tabla Cobertura
+CREATE TABLE cobertura (
+ idTipo INTEGER NOT NULL PRIMARY KEY,
+ descripcion VARCHAR(255) NOT NULL
+);
+
+-- Tabla Seguros
+CREATE TABLE seguro (
+ idSeguro INTEGER NOT NULL PRIMARY KEY,
+ emitidaPor INTEGER NOT NULL,
+ proteccion INTEGER NOT NULL,
+ FOREIGN KEY(emitidaPor) REFERENCES compania_seguro(cuit),
+ FOREIGN KEY(proteccion) REFERENCES cobertura(idTipo)
+);
+
+-- Tabla Tipo Vehiculo
+CREATE TABLE tipo_vehiculo (
+ idTipo INTEGER NOT NULL PRIMARY KEY,
+ descripcion VARCHAR(255) NOT NULL
+);
+
+-- Tabla Categoria Vehiculo
+CREATE TABLE categoria_vehiculo (
+ idCategoria INTEGER NOT NULL PRIMARY KEY,
+ descripcion VARCHAR(255) NOT NULL
+);
+
+-- Tabla Vehiculo
+CREATE TABLE vehiculo (
+ nroPatente CHARACTER(6) NOT NULL PRIMARY KEY,
+ fechaFabricacion DATE NOT NULL,
+ valor INTEGER NOT NULL,
+ clase INTEGER NOT NULL,
+ protegido INTEGER NOT NULL,
+ dueno INTEGER NOT NULL,
+ FOREIGN KEY(valor) REFERENCES categoria_vehiculo(idCategoria),
+ FOREIGN KEY(clase) REFERENCES tipo_vehiculo(idTipo),
+ FOREIGN KEY(protegido) REFERENCES seguro(idSeguro),
+ FOREIGN KEY(dueno) REFERENCES persona(dni)
+);
+
+-- Tabla Cedula
+CREATE TABLE cedula (
+ nroPatente CHARACTER(6) NOT NULL,
+ dni INTEGER NOT NULL,
+ FOREIGN KEY(nroPatente) REFERENCES vehiculo(nroPatente),
+ FOREIGN KEY(dni) REFERENCES persona(dni),
+ PRIMARY KEY (nroPatente, dni)
+);
+
+-- Tabla Protagoniza
+CREATE TABLE protagoniza (
+ nroPatente CHARACTER(6) NOT NULL,
+ idSiniestro INTEGER NOT NULL,
+ FOREIGN KEY(nroPatente) REFERENCES vehiculo(nroPatente),
+ FOREIGN KEY(idSiniestro) REFERENCES siniestro(idSiniestro),
+ PRIMARY KEY (nroPatente, idSiniestro)
+);
+
+-- Tabla Accidente
+CREATE TABLE accidente (
+ nroPatente CHARACTER(6) NOT NULL,
+ idSiniestro INTEGER NOT NULL,
+ dni INTEGER NOT NULL,
+ FOREIGN KEY(nroPatente) REFERENCES vehiculo(nroPatente),
+ FOREIGN KEY(idSiniestro) REFERENCES siniestro(idSiniestro),
+ FOREIGN KEY(dni) REFERENCES persona(dni), 
+ PRIMARY KEY (nroPatente, idSiniestro)
+);
+
+-- Tabla Infraccion
+CREATE TABLE infraccion (
+ nroPatente CHARACTER(6) NOT NULL,
+ dni INTEGER NOT NULL,
+ idInfraccion INTEGER NOT NULL,
+ FOREIGN KEY(nroPatente) REFERENCES vehiculo(nroPatente),
+ FOREIGN KEY(dni) REFERENCES persona(dni), 
+ FOREIGN KEY(idInfraccion) REFERENCES infraccion_transito(idInfraccion), 
+ PRIMARY KEY (nroPatente, dni, idInfraccion)
+);
 
 \end{verbatim}
