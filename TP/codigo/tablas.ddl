@@ -56,6 +56,7 @@ CREATE TABLE comisaria (
 -- Tabla Denuncia
 CREATE TABLE denuncia (
  nroDenuncia INTEGER NOT NULL PRIMARY KEY,
+ descripcion VARCHAR(255) DEFAULT NULL,
  hechaEn INTEGER NOT NULL,
  FOREIGN KEY(hechaEn) REFERENCES comisaria(nroComisaria)
 );

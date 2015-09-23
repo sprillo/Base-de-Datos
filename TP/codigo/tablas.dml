@@ -36,9 +36,9 @@ INSERT INTO comisaria VALUES (24, "choque multiple", 0);
 INSERT INTO comisaria VALUES (10, "reversa en autopista", 2);
 
 -- Denuncia
-INSERT INTO denuncia VALUES (56, 24);
-INSERT INTO denuncia VALUES (57, 24);
-INSERT INTO denuncia VALUES (58, 10);
+INSERT INTO denuncia VALUES (56,,24);
+INSERT INTO denuncia VALUES (57,,24);
+INSERT INTO denuncia VALUES (58,,10);
 
 -- Tipo Colision
 INSERT INTO tipo_colision VALUES (0, "peaton");

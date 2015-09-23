@@ -1,0 +1,13 @@
+Los conductores que pertenecen a un estudio,
+deben ser conductores involucrados en el
+siniestro de ese estudio
+
+Si un vehiculo aparece relacionado con siniestro
+sin conductor (en la binaria), entones no
+aparece en la ternaria. (No tiene sentido que
+aparezca con y sin conductor)
+
+Tenemos que tener cuidado
+con el ciclo en cinturon
+
+"No hay dos lugares iguales con distinto id"
