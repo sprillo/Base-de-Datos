@@ -7,7 +7,4 @@ sin conductor (en la binaria), entones no
 aparece en la ternaria. (No tiene sentido que
 aparezca con y sin conductor)
 
-Tenemos que tener cuidado
-con el ciclo en cinturon
-
-"No hay dos lugares iguales con distinto id"
+Las personas que aparecen relacionadas con el estudio en la relacion cinturon, deben ser personas que participaron del siniestro asociado al estudio, conduciendo uno de los vehiculos de ese siniestro.
