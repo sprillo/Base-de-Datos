@@ -1,7 +1,6 @@
 \section{Modelo Relacional}
 
 \begin{verbatim}
-
 -- Tabla Provincia
 CREATE TABLE provincia (
  idProvincia INTEGER NOT NULL,
@@ -251,7 +250,7 @@ CREATE TABLE cedula (
  nroPatente CHARACTER(6) NOT NULL,
  dni INTEGER NOT NULL,
  FOREIGN KEY(nroPatente) REFERENCES vehiculo(nroPatente),
- FOREIGN KEY(dni) REFERENCES persona(dni),
+ FOREIGN KEY(dni) REFERENCES persona_con_licencia(dni),
  PRIMARY KEY (nroPatente, dni)
 );
 
@@ -285,5 +284,6 @@ CREATE TABLE infraccion (
  FOREIGN KEY(idInfraccion) REFERENCES infraccion_transito(idInfraccion), 
  PRIMARY KEY (nroPatente, dni, idInfraccion)
 );
+
 
 \end{verbatim}
