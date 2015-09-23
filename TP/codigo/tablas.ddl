@@ -109,7 +109,7 @@ CREATE TABLE pavimento (
 
 -- Tabla Estudio
 CREATE TABLE estudio (
- idEstudio INTEGER NOT NULL PRIMARY KEY,
+ idEstudio INTEGER NOT NULL,
  causaProbable VARCHAR(255) DEFAULT NULL,
  estadoVia VARCHAR(255) DEFAULT NULL,
  estadoIluminacion VARCHAR(255) DEFAULT NULL,
@@ -117,7 +117,8 @@ CREATE TABLE estudio (
  tipoVia INTEGER NOT NULL,
  perita INTEGER NOT NULL,
  FOREIGN KEY(tipoVia) REFERENCES modalidad(idTipo),
- FOREIGN KEY(perita) REFERENCES siniestro(idSiniestro) 
+ FOREIGN KEY(perita) REFERENCES siniestro(idSiniestro) ,
+ PRIMARY KEY (idEstudio, perita)
 );
 
 -- Tabla Persona
@@ -146,3 +147,51 @@ CREATE TABLE cinturon (
  FOREIGN KEY(dni) REFERENCES persona(dni),
  PRIMARY KEY (idEstudio, dni)
 );
+
+-- Tabla Tipo Delito
+CREATE TABLE tipo_delito (
+ idTipo INTEGER NOT NULL PRIMARY KEY,
+ descripcion VARCHAR(255) DEFAULT NULL
+);
+
+-- Tabla Antecedente penal
+CREATE TABLE antecedente_penal (
+ idAntecedente INTEGER NOT NULL PRIMARY KEY,
+ fecha Date NOT NULL,
+ haCometido INTEGER NOT NULL,
+ es INTEGER NOT NULL,
+ FOREIGN KEY(haCometido) REFERENCES persona(dni),
+ FOREIGN KEY(es) REFERENCES tipo_delito(idTipo)
+);
+
+-- Tabla Tipo Infraccion
+CREATE TABLE tipo_infraccion (
+ idTipo INTEGER NOT NULL PRIMARY KEY,
+ descripcion VARCHAR(255) DEFAULT NULL
+);
+
+-- Tabla Antecedente penal
+CREATE TABLE infraccion_transito (
+ idInfraccion INTEGER NOT NULL PRIMARY KEY,
+ ocurreEn INTEGER NOT NULL,
+ violo INTEGER NOT NULL,
+ FOREIGN KEY(ocurreEn) REFERENCES direccion(idDireccion),
+ FOREIGN KEY(violo) REFERENCES tipo_infraccion(idTipo)
+);
+
+-- Tabla Persona con Licencia
+CREATE TABLE persona_con_licencia (
+ dni INTEGER NOT NULL PRIMARY KEY,
+ FOREIGN KEY(dni) REFERENCES persona(dni)
+);
+
+-- Licencia
+CREATE TABLE licencia (
+ nroLicencia INTEGER NOT NULL,
+ dni INTEGER NOT NULL,
+ expedicion DATE NOT NULL,
+ expiracion DATE NOT NULL,
+ FOREIGN KEY(dni) REFERENCES persona_con_licencia(dni),
+ PRIMARY KEY (nroLicencia, dni) 
+);
+

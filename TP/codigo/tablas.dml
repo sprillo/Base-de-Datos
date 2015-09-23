@@ -36,9 +36,9 @@ INSERT INTO comisaria VALUES (24, "choque multiple", 0);
 INSERT INTO comisaria VALUES (10, "reversa en autopista", 2);
 
 -- Denuncia
-INSERT INTO denuncia VALUES (56,,24);
-INSERT INTO denuncia VALUES (57,,24);
-INSERT INTO denuncia VALUES (58,,10);
+INSERT INTO denuncia VALUES (56,NULL,24);
+INSERT INTO denuncia VALUES (57,NULL,24);
+INSERT INTO denuncia VALUES (58,NULL,10);
 
 -- Tipo Colision
 INSERT INTO tipo_colision VALUES (0, "peaton");
@@ -88,4 +88,32 @@ INSERT INTO testigo VALUES (26123123, 1);
 -- Cinturon
 INSERT INTO cinturon VALUES (0, 36123123, 0);
 INSERT INTO cinturon VALUES (1, 30126129, 1);
+
+-- Tipo de delito
+INSERT INTO tipo_delito VALUES (0, "robo de ganado");
+INSERT INTO tipo_delito VALUES (1, "robo de auto");
+INSERT INTO tipo_delito VALUES (2, "estafa");
+
+-- Antecedente
+INSERT INTO antecedente_penal VALUES (0, "2014-08-09", 0, 0);
+INSERT INTO antecedente_penal VALUES (1, "2014-08-09", 1, 0);
+INSERT INTO antecedente_penal VALUES (2, "2014-08-09", 1, 2);
+
+-- Tipo de infraccion
+INSERT INTO tipo_infraccion VALUES (0, "semaforo en rojo");
+INSERT INTO tipo_infraccion VALUES (1, "mal estacionado");
+INSERT INTO tipo_infraccion VALUES (2, "exceso de velocidad");
+
+-- Infraccion Transito
+INSERT INTO infraccion_transito VALUES (0, 0, 0);
+INSERT INTO infraccion_transito VALUES (1, 1, 1);
+INSERT INTO infraccion_transito VALUES (2, 1, 0);
+
+-- Persona
+INSERT INTO persona_con_licencia VALUES (36123123);
+INSERT INTO persona_con_licencia VALUES (30126129);
+
+-- Persona
+INSERT INTO licencia VALUES (0303, 36123123, "2015-08-08","2025-08-08");
+INSERT INTO licencia VALUES (456, 30126129, "2004-01-09","2009-01-09");
 
