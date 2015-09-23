@@ -242,3 +242,42 @@ CREATE TABLE vehiculo (
  FOREIGN KEY(dueno) REFERENCES persona(dni)
 );
 
+-- Tabla Cedula
+CREATE TABLE cedula (
+ nroPatente CHARACTER(6) NOT NULL,
+ dni INTEGER NOT NULL,
+ FOREIGN KEY(nroPatente) REFERENCES vehiculo(nroPatente),
+ FOREIGN KEY(dni) REFERENCES persona(dni),
+ PRIMARY KEY (nroPatente, dni)
+);
+
+-- Tabla Protagoniza
+CREATE TABLE protagoniza (
+ nroPatente CHARACTER(6) NOT NULL,
+ idSiniestro INTEGER NOT NULL,
+ FOREIGN KEY(nroPatente) REFERENCES vehiculo(nroPatente),
+ FOREIGN KEY(idSiniestro) REFERENCES siniestro(idSiniestro),
+ PRIMARY KEY (nroPatente, idSiniestro)
+);
+
+-- Tabla Accidente
+CREATE TABLE accidente (
+ nroPatente CHARACTER(6) NOT NULL,
+ idSiniestro INTEGER NOT NULL,
+ dni INTEGER NOT NULL,
+ FOREIGN KEY(nroPatente) REFERENCES vehiculo(nroPatente),
+ FOREIGN KEY(idSiniestro) REFERENCES siniestro(idSiniestro),
+ FOREIGN KEY(dni) REFERENCES persona(dni), 
+ PRIMARY KEY (nroPatente, idSiniestro)
+);
+
+-- Tabla Infraccion
+CREATE TABLE infraccion (
+ nroPatente CHARACTER(6) NOT NULL,
+ dni INTEGER NOT NULL,
+ idInfraccion INTEGER NOT NULL,
+ FOREIGN KEY(nroPatente) REFERENCES vehiculo(nroPatente),
+ FOREIGN KEY(dni) REFERENCES persona(dni), 
+ FOREIGN KEY(idInfraccion) REFERENCES infraccion_transito(idInfraccion), 
+ PRIMARY KEY (nroPatente, dni, idInfraccion)
+);

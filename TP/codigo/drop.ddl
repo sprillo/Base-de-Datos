@@ -18,7 +18,6 @@ drop table testigo;
 drop table cinturon;
 drop table tipo_delito;
 drop table antecedente_penal;
-drop table tipo_delito;
 drop table tipo_infraccion;
 drop table infraccion_transito;
 drop table persona_con_licencia;
@@ -29,4 +28,8 @@ drop table seguro;
 drop table tipo_vehiculo;
 drop table categoria_vehiculo;
 drop table vehiculo;
+drop table cedula;
+drop table protagoniza;
+drop table accidente;
+drop table infraccion;
 
