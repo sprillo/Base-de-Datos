@@ -23,6 +23,10 @@ drop table tipo_infraccion;
 drop table infraccion_transito;
 drop table persona_con_licencia;
 drop table licencia;
-
-
+drop table compania_seguro;
+drop table cobertura;
+drop table seguro;
+drop table tipo_vehiculo;
+drop table categoria_vehiculo;
+drop table vehiculo;
 

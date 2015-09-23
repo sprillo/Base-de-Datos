@@ -195,3 +195,50 @@ CREATE TABLE licencia (
  PRIMARY KEY (nroLicencia, dni) 
 );
 
+-- Tabla Compania Seguros
+CREATE TABLE compania_seguro (
+ cuit INTEGER NOT NULL PRIMARY KEY,
+ nombre VARCHAR(255) NOT NULL
+);
+
+-- Tabla Cobertura
+CREATE TABLE cobertura (
+ idTipo INTEGER NOT NULL PRIMARY KEY,
+ descripcion VARCHAR(255) NOT NULL
+);
+
+-- Tabla Seguros
+CREATE TABLE seguro (
+ idSeguro INTEGER NOT NULL PRIMARY KEY,
+ emitidaPor INTEGER NOT NULL,
+ proteccion INTEGER NOT NULL,
+ FOREIGN KEY(emitidaPor) REFERENCES compania_seguro(cuit),
+ FOREIGN KEY(proteccion) REFERENCES cobertura(idTipo)
+);
+
+-- Tabla Tipo Vehiculo
+CREATE TABLE tipo_vehiculo (
+ idTipo INTEGER NOT NULL PRIMARY KEY,
+ descripcion VARCHAR(255) NOT NULL
+);
+
+-- Tabla Categoria Vehiculo
+CREATE TABLE categoria_vehiculo (
+ idCategoria INTEGER NOT NULL PRIMARY KEY,
+ descripcion VARCHAR(255) NOT NULL
+);
+
+-- Tabla Vehiculo
+CREATE TABLE vehiculo (
+ nroPatente CHARACTER(6) NOT NULL PRIMARY KEY,
+ fechaFabricacion DATE NOT NULL,
+ valor INTEGER NOT NULL,
+ clase INTEGER NOT NULL,
+ protegido INTEGER NOT NULL,
+ dueno INTEGER NOT NULL,
+ FOREIGN KEY(valor) REFERENCES categoria_vehiculo(idCategoria),
+ FOREIGN KEY(clase) REFERENCES tipo_vehiculo(idTipo),
+ FOREIGN KEY(protegido) REFERENCES seguro(idSeguro),
+ FOREIGN KEY(dueno) REFERENCES persona(dni)
+);
+

@@ -113,7 +113,35 @@ INSERT INTO infraccion_transito VALUES (2, 1, 0);
 INSERT INTO persona_con_licencia VALUES (36123123);
 INSERT INTO persona_con_licencia VALUES (30126129);
 
--- Persona
+-- Licencia
 INSERT INTO licencia VALUES (0303, 36123123, "2015-08-08","2025-08-08");
 INSERT INTO licencia VALUES (456, 30126129, "2004-01-09","2009-01-09");
+
+--Compania seguros
+INSERT INTO compania_seguro VALUES (0,"La caja");
+INSERT INTO compania_seguro VALUES (1, "Zurich");
+
+--Cobertura
+INSERT INTO cobertura VALUES (0,"Todo riesgo");
+INSERT INTO cobertura VALUES (1, "Terceros");
+
+--Seguro
+INSERT INTO seguro VALUES (0, 0, 0);
+INSERT INTO seguro VALUES (1, 0, 1);
+INSERT INTO seguro VALUES (2, 1, 1);
+
+--Tipo Vehiculo
+INSERT INTO tipo_vehiculo VALUES (0, "auto");
+INSERT INTO tipo_vehiculo VALUES (1, "camion");
+INSERT INTO tipo_vehiculo VALUES (2, "moto");
+
+--Categoria Coche
+INSERT INTO categoria_vehiculo VALUES (0, "alta gamma");
+INSERT INTO categoria_vehiculo VALUES (1, "gama baja");
+INSERT INTO categoria_vehiculo VALUES (2, "lujo");
+
+--Vehiculo
+INSERT INTO vehiculo VALUES ("CFK678", "1995-01-01",0,1,0,36123123);
+INSERT INTO vehiculo VALUES ("PRO015", "2010-07-01",1,0,1,36123123);
+INSERT INTO vehiculo VALUES ("ABC123", "2014-01-01",0,2,1, 30126129);
 
