@@ -247,7 +247,7 @@ CREATE TABLE cedula (
  nroPatente CHARACTER(6) NOT NULL,
  dni INTEGER NOT NULL,
  FOREIGN KEY(nroPatente) REFERENCES vehiculo(nroPatente),
- FOREIGN KEY(dni) REFERENCES persona(dni),
+ FOREIGN KEY(dni) REFERENCES persona_con_licencia(dni),
  PRIMARY KEY (nroPatente, dni)
 );
 
