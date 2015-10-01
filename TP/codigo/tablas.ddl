@@ -1,7 +1,7 @@
 -- Tabla Provincia
 CREATE TABLE provincia (
  idProvincia INTEGER NOT NULL,
- nombre VARCHAR(255) DEFAULT NULL,
+ nombre VARCHAR(255) NOT NULL,
  PRIMARY KEY (idProvincia)
 );
 

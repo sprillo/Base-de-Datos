@@ -1,0 +1,19 @@
+(SELECT s.fecha, c.nombre, d.altura, lo.nombre, pr.nombre, m.tipo
+FROM accidente a, persona p, persona_con_licencia pl, licencia l, siniestro s, forma_de f, modalidad m, direccion d, calle c, localidad lo, provincia pr, damnifica dam, tipo_colision tc
+WHERE a.dni = p.dni
+AND p.dni = pl.dni
+AND pl.dni = l.dni
+AND l.dni = 36123123
+-- esto es para llegar a la modalidad
+AND s.idSiniestro = a.idSiniestro
+AND f.idSiniestro = s.idSiniestro
+AND f.idTipo = m.idTipo
+-- esto es para joinear con la direccion
+AND s.ocurre = d.idDireccion
+AND d.tiene = c.idCalle
+AND c.tiene = lo.idLocalidad
+AND lo.tiene = pr.idProvincia
+-- esto es para joinear con el tipo
+AND s.idSiniestro = dam.idSiniestro
+AND dam.idTipo = tc.idTipo)
+INNER JOIN seguro;
