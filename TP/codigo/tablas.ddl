@@ -2,109 +2,119 @@
 CREATE TABLE provincia (
  idProvincia INTEGER NOT NULL,
  nombre VARCHAR(255) NOT NULL,
- PRIMARY KEY (idProvincia)
+ PRIMARY KEY(idProvincia)
 );
 
 -- Tabla Localidad
 CREATE TABLE localidad (
- idLocalidad INTEGER NOT NULL PRIMARY KEY,
+ idLocalidad INTEGER NOT NULL,
  nombre VARCHAR(255) DEFAULT NULL,
- tiene INTEGER NOT NULL,
- FOREIGN KEY(tiene) REFERENCES provincia(idProvincia)
+ idProvincia INTEGER NOT NULL,
+ PRIMARY KEY(idLocalidad),
+ FOREIGN KEY(idProvincia) REFERENCES provincia(idProvincia)
 );
 
 -- Tabla Calle
 CREATE TABLE calle (
- idCalle INTEGER NOT NULL PRIMARY KEY,
+ idCalle INTEGER NOT NULL,
  nombre VARCHAR(255) DEFAULT NULL,
- tiene INTEGER NOT NULL,
- FOREIGN KEY(tiene) REFERENCES localidad(idLocalidad)
+ idLocalidad INTEGER NOT NULL,
+ PRIMARY KEY(idCalle),
+ FOREIGN KEY(idLocalidad) REFERENCES localidad(idLocalidad)
 );
 
 -- Tabla Direccion
 CREATE TABLE direccion (
- idDireccion INTEGER NOT NULL PRIMARY KEY,
+ idDireccion INTEGER NOT NULL,
  altura INTEGER NOT NULL,
- tiene INTEGER NOT NULL,
- FOREIGN KEY(tiene) REFERENCES calle(idCalle)
+ idCalle INTEGER NOT NULL,
+ PRIMARY KEY(idDireccion),
+ FOREIGN KEY(idCalle) REFERENCES calle(idCalle)
 );
 
 -- Tabla Tipo de Lugar
-CREATE TABLE tipo_lugar (
- idTipo INTEGER NOT NULL PRIMARY KEY,
- tipo VARCHAR(255) DEFAULT NULL
+CREATE TABLE tipo_de_lugar (
+ idTipoLugar INTEGER NOT NULL,
+ tipo VARCHAR(255) DEFAULT NULL,
+ PRIMARY KEY(idTipoLugar)
 );
 
--- Tabla Tiene
-CREATE TABLE tiene (
+-- Tabla relacion tiene, entre Direccion y Tipo de lugar
+CREATE TABLE direccion_tiene_tipo_de_lugar (
  idDireccion INTEGER NOT NULL,
- idTipo INTEGER NOT NULL,
+ idTipoLugar INTEGER NOT NULL,
  longitud INTEGER NOT NULL,
- PRIMARY KEY (idDireccion, idTipo),
+ PRIMARY KEY(idDireccion, idTipoLugar),
  FOREIGN KEY(idDireccion) REFERENCES direccion(idDireccion),
- FOREIGN KEY(idTipo) REFERENCES tipo_lugar(idTipo)
+ FOREIGN KEY(idTipoLugar) REFERENCES tipo_de_lugar(idTipoLugar)
 );
 
 -- Tabla Comisaria
 CREATE TABLE comisaria (
- nroComisaria INTEGER NOT NULL PRIMARY KEY,
+ nroComisaria INTEGER NOT NULL,
  nombre VARCHAR(255) DEFAULT NULL,
- tiene INTEGER NOT NULL,
- FOREIGN KEY(tiene) REFERENCES direccion(idDireccion)
+ idDireccion INTEGER NOT NULL,
+ PRIMARY KEY(nroComisaria),
+ FOREIGN KEY(idDireccion) REFERENCES direccion(idDireccion)
 );
 
 -- Tabla Denuncia
 CREATE TABLE denuncia (
- nroDenuncia INTEGER NOT NULL PRIMARY KEY,
+ nroDenuncia INTEGER NOT NULL,
  descripcion VARCHAR(255) DEFAULT NULL,
- hechaEn INTEGER NOT NULL,
- FOREIGN KEY(hechaEn) REFERENCES comisaria(nroComisaria)
+ nroComisaria INTEGER NOT NULL,
+ PRIMARY KEY(nroDenuncia),
+ FOREIGN KEY(nroComisaria) REFERENCES comisaria(nroComisaria)
 );
 
--- Tabla Tipo Colision
-CREATE TABLE tipo_colision (
- idTipo INTEGER NOT NULL PRIMARY KEY,
- tipo VARCHAR(255) DEFAULT NULL
+-- Tabla Tipo de Colision
+CREATE TABLE tipo_de_colision (
+ idTipoColision INTEGER NOT NULL,
+ tipo VARCHAR(255) DEFAULT NULL,
+ PRIMARY KEY(idTipoColision)
 );
 
 -- Tabla Modalidad
 CREATE TABLE modalidad (
- idTipo INTEGER NOT NULL PRIMARY KEY,
- tipo VARCHAR(255) DEFAULT NULL
+ idTipoModalidad INTEGER NOT NULL,
+ tipo VARCHAR(255) DEFAULT NULL,
+ PRIMARY KEY(idTipoModalidad)
 );
 
 -- Tabla Siniestro
 CREATE TABLE siniestro (
- idSiniestro INTEGER NOT NULL PRIMARY KEY,
+ idSiniestro INTEGER NOT NULL,
  fecha DATETIME DEFAULT NULL,
- seRegistra INTEGER NOT NULL,
- ocurre INTEGER NOT NULL,
- FOREIGN KEY(seRegistra) REFERENCES denuncia(nroDenuncia),
- FOREIGN KEY(ocurre) REFERENCES direccion(idDireccion)
+ nroDenuncia INTEGER NOT NULL,
+ idDireccion INTEGER NOT NULL,
+ PRIMARY KEY(idSiniestro),
+ FOREIGN KEY(nroDenuncia) REFERENCES denuncia(nroDenuncia),
+ FOREIGN KEY(idDireccion) REFERENCES direccion(idDireccion)
 );
 
--- Tabla Damnifica
-CREATE TABLE damnifica (
+-- Tabla relacion damnifica, entre Siniestro y Tipo de Colision
+CREATE TABLE siniestro_damnifica_tipo_de_colision (
  idSiniestro INTEGER NOT NULL,
- idTipo INTEGER NOT NULL,
+ idTipoColision INTEGER NOT NULL,
+ PRIMARY KEY(idSiniestro, idTipoColision),
  FOREIGN KEY(idSiniestro) REFERENCES siniestro(idSiniestro),
- FOREIGN KEY(idTipo) REFERENCES tipo_colision(idTipo),
- PRIMARY KEY (idSiniestro, idTipo)
+ FOREIGN KEY(idTipoColision) REFERENCES tipo_de_colision(idTipoColision)
 );
 
--- Tabla Forma De
-CREATE TABLE forma_de (
+-- Tabla relacion formaDe, entre Siniestro y Modalidad
+CREATE TABLE siniestro_forma_de_modalidad (
  idSiniestro INTEGER NOT NULL,
- idTipo INTEGER NOT NULL,
+ idTipoModalidad INTEGER NOT NULL,
+ PRIMARY KEY(idSiniestro, idTipoModalidad),
  FOREIGN KEY(idSiniestro) REFERENCES siniestro(idSiniestro),
- FOREIGN KEY(idTipo) REFERENCES modalidad(idTipo),
- PRIMARY KEY (idSiniestro, idTipo)
+ FOREIGN KEY(idTipoModalidad) REFERENCES modalidad(idTipoModalidad)
 );
 
 -- Tabla Pavimento
 CREATE TABLE pavimento (
- idPavimento INTEGER NOT NULL PRIMARY KEY,
- descripcion VARCHAR(255) DEFAULT NULL
+ idPavimento INTEGER NOT NULL,
+ descripcion VARCHAR(255) DEFAULT NULL,
+ PRIMARY KEY(idPavimento)
 );
 
 -- Tabla Estudio
@@ -114,44 +124,46 @@ CREATE TABLE estudio (
  estadoVia VARCHAR(255) DEFAULT NULL,
  estadoIluminacion VARCHAR(255) DEFAULT NULL,
  seguridadPeatonal BOOLEAN DEFAULT NULL,
- tipoVia INTEGER NOT NULL,
- perita INTEGER NOT NULL,
- FOREIGN KEY(tipoVia) REFERENCES modalidad(idTipo),
- FOREIGN KEY(perita) REFERENCES siniestro(idSiniestro) ,
- PRIMARY KEY (idEstudio, perita)
+ idTipoPavimento INTEGER NOT NULL,
+ idSiniestro INTEGER NOT NULL,
+ PRIMARY KEY (idEstudio, idSiniestro),
+ FOREIGN KEY(idTipoPavimento) REFERENCES pavimento(idTipoPavimento),
+ FOREIGN KEY(idSiniestro) REFERENCES siniestro(idSiniestro)
 );
 
 -- Tabla Persona
 CREATE TABLE persona (
- dni INTEGER NOT NULL PRIMARY KEY,
+ dni INTEGER NOT NULL,
  nombre VARCHAR(255) NOT NULL,
  apellido VARCHAR(255) NOT NULL,
- nacimiento DATE NOT NULL
+ nacimiento DATE NOT NULL,
+ PRIMARY KEY(dni)
 );
 
--- Tabla Testigo
-CREATE TABLE testigo (
+-- Tabla relacion Testigo, entre Siniestro y Persona
+CREATE TABLE siniestro_testigo_persona (
  idSiniestro INTEGER NOT NULL,
  dni INTEGER NOT NULL,
+ PRIMARY KEY(idSiniestro, dni),
  FOREIGN KEY(idSiniestro) REFERENCES siniestro(idSiniestro),
- FOREIGN KEY(dni) REFERENCES persona(dni),
- PRIMARY KEY (idSiniestro, dni)
+ FOREIGN KEY(dni) REFERENCES persona(dni)
 );
 
 -- Tabla Cinturon
 CREATE TABLE cinturon (
  idEstudio INTEGER NOT NULL,
  dni INTEGER NOT NULL,
- tiene BOOLEAN NOT NULL,
+ si_o_no BOOLEAN NOT NULL,
+ PRIMARY KEY(idEstudio, dni),
  FOREIGN KEY(idEstudio) REFERENCES estudio(idEstudio),
- FOREIGN KEY(dni) REFERENCES persona(dni),
- PRIMARY KEY (idEstudio, dni)
+ FOREIGN KEY(dni) REFERENCES persona(dni)
 );
 
--- Tabla Tipo Delito
-CREATE TABLE tipo_delito (
- idTipo INTEGER NOT NULL PRIMARY KEY,
- descripcion VARCHAR(255) DEFAULT NULL
+-- Tabla Tipo de Delito
+CREATE TABLE tipo_de_delito (
+ idTipoDelito INTEGER NOT NULL,
+ descripcion VARCHAR(255) DEFAULT NULL,
+ PRIMARY KEY(idTipoDelito)
 );
 
 -- Tabla Antecedente penal
