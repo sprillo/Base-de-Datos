@@ -168,33 +168,37 @@ CREATE TABLE tipo_de_delito (
 
 -- Tabla Antecedente penal
 CREATE TABLE antecedente_penal (
- idAntecedente INTEGER NOT NULL PRIMARY KEY,
+ idAntecedente INTEGER NOT NULL,
  fecha Date NOT NULL,
- haCometido INTEGER NOT NULL,
- es INTEGER NOT NULL,
- FOREIGN KEY(haCometido) REFERENCES persona(dni),
- FOREIGN KEY(es) REFERENCES tipo_delito(idTipo)
+ dni INTEGER NOT NULL,
+ idTipoDelito INTEGER NOT NULL,
+ FOREIGN KEY(dni) REFERENCES persona(dni),
+ FOREIGN KEY(idTipoDelito) REFERENCES tipo_de_delito(idTipoDelito),
+ PRIMARY KEY(idAntecedente)
 );
 
 -- Tabla Tipo Infraccion
-CREATE TABLE tipo_infraccion (
- idTipo INTEGER NOT NULL PRIMARY KEY,
- descripcion VARCHAR(255) DEFAULT NULL
+CREATE TABLE tipo_de_infraccion (
+ idTipoInfraccion INTEGER NOT NULL,
+ descripcion VARCHAR(255) DEFAULT NULL,
+ PRIMARY KEY(idTipoInfraccion)
 );
 
 -- Tabla Antecedente penal
-CREATE TABLE infraccion_transito (
- idInfraccion INTEGER NOT NULL PRIMARY KEY,
- ocurreEn INTEGER NOT NULL,
- violo INTEGER NOT NULL,
- FOREIGN KEY(ocurreEn) REFERENCES direccion(idDireccion),
- FOREIGN KEY(violo) REFERENCES tipo_infraccion(idTipo)
+CREATE TABLE infraccion_de_transito (
+ idInfraccion INTEGER NOT NULL,
+ idDireccion INTEGER NOT NULL,
+ idTipoInfraccion INTEGER NOT NULL,
+ FOREIGN KEY(idDireccion) REFERENCES direccion(idDireccion),
+ FOREIGN KEY(idTipoInfraccion) REFERENCES tipo_infraccion(idTipoInfraccion),
+ PRIMARY KEY(idInfraccion)
 );
 
 -- Tabla Persona con Licencia
 CREATE TABLE persona_con_licencia (
- dni INTEGER NOT NULL PRIMARY KEY,
- FOREIGN KEY(dni) REFERENCES persona(dni)
+ dni INTEGER NOT NULL,
+ FOREIGN KEY(dni) REFERENCES persona(dni),
+ PRIMARY KEY(dni)
 );
 
 -- Licencia
@@ -204,54 +208,60 @@ CREATE TABLE licencia (
  expedicion DATE NOT NULL,
  expiracion DATE NOT NULL,
  FOREIGN KEY(dni) REFERENCES persona_con_licencia(dni),
- PRIMARY KEY (nroLicencia, dni) 
+ PRIMARY KEY (nroLicencia, dni)
 );
 
--- Tabla Compania Seguros
-CREATE TABLE compania_seguro (
- cuit INTEGER NOT NULL PRIMARY KEY,
- nombre VARCHAR(255) NOT NULL
+-- Tabla Compania de Seguros
+CREATE TABLE compania_de_seguro (
+ cuit INTEGER NOT NULL,
+ nombre VARCHAR(255) NOT NULL,
+ PRIMARY KEY(cuit)
 );
 
--- Tabla Cobertura
-CREATE TABLE cobertura (
- idTipo INTEGER NOT NULL PRIMARY KEY,
- descripcion VARCHAR(255) NOT NULL
+-- Tabla Tipo de Cobertura
+CREATE TABLE tipo_de_cobertura (
+ idTipoCobertura INTEGER NOT NULL,
+ descripcion VARCHAR(255) NOT NULL,
+ PRIMARY KEY(idTipoCobertura)
 );
 
 -- Tabla Seguros
 CREATE TABLE seguro (
- idSeguro INTEGER NOT NULL PRIMARY KEY,
- emitidaPor INTEGER NOT NULL,
- proteccion INTEGER NOT NULL,
- FOREIGN KEY(emitidaPor) REFERENCES compania_seguro(cuit),
- FOREIGN KEY(proteccion) REFERENCES cobertura(idTipo)
+ idSeguro INTEGER NOT NULL,
+ cuit INTEGER NOT NULL,
+ idTipoCobertura INTEGER NOT NULL,
+ FOREIGN KEY(cuit) REFERENCES compania_de_seguro(cuit),
+ FOREIGN KEY(idTipoCobertura) REFERENCES cobertura(idTipoCobertura),
+ PRIMARY KEY(idSeguro)
 );
 
 -- Tabla Tipo Vehiculo
-CREATE TABLE tipo_vehiculo (
- idTipo INTEGER NOT NULL PRIMARY KEY,
- descripcion VARCHAR(255) NOT NULL
+CREATE TABLE tipo_de_vehiculo (
+ idTipoVehiculo INTEGER NOT NULL,
+ descripcion VARCHAR(255) NOT NULL,
+ PRIMARY KEY(idTipoVehiculo)
 );
 
 -- Tabla Categoria Vehiculo
-CREATE TABLE categoria_vehiculo (
- idCategoria INTEGER NOT NULL PRIMARY KEY,
- descripcion VARCHAR(255) NOT NULL
+CREATE TABLE categoria_de_vehiculo (
+ idCategoria INTEGER NOT NULL,
+ descripcion VARCHAR(255) NOT NULL,
+ PRIMARY KEY(idCategoria)
 );
 
 -- Tabla Vehiculo
 CREATE TABLE vehiculo (
- nroPatente CHARACTER(6) NOT NULL PRIMARY KEY,
+ nroPatente CHARACTER(6) NOT NULL,
  fechaFabricacion DATE NOT NULL,
- valor INTEGER NOT NULL,
- clase INTEGER NOT NULL,
- protegido INTEGER NOT NULL,
- dueno INTEGER NOT NULL,
- FOREIGN KEY(valor) REFERENCES categoria_vehiculo(idCategoria),
- FOREIGN KEY(clase) REFERENCES tipo_vehiculo(idTipo),
- FOREIGN KEY(protegido) REFERENCES seguro(idSeguro),
- FOREIGN KEY(dueno) REFERENCES persona(dni)
+ idCategoria INTEGER NOT NULL,
+ idTipoVehiculo INTEGER NOT NULL,
+ idSeguro INTEGER NOT NULL,
+ dni INTEGER NOT NULL,
+ FOREIGN KEY(idCategoria) REFERENCES categoria_de_vehiculo(idCategoria),
+ FOREIGN KEY(idTipoVehiculo) REFERENCES tipo_de_vehiculo(idTipoVehiculo),
+ FOREIGN KEY(idSeguro) REFERENCES seguro(idSeguro),
+ FOREIGN KEY(dni) REFERENCES persona(dni),
+ PRIMARY KEY(nroPatente)
 );
 
 -- Tabla Cedula
@@ -260,7 +270,7 @@ CREATE TABLE cedula (
  dni INTEGER NOT NULL,
  FOREIGN KEY(nroPatente) REFERENCES vehiculo(nroPatente),
  FOREIGN KEY(dni) REFERENCES persona_con_licencia(dni),
- PRIMARY KEY (nroPatente, dni)
+ PRIMARY KEY(nroPatente, dni)
 );
 
 -- Tabla Protagoniza
@@ -269,7 +279,7 @@ CREATE TABLE protagoniza (
  idSiniestro INTEGER NOT NULL,
  FOREIGN KEY(nroPatente) REFERENCES vehiculo(nroPatente),
  FOREIGN KEY(idSiniestro) REFERENCES siniestro(idSiniestro),
- PRIMARY KEY (nroPatente, idSiniestro)
+ PRIMARY KEY(nroPatente, idSiniestro)
 );
 
 -- Tabla Accidente
@@ -280,7 +290,7 @@ CREATE TABLE accidente (
  FOREIGN KEY(nroPatente) REFERENCES vehiculo(nroPatente),
  FOREIGN KEY(idSiniestro) REFERENCES siniestro(idSiniestro),
  FOREIGN KEY(dni) REFERENCES persona(dni), 
- PRIMARY KEY (nroPatente, idSiniestro)
+ PRIMARY KEY(nroPatente, idSiniestro)
 );
 
 -- Tabla Infraccion
@@ -290,6 +300,6 @@ CREATE TABLE infraccion (
  idInfraccion INTEGER NOT NULL,
  FOREIGN KEY(nroPatente) REFERENCES vehiculo(nroPatente),
  FOREIGN KEY(dni) REFERENCES persona(dni), 
- FOREIGN KEY(idInfraccion) REFERENCES infraccion_transito(idInfraccion), 
- PRIMARY KEY (nroPatente, dni, idInfraccion)
+ FOREIGN KEY(idInfraccion) REFERENCES infraccion_de_transito(idInfraccion), 
+ PRIMARY KEY(nroPatente, dni, idInfraccion)
 );
