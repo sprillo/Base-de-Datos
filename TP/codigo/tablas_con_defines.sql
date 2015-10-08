@@ -137,11 +137,11 @@ INSERT INTO "siniestro_forma_de_modalidad" VALUES(idSiniestroChano,idTipoPavimen
 
 -- entidad Tipo de Pavimento
 CREATE TABLE tipo_de_pavimento (
- idPavimento INTEGER NOT NULL,
+ idTipoPavimento INTEGER NOT NULL,
  descripcion VARCHAR(255) DEFAULT NULL,
- PRIMARY KEY(idPavimento)
+ PRIMARY KEY(idTipoPavimento)
 );
-INSERT INTO "pavimento" VALUES(idTipoPavimentoNormal,'pavimento normal');
+INSERT INTO "tipo_de_pavimento" VALUES(idTipoPavimentoNormal,'pavimento normal');
 
 -- entidad Estudio
 CREATE TABLE estudio (
@@ -153,7 +153,7 @@ CREATE TABLE estudio (
  idTipoPavimento INTEGER NOT NULL,
  idSiniestro INTEGER NOT NULL,
  PRIMARY KEY (idEstudio, idSiniestro),
- FOREIGN KEY(idTipoPavimento) REFERENCES pavimento(idTipoPavimento),
+ FOREIGN KEY(idTipoPavimento) REFERENCES tipo_de_pavimento(idTipoPavimento),
  FOREIGN KEY(idSiniestro) REFERENCES siniestro(idSiniestro)
 );
 INSERT INTO "estudio" VALUES(idEstudioChano,'El Chano venia pisteando como un campeon en contramano y choco 6 autos.','Buena condicion de via.','De noche, pero buena iluminacion.',False,idTipoPavimentoNormal,idSiniestroChano);

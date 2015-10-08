@@ -11,7 +11,7 @@ drop table modalidad;
 drop table siniestro;
 drop table siniestro_damnifica_tipo_de_colision;
 drop table siniestro_forma_de_modalidad;
-drop table pavimento;
+drop table tipo_de_pavimento;
 drop table estudio;
 drop table persona;
 drop table siniestro_testigo_persona;
