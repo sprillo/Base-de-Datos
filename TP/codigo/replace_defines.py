@@ -5,8 +5,8 @@ with open("defines") as DEF:
 			words = line.split(" ")
 			define[words[0]] = words[1][:-1]
 
-with open("tablas.dml", "w") as fout:
-    with open("tablas_con_defines.dml", "r") as fin:
+with open("tablas.sql", "w") as fout:
+    with open("tablas_con_defines.sql", "r") as fin:
         for line in fin:
 			newLine = line
 			for word in define:

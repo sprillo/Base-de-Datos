@@ -300,7 +300,7 @@ CREATE TABLE siniestro_protagoniza_vehiculo (
 );
 INSERT INTO "siniestro_protagoniza_vehiculo" VALUES(nroPatenteAna,idSiniestroChano);
 
-CREATE TABLE accidente (
+CREATE TABLE siniestro_vehiculo_persona (
  nroPatente CHARACTER(6) NOT NULL,
  idSiniestro INTEGER NOT NULL,
  dni INTEGER NOT NULL,
@@ -309,16 +309,7 @@ CREATE TABLE accidente (
  FOREIGN KEY(dni) REFERENCES persona(dni), 
  PRIMARY KEY(nroPatente, idSiniestro)
 );
-INSERT INTO "accidente" VALUES(nroPatenteChano,idSiniestroChano,dniChano);
-
-CREATE TABLE siniestro_vehiculo_persona (
- idSiniestro INTEGER NOT NULL,
- dni INETGER NOT NULL,
- FOREIGN KEY(idSiniestro) REFERENCES siniestro(idSiniestro)
- FOREIGN KEY(dni) REFERENCES persona(dni),
- PRIMARY KEY(idSiniestro,dni)
-);
-INSERT INTO "siniestro_vehiculo_persona" VALUES(idSiniestroChano,dniChano);
+INSERT INTO "siniestro_vehiculo_persona" VALUES(nroPatenteChano,idSiniestroChano,dniChano);
 
 CREATE TABLE persona_en_vehiculo_comete_infraccion (
  nroPatente CHARACTER(6) NOT NULL,
