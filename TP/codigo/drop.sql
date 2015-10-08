@@ -24,12 +24,11 @@ drop table persona_con_licencia;
 drop table licencia;
 drop table compania_de_seguro;
 drop table tipo_de_cobertura;
-drop table seguro;
 drop table tipo_de_vehiculo;
-drop table categoria_de_vehiculo;
 drop table vehiculo;
+drop table categoria_de_vehiculo;
+drop table seguro;
 drop table cedula;
-drop table protagoniza;
-drop table accidente;
-drop table infraccion;
-
+drop table siniestro_protagoniza_vehiculo;
+drop table siniestro_vehiculo_persona;
+drop table persona_en_vehiculo_comete_infraccion;

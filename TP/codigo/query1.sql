@@ -3,12 +3,12 @@ FROM accidente a, persona p, persona_con_licencia pl, licencia l, siniestro s, s
 WHERE a.dni = p.dni
 AND p.dni = pl.dni
 AND pl.dni = l.dni
-AND l.dni = 28282828
--- esto es para llegar a la modalidad
+AND l.nroLicencia = 0		-- la licencia del Chano
+-- join contra modalidad
 AND s.idSiniestro = a.idSiniestro
 AND f.idSiniestro = s.idSiniestro
 AND f.idTipoModalidad = m.idTipoModalidad
--- esto es para joinear con la direccion
+-- join contra direccion
 AND s.idDireccion = d.idDireccion
 AND d.idCalle = c.idCalle
 AND c.idLocalidad = lo.idLocalidad
