@@ -1,13 +1,7 @@
-Los conductores que pertenecen a un estudio,
-deben ser conductores involucrados en el
-siniestro de ese estudio
-
-Si un vehiculo aparece relacionado con siniestro
-sin conductor (en la binaria), entones no
-aparece en la ternaria. (No tiene sentido que
-aparezca con y sin conductor)
-
-Cada persona aparece a lo sumo una vez por siniestro # OK, esto lo garantiza que vehiculo diga '1'.
-Cada vehiculo aparece a lo sumo una vez por siniestro
-
-Las personas que aparecen relacionadas con el estudio en la relacion cinturon, deben ser personas que participaron del siniestro asociado al estudio, conduciendo uno de los vehiculos de ese siniestro.
+1. Los conductores que pertenecen a un estudio deben ser conductores involucrados en el siniestro de ese estudio.
+2. Si un vehiculo aparece relacionado con siniestro sin conductor (en la binaria), entones no aparece en la ternaria.
+3. Cada persona aparece a lo sumo una vez por siniestro. (Me parece que el DER no lo restringe, no?)
+4. Cada vehiculo aparece a lo sumo una vez por siniestro.
+5. Las personas que aparecen relacionadas con el estudio en la relacion cinturon, deben ser personas que participaron del siniestro asociado al estudio, conduciendo uno de los vehiculos de ese siniestro.
+6. No hay solapamiento entre los rangos de alturas de las vías.
+7. Para cada infraccion solo hay un auto y una persona involucrados.

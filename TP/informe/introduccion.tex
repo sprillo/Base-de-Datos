@@ -1,3 +1,51 @@
 \section{Introducci'on}
 
-En este trabajo pr'actico usamos nuestros conocimientos sobre bases de datos para diseñar e implementar una base de datos - RUAT, por \textit{Registro 'Unico de Accidentes de Tr'ansito} - que unifica informaci'on de infracciones de tr'ansito y siniestros viales ocurridos en el pais.
+En este trabajo pr'actico dise\~{n}amos e implementamos una base de datos para el Registro 'Unico de Accidentes de Tr'ansito (RUAT), sistema que est'a que est'a preparando el Gobierno Nacional, para registrar y analizar informaci'on sobre accidentes e infracciones de tr'ansito ocurridos en el pa'is.
+
+Por un lado, el sistema registra todos los datos relacionados con siniestros de tr'ansito, lo cual abarca:
+\begin{itemize}
+\item veh'iculos involucrados;
+\item conductores involucrados;
+\item testigos;
+\item localizaci'on;
+\item modalidad del siniestro (atropello, vuelco, etc.);
+\item tipo de colisi'on;
+\item denuncia radicada por el hecho;
+\item estudios y peritajes hechos.
+\end{itemize}
+
+Por otro lado, registra infracciones de tr'ansito, y m'as espec'ificamente:
+
+\begin{itemize}
+\item veh'iculo involucrado;
+\item conductor involucrado;
+\item localizaci'on;
+\item tipo de infracci'on;
+\end{itemize}
+
+Adem'as, el sistema registra datos sobre los veh'iculos, personas y las v'ias nacionales. Sobre los veh'iculos, almacena:
+
+\begin{itemize}
+\item categor'ia de coche (gama media, gama alta, etc.);
+\item tipo de veh'iculo (auto, cami'on, moto, etc.);
+\item seguro automotor y su tipo;
+\end{itemize}
+
+Sobre las personas, almacena:
+
+\begin{itemize}
+\item datos personales;
+\item autos de los cuales es due\~{n}a;
+\item cedulas (verdes y azules) que posee;
+\item licencias de conducir que posee;
+\item antecedentes penales;
+\end{itemize}
+
+Finalmente, sobre las v'ias nacionales, el sistema almacena:
+
+\begin{itemize}
+\item tipo de v'ia seg'un el tramo (calle, avenida, autopista, etc.);
+\item extensi'on del tramo;
+\end{itemize}
+
+La elicitaci'on de estos requerimientos proviene, principalmente, de la lectura del enunciado del trabajo pr'actico, que contiene toda esta informaci'on.
