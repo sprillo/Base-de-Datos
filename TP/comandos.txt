@@ -1,0 +1,3 @@
+.schema <TABLE>		- Ver el esquema de una tabla
+.tables				- Ver todas las tablas
+.read <FILE>		- Ejecutar todos los comandos SQL de un archivo

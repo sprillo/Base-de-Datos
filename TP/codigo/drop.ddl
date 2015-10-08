@@ -15,7 +15,7 @@ drop table pavimento;
 drop table estudio;
 drop table persona;
 drop table siniestro_testigo_persona;
-drop table cinturon;
+drop table estudio_cinturon_persona;
 drop table tipo_de_delito;
 drop table antecedente_penal;
 drop table tipo_de_infraccion;
