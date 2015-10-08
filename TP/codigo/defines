@@ -1,0 +1,65 @@
+False 0
+True 1
+
+idProvinciaBuenosAires 0
+
+idLocalidadCABA 0
+
+idCalleMendoza 0
+idCalleArtilleros 1
+idCalleCabildo 2
+
+idDireccionMendoza 0
+idDireccionArtilleros 1
+idDireccionCabildo 2
+
+idTipoLugarCalle 0
+idTipoLugarAvenida 1
+idTipoLugarAutopista 2
+
+longitudMendoza 5000
+longitudArtilleros 1000
+longitudCabildo 10000
+
+nroComisariaComisaria51 51
+
+nroDenunciaChano 0
+
+idTipoColisionVehicular 0
+
+idTipoModalidadChoque 0
+
+idSiniestroChano 0
+
+idTipoPavimentoNormal 0
+
+idEstudioChano 0
+
+dniChano 28282828
+dniTestigo 20202020
+dniAna 15151515
+
+idTipoDelitoDrogas 0
+
+idAntecedenteChano 0
+
+idTipoInfraccionExcesoVelocidad 0
+
+idInfraccionChano 0
+
+nroLicenciaChano 0
+
+cuitLaCaja 30663205621
+
+idTipoCoberturaTotal 0
+
+idTipoVehiculoAuto 0
+idTipoVehiculoCamioneta 1
+
+idCategoriaGamaMedia 0
+idCategoriaGamaAlta 1
+
+nroPatenteChano "CHA123"
+nroPatenteAna "ANA123"
+
+idSeguroAna 0
