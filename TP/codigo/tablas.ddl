@@ -150,8 +150,8 @@ CREATE TABLE siniestro_testigo_persona (
  FOREIGN KEY(dni) REFERENCES persona(dni)
 );
 
--- Tabla Cinturon
-CREATE TABLE cinturon (
+-- Tabla relacion Cinturon, entre Estudio y Persona
+CREATE TABLE estudio_cinturon_persona (
  idEstudio INTEGER NOT NULL,
  dni INTEGER NOT NULL,
  si_o_no BOOLEAN NOT NULL,
