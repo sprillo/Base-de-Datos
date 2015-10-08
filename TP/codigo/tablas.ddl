@@ -39,13 +39,14 @@ CREATE TABLE tipo_de_lugar (
  PRIMARY KEY(idTipoLugar)
 );
 
--- Tabla relacion tiene, entre Direccion y Tipo de lugar
-CREATE TABLE direccion_tiene_tipo_de_lugar (
- idDireccion INTEGER NOT NULL,
+-- Tabla relacion tiene, entre Calle y Tipo de lugar
+CREATE TABLE calle_tiene_tipo_de_lugar (
+ idCalle INTEGER NOT NULL,
  idTipoLugar INTEGER NOT NULL,
- longitud INTEGER NOT NULL,
- PRIMARY KEY(idDireccion, idTipoLugar),
- FOREIGN KEY(idDireccion) REFERENCES direccion(idDireccion),
+ desde INTEGER NOT NULL,
+ hasta INTEGER NOT NULL,
+ PRIMARY KEY(idCalle, idTipoLugar, desde),
+ FOREIGN KEY(idCalle) REFERENCES calle(idCalle),
  FOREIGN KEY(idTipoLugar) REFERENCES tipo_de_lugar(idTipoLugar)
 );
 
@@ -225,16 +226,6 @@ CREATE TABLE tipo_de_cobertura (
  PRIMARY KEY(idTipoCobertura)
 );
 
--- Tabla Seguros
-CREATE TABLE seguro (
- idSeguro INTEGER NOT NULL,
- cuit INTEGER NOT NULL,
- idTipoCobertura INTEGER NOT NULL,
- FOREIGN KEY(cuit) REFERENCES compania_de_seguro(cuit),
- FOREIGN KEY(idTipoCobertura) REFERENCES cobertura(idTipoCobertura),
- PRIMARY KEY(idSeguro)
-);
-
 -- Tabla Tipo Vehiculo
 CREATE TABLE tipo_de_vehiculo (
  idTipoVehiculo INTEGER NOT NULL,
@@ -255,13 +246,23 @@ CREATE TABLE vehiculo (
  fechaFabricacion DATE NOT NULL,
  idCategoria INTEGER NOT NULL,
  idTipoVehiculo INTEGER NOT NULL,
- idSeguro INTEGER NOT NULL,
  dni INTEGER NOT NULL,
  FOREIGN KEY(idCategoria) REFERENCES categoria_de_vehiculo(idCategoria),
  FOREIGN KEY(idTipoVehiculo) REFERENCES tipo_de_vehiculo(idTipoVehiculo),
- FOREIGN KEY(idSeguro) REFERENCES seguro(idSeguro),
  FOREIGN KEY(dni) REFERENCES persona(dni),
  PRIMARY KEY(nroPatente)
+);
+
+-- Tabla Seguros
+CREATE TABLE seguro (
+ idSeguro INTEGER NOT NULL,
+ cuit INTEGER NOT NULL,
+ idTipoCobertura INTEGER NOT NULL,
+ nroPatente INTEGER NOT NULL,
+ FOREIGN KEY(cuit) REFERENCES compania_de_seguro(cuit),
+ FOREIGN KEY(idTipoCobertura) REFERENCES cobertura(idTipoCobertura),
+ FOREIGN KEY(nroPatente) REFERENCES vehiculo(nroPatente),
+ PRIMARY KEY(idSeguro)
 );
 
 -- Tabla Cedula
