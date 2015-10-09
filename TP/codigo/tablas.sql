@@ -349,26 +349,15 @@ CREATE TABLE siniestro_vehiculo_persona (
  nroPatente CHARACTER(6) NOT NULL,
  idSiniestro INTEGER NOT NULL,
  dni INTEGER NOT NULL,
+ culpable BOOLEAN NOT NULL,
  FOREIGN KEY(nroPatente) REFERENCES vehiculo(nroPatente),
  FOREIGN KEY(idSiniestro) REFERENCES siniestro(idSiniestro),
  FOREIGN KEY(dni) REFERENCES persona(dni), 
  PRIMARY KEY(nroPatente, idSiniestro)
 );
-INSERT INTO "siniestro_vehiculo_persona" VALUES("CHA123",0,28282828);
-INSERT INTO siniestro_vehiculo_persona VALUES("CHA234",1,28282828);
-INSERT INTO siniestro_vehiculo_persona VALUES("BET789",1,16161616);
-
--- relacion culpable, entre Siniestro y Persona
-CREATE TABLE culpable (
- idSiniestro INTEGER NOT NULL,
- dni INETGER NOT NULL,
- FOREIGN KEY(idSiniestro) REFERENCES siniestro(idSiniestro)
- FOREIGN KEY(dni) REFERENCES persona(dni),
- PRIMARY KEY(idSiniestro,dni)
-);
-INSERT INTO "culpable" VALUES(0,28282828);
-INSERT INTO culpable VALUES(1,28282828);
-INSERT INTO culpable VALUES(1,16161616);
+INSERT INTO "siniestro_vehiculo_persona" VALUES("CHA123",0,28282828,1);
+INSERT INTO siniestro_vehiculo_persona VALUES("CHA234",1,28282828,1);
+INSERT INTO siniestro_vehiculo_persona VALUES("BET789",1,16161616,0);
 
 -- relacion infraccion, entre Persona, Vehiculo e Infraccion de Transito
 CREATE TABLE persona_en_vehiculo_comete_infraccion (

@@ -1,4 +1,5 @@
-SELECT s.fecha, c.nombre, d.altura, lo.nombre, pr.nombre, m.tipo, tc.tipo
+SELECT s.fecha, c.nombre, d.altura, lo.nombre, pr.nombre, m.tipo, tc.tipo, svp.culpable
+
 FROM siniestro_vehiculo_persona svp, 
 		persona p, 
 		persona_con_licencia pl, 

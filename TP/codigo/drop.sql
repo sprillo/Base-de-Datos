@@ -31,5 +31,4 @@ drop table seguro;
 drop table cedula;
 drop table siniestro_protagoniza_vehiculo;
 drop table siniestro_vehiculo_persona;
-drop table culpable;
 drop table persona_en_vehiculo_comete_infraccion;
