@@ -120,9 +120,9 @@ CREATE TABLE siniestro_forma_de_modalidad (
 
 -- entidad Tipo de Pavimento
 CREATE TABLE tipo_de_pavimento (
- idPavimento INTEGER NOT NULL,
+ idTipoPavimento INTEGER NOT NULL,
  descripcion VARCHAR(255) DEFAULT NULL,
- PRIMARY KEY(idPavimento)
+ PRIMARY KEY(idTipoPavimento)
 );
 
 -- entidad Estudio
@@ -135,7 +135,7 @@ CREATE TABLE estudio (
  idTipoPavimento INTEGER NOT NULL,
  idSiniestro INTEGER NOT NULL,
  PRIMARY KEY (idEstudio, idSiniestro),
- FOREIGN KEY(idTipoPavimento) REFERENCES pavimento(idTipoPavimento),
+ FOREIGN KEY(idTipoPavimento) REFERENCES tipo_de_pavimento(idTipoPavimento),
  FOREIGN KEY(idSiniestro) REFERENCES siniestro(idSiniestro)
 );
 
@@ -295,19 +295,11 @@ CREATE TABLE siniestro_vehiculo_persona (
  nroPatente CHARACTER(6) NOT NULL,
  idSiniestro INTEGER NOT NULL,
  dni INTEGER NOT NULL,
+ culpable BOOLEAN NOT NULL,
  FOREIGN KEY(nroPatente) REFERENCES vehiculo(nroPatente),
  FOREIGN KEY(idSiniestro) REFERENCES siniestro(idSiniestro),
  FOREIGN KEY(dni) REFERENCES persona(dni), 
  PRIMARY KEY(nroPatente, idSiniestro)
-);
-
--- relacion culpable, entre Siniestro y Persona
-CREATE TABLE culpable (
- idSiniestro INTEGER NOT NULL,
- dni INETGER NOT NULL,
- FOREIGN KEY(idSiniestro) REFERENCES siniestro(idSiniestro)
- FOREIGN KEY(dni) REFERENCES persona(dni),
- PRIMARY KEY(idSiniestro, dni)
 );
 
 -- relacion infraccion, entre Persona, Vehiculo e Infraccion de Transito
