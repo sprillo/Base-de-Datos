@@ -43,7 +43,7 @@ idEstudioChano 0
 dniChano 28282828
 dniTestigo 20202020
 dniAna 15151515
-dniBeto 1616161616
+dniBeto 16161616
 
 idTipoDelitoDrogas 0
 
@@ -54,6 +54,7 @@ idTipoInfraccionExcesoVelocidad 0
 idInfraccionChano 0
 
 nroLicenciaChano 0
+nroLicenciaBeto 1
 
 cuitLaCaja 30663205621
 

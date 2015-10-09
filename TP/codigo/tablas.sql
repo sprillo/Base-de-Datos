@@ -1,4 +1,4 @@
-PRAGMA foreign_keys=OFF;
+--PRAGMA foreign_keys=OFF;
 BEGIN TRANSACTION;
 
 -- entidad Provincia
@@ -30,6 +30,7 @@ CREATE TABLE calle (
 INSERT INTO "calle" VALUES(0,'Mendoza',0);
 INSERT INTO "calle" VALUES(1,'Artilleros',0);
 INSERT INTO "calle" VALUES(2,'Cabildo',0);
+INSERT INTO calle VALUES(3,'Libertador',0);
 
 -- entidad Direccion
 CREATE TABLE direccion (
@@ -42,6 +43,7 @@ CREATE TABLE direccion (
 INSERT INTO "direccion" VALUES(0,1200,0);
 INSERT INTO "direccion" VALUES(1,2081,1);
 INSERT INTO "direccion" VALUES(2,4000,2);
+INSERT INTO direccion VALUES(3,14000,3);
 
 -- entidad Tipo de Lugar
 CREATE TABLE tipo_de_lugar (
@@ -66,6 +68,7 @@ CREATE TABLE calle_tiene_tipo_de_lugar (
 INSERT INTO "calle_tiene_tipo_de_lugar" VALUES(0,0,0,5000);
 INSERT INTO "calle_tiene_tipo_de_lugar" VALUES(1,0,0,1000);
 INSERT INTO "calle_tiene_tipo_de_lugar" VALUES(2,1,0,10000);
+INSERT INTO calle_tiene_tipo_de_lugar VALUES(3,1,0,20000);
 
 -- entidad Comisaria
 CREATE TABLE comisaria (
@@ -114,6 +117,7 @@ CREATE TABLE siniestro (
  FOREIGN KEY(idDireccion) REFERENCES direccion(idDireccion)
 );
 INSERT INTO "siniestro" VALUES(0,'05/08/2015',0,0);
+INSERT INTO siniestro VALUES(1,'06/06/2015',1,3);
 
 -- relacion damnifica, entre Siniestro y Tipo de Colision
 CREATE TABLE siniestro_damnifica_tipo_de_colision (
@@ -124,6 +128,7 @@ CREATE TABLE siniestro_damnifica_tipo_de_colision (
  FOREIGN KEY(idTipoColision) REFERENCES tipo_de_colision(idTipoColision)
 );
 INSERT INTO "siniestro_damnifica_tipo_de_colision" VALUES(0,0);
+INSERT INTO siniestro_damnifica_tipo_de_colision VALUES(1,0);
 
 -- relacion formaDe, entre Siniestro y Modalidad
 CREATE TABLE siniestro_forma_de_modalidad (
@@ -134,6 +139,7 @@ CREATE TABLE siniestro_forma_de_modalidad (
  FOREIGN KEY(idTipoModalidad) REFERENCES modalidad(idTipoModalidad)
 );
 INSERT INTO "siniestro_forma_de_modalidad" VALUES(0,0);
+INSERT INTO siniestro_forma_de_modalidad VALUES(1,0);
 
 -- entidad Tipo de Pavimento
 CREATE TABLE tipo_de_pavimento (
@@ -169,6 +175,7 @@ CREATE TABLE persona (
 INSERT INTO "persona" VALUES(15151515,'Ana','Arias','01/01/1971');
 INSERT INTO "persona" VALUES(20202020,'Tomas','Troglio','07/07/1977');
 INSERT INTO "persona" VALUES(28282828,'Santiago','Moreno Charpentier','23/09/1981');
+INSERT INTO persona VALUES(16161616,'Beto','Bielsa','01/01/1960');
 
 -- relacion testigo, entre Siniestro y Persona
 CREATE TABLE siniestro_testigo_persona (
@@ -237,6 +244,7 @@ CREATE TABLE persona_con_licencia (
  PRIMARY KEY(dni)
 );
 INSERT INTO "persona_con_licencia" VALUES(28282828);
+INSERT INTO "persona_con_licencia" VALUES(16161616);
 
 -- entidad Licencia
 CREATE TABLE licencia (
@@ -248,6 +256,7 @@ CREATE TABLE licencia (
  PRIMARY KEY (nroLicencia, dni)
 );
 INSERT INTO "licencia" VALUES(0,28282828,'01/01/2015','01/01/2016');
+INSERT INTO "licencia" VALUES(1,16161616,'01/01/2015','01/01/2016');
 
 -- entidad Compania de Seguros
 CREATE TABLE compania_de_seguro (
@@ -297,6 +306,9 @@ CREATE TABLE vehiculo (
 );
 INSERT INTO "vehiculo" VALUES("CHA123",'01/01/2010',1,1,28282828);
 INSERT INTO "vehiculo" VALUES("ANA123",'01/01/2009',0,0,15151515);
+INSERT INTO vehiculo VALUES("CHA234",'02/02/2010',0,0,28282828);
+INSERT INTO vehiculo VALUES("CHA345",'03/03/2010',0,0,28282828);
+INSERT INTO vehiculo VALUES("BET789",'01/01/1998',0,0,16161616);
 
 -- entidad Seguro
 CREATE TABLE seguro (
@@ -343,6 +355,8 @@ CREATE TABLE siniestro_vehiculo_persona (
  PRIMARY KEY(nroPatente, idSiniestro)
 );
 INSERT INTO "siniestro_vehiculo_persona" VALUES("CHA123",0,28282828);
+INSERT INTO siniestro_vehiculo_persona VALUES("CHA234",1,28282828);
+INSERT INTO siniestro_vehiculo_persona VALUES("BET789",1,16161616);
 
 -- relacion culpable, entre Siniestro y Persona
 CREATE TABLE culpable (
@@ -353,6 +367,8 @@ CREATE TABLE culpable (
  PRIMARY KEY(idSiniestro,dni)
 );
 INSERT INTO "culpable" VALUES(0,28282828);
+INSERT INTO culpable VALUES(1,28282828);
+INSERT INTO culpable VALUES(1,16161616);
 
 -- relacion infraccion, entre Persona, Vehiculo e Infraccion de Transito
 CREATE TABLE persona_en_vehiculo_comete_infraccion (

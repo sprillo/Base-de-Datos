@@ -1,4 +1,4 @@
-PRAGMA foreign_keys=OFF;
+--PRAGMA foreign_keys=OFF;
 BEGIN TRANSACTION;
 
 -- entidad Provincia
@@ -244,6 +244,7 @@ CREATE TABLE persona_con_licencia (
  PRIMARY KEY(dni)
 );
 INSERT INTO "persona_con_licencia" VALUES(dniChano);
+INSERT INTO "persona_con_licencia" VALUES(dniBeto);
 
 -- entidad Licencia
 CREATE TABLE licencia (
@@ -255,6 +256,7 @@ CREATE TABLE licencia (
  PRIMARY KEY (nroLicencia, dni)
 );
 INSERT INTO "licencia" VALUES(nroLicenciaChano,dniChano,'01/01/2015','01/01/2016');
+INSERT INTO "licencia" VALUES(nroLicenciaBeto,dniBeto,'01/01/2015','01/01/2016');
 
 -- entidad Compania de Seguros
 CREATE TABLE compania_de_seguro (
