@@ -8,10 +8,12 @@ idLocalidadCABA 0
 idCalleMendoza 0
 idCalleArtilleros 1
 idCalleCabildo 2
+idCalleLibertador 3
 
 idDireccionMendoza 0
 idDireccionArtilleros 1
 idDireccionCabildo 2
+idDireccionLibertador 3
 
 idTipoLugarCalle 0
 idTipoLugarAvenida 1
@@ -20,16 +22,19 @@ idTipoLugarAutopista 2
 longitudMendoza 5000
 longitudArtilleros 1000
 longitudCabildo 10000
+longitudLibertador 20000
 
 nroComisariaComisaria51 51
 
 nroDenunciaChano 0
+nroDenunciaSiniestro2 1
 
 idTipoColisionVehicular 0
 
 idTipoModalidadChoque 0
 
 idSiniestroChano 0
+idSiniestro2 1
 
 idTipoPavimentoNormal 0
 
@@ -38,6 +43,7 @@ idEstudioChano 0
 dniChano 28282828
 dniTestigo 20202020
 dniAna 15151515
+dniBeto 1616161616
 
 idTipoDelitoDrogas 0
 
@@ -60,6 +66,9 @@ idCategoriaGamaMedia 0
 idCategoriaGamaAlta 1
 
 nroPatenteChano "CHA123"
+nroPatenteChano2 "CHA234"
+nroPatenteChano3 "CHA345"
 nroPatenteAna "ANA123"
+nroPatenteBeto "BET789"
 
 idSeguroAna 0
