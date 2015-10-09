@@ -30,6 +30,7 @@ CREATE TABLE calle (
 INSERT INTO "calle" VALUES(idCalleMendoza,'Mendoza',idLocalidadCABA);
 INSERT INTO "calle" VALUES(idCalleArtilleros,'Artilleros',idLocalidadCABA);
 INSERT INTO "calle" VALUES(idCalleCabildo,'Cabildo',idLocalidadCABA);
+INSERT INTO calle VALUES(idCalleLibertador,'Libertador',idLocalidadCABA);
 
 -- entidad Direccion
 CREATE TABLE direccion (
@@ -42,6 +43,7 @@ CREATE TABLE direccion (
 INSERT INTO "direccion" VALUES(idDireccionMendoza,1200,idCalleMendoza);
 INSERT INTO "direccion" VALUES(idDireccionArtilleros,2081,idCalleArtilleros);
 INSERT INTO "direccion" VALUES(idDireccionCabildo,4000,idCalleCabildo);
+INSERT INTO direccion VALUES(idDireccionLibertador,14000,idCalleLibertador);
 
 -- entidad Tipo de Lugar
 CREATE TABLE tipo_de_lugar (
@@ -66,6 +68,7 @@ CREATE TABLE calle_tiene_tipo_de_lugar (
 INSERT INTO "calle_tiene_tipo_de_lugar" VALUES(idCalleMendoza,idTipoLugarCalle,0,longitudMendoza);
 INSERT INTO "calle_tiene_tipo_de_lugar" VALUES(idCalleArtilleros,idTipoLugarCalle,0,longitudArtilleros);
 INSERT INTO "calle_tiene_tipo_de_lugar" VALUES(idCalleCabildo,idTipoLugarAvenida,0,longitudCabildo);
+INSERT INTO calle_tiene_tipo_de_lugar VALUES(idCalleLibertador,idTipoLugarAvenida,0,longitudLibertador);
 
 -- entidad Comisaria
 CREATE TABLE comisaria (
@@ -114,6 +117,7 @@ CREATE TABLE siniestro (
  FOREIGN KEY(idDireccion) REFERENCES direccion(idDireccion)
 );
 INSERT INTO "siniestro" VALUES(idSiniestroChano,'05/08/2015',nroDenunciaChano,idDireccionMendoza);
+INSERT INTO siniestro VALUES(idSiniestro2,'06/06/2015',nroDenunciaSiniestro2,idDireccionLibertador);
 
 -- relacion damnifica, entre Siniestro y Tipo de Colision
 CREATE TABLE siniestro_damnifica_tipo_de_colision (
@@ -124,6 +128,7 @@ CREATE TABLE siniestro_damnifica_tipo_de_colision (
  FOREIGN KEY(idTipoColision) REFERENCES tipo_de_colision(idTipoColision)
 );
 INSERT INTO "siniestro_damnifica_tipo_de_colision" VALUES(idSiniestroChano,idTipoColisionVehicular);
+INSERT INTO siniestro_damnifica_tipo_de_colision VALUES(idSiniestro2,idTipoColisionVehicular);
 
 -- relacion formaDe, entre Siniestro y Modalidad
 CREATE TABLE siniestro_forma_de_modalidad (
@@ -133,7 +138,8 @@ CREATE TABLE siniestro_forma_de_modalidad (
  FOREIGN KEY(idSiniestro) REFERENCES siniestro(idSiniestro),
  FOREIGN KEY(idTipoModalidad) REFERENCES modalidad(idTipoModalidad)
 );
-INSERT INTO "siniestro_forma_de_modalidad" VALUES(idSiniestroChano,idTipoPavimentoNormal);
+INSERT INTO "siniestro_forma_de_modalidad" VALUES(idSiniestroChano,idTipoModalidadChoque);
+INSERT INTO siniestro_forma_de_modalidad VALUES(idSiniestro2,idTipoModalidadChoque);
 
 -- entidad Tipo de Pavimento
 CREATE TABLE tipo_de_pavimento (
@@ -169,6 +175,7 @@ CREATE TABLE persona (
 INSERT INTO "persona" VALUES(dniAna,'Ana','Arias','01/01/1971');
 INSERT INTO "persona" VALUES(dniTestigo,'Tomas','Troglio','07/07/1977');
 INSERT INTO "persona" VALUES(dniChano,'Santiago','Moreno Charpentier','23/09/1981');
+INSERT INTO persona VALUES(dniBeto,'Beto','Bielsa','01/01/1960');
 
 -- relacion testigo, entre Siniestro y Persona
 CREATE TABLE siniestro_testigo_persona (
@@ -297,6 +304,9 @@ CREATE TABLE vehiculo (
 );
 INSERT INTO "vehiculo" VALUES(nroPatenteChano,'01/01/2010',idCategoriaGamaAlta,idTipoVehiculoCamioneta,dniChano);
 INSERT INTO "vehiculo" VALUES(nroPatenteAna,'01/01/2009',idCategoriaGamaMedia,idTipoVehiculoAuto,dniAna);
+INSERT INTO vehiculo VALUES(nroPatenteChano2,'02/02/2010',idCategoriaGamaMedia,idTipoVehiculoAuto,dniChano);
+INSERT INTO vehiculo VALUES(nroPatenteChano3,'03/03/2010',idCategoriaGamaMedia,idTipoVehiculoAuto,dniChano);
+INSERT INTO vehiculo VALUES(nroPatenteBeto,'01/01/1998',idCategoriaGamaMedia,idTipoVehiculoAuto,dniBeto);
 
 -- entidad Seguro
 CREATE TABLE seguro (
@@ -343,6 +353,8 @@ CREATE TABLE siniestro_vehiculo_persona (
  PRIMARY KEY(nroPatente, idSiniestro)
 );
 INSERT INTO "siniestro_vehiculo_persona" VALUES(nroPatenteChano,idSiniestroChano,dniChano);
+INSERT INTO siniestro_vehiculo_persona VALUES(nroPatenteChano2,idSiniestro2,dniChano);
+INSERT INTO siniestro_vehiculo_persona VALUES(nroPatenteBeto,idSiniestro2,dniBeto);
 
 -- relacion culpable, entre Siniestro y Persona
 CREATE TABLE culpable (
@@ -353,6 +365,8 @@ CREATE TABLE culpable (
  PRIMARY KEY(idSiniestro,dni)
 );
 INSERT INTO "culpable" VALUES(idSiniestroChano,dniChano);
+INSERT INTO culpable VALUES(idSiniestro2,dniChano);
+INSERT INTO culpable VALUES(idSiniestro2,dniBeto);
 
 -- relacion infraccion, entre Persona, Vehiculo e Infraccion de Transito
 CREATE TABLE persona_en_vehiculo_comete_infraccion (
