@@ -1,3 +1,61 @@
-\section{Consultas}
+\section{Consultas SQL}
 
+Dos eran las funcionalidades que esperaban poder realizarse. La primera de ellas ped'ia lo siguiente:
 
+\textit{Obtener, con un número de licencia específico,
+información sobre los accidentes en los que ha participado el conductor propietario de
+la misma, con detalles de fecha, lugar, tipo de accidente, participación y modalidad.
+También se deberá indicar la cantidad de automóviles que está habilitado a conducir.}
+
+La consulta SQL correspondiente es la siguiente:
+
+\begin{verbatim}
+SELECT s.fecha, c.nombre, d.altura, lo.nombre, pr.nombre, m.tipo, tc.tipo
+FROM siniestro_vehiculo_persona svp, 
+        persona p, 
+        persona_con_licencia pl, 
+        licencia l, 
+        siniestro s,
+        siniestro_forma_de_modalidad f, 
+        modalidad m, 
+        direccion d, 
+        calle c, 
+        localidad lo, 
+        provincia pr, 
+        siniestro_damnifica_tipo_de_colision dam, 
+        tipo_de_colision tc
+WHERE l.nroLicencia = 0		-- la licencia del Chano
+-- join entre licencia, persona_con_licencia, persona y siniestro_vehiculo_persona
+AND svp.dni = p.dni
+AND p.dni = pl.dni
+AND pl.dni = l.dni
+-- join entre modalidad, siniestro_forma_de_modalidad, siniestro y siniestro_vehiculo_persona
+AND s.idSiniestro = svp.idSiniestro
+AND f.idSiniestro = s.idSiniestro
+AND f.idTipoModalidad = m.idTipoModalidad
+-- join entre siniestro, direccion, calle, localidad y provincia
+AND s.idDireccion = d.idDireccion
+AND d.idCalle = c.idCalle
+AND c.idLocalidad = lo.idLocalidad
+AND lo.idProvincia = pr.idProvincia
+-- join entre siniestro, siniestro_damnifica_tipo_de_colision y tipo_de_colision
+AND s.idSiniestro = dam.idSiniestro
+AND dam.idTipoColision = tc.idTipoColision;
+\end{verbatim}
+
+El segundo requerimiento era:
+
+\textit{Obtener, dada una modalidad de accidente (atropello, vuelco, incendio, caída del ocupante, etc), un listado de licencias de conducir y la cantidad de veces que cada una de estas licencias incurrió en la modalidad consultada.}
+
+En esta oportunidad, decidimos abreviar la consulta utilizando el comando \texttt{JOIN}, en lugar de hacer las juntas manualmente. La consulta que resuelve el problema es:
+
+\begin{verbatim}
+SELECT m.idTipoModalidad, j.nroLicencia, j.dni, COUNT(*)
+FROM (modalidad m JOIN 
+        siniestro_forma_de_modalidad sm JOIN 
+        siniestro_vehiculo_persona svp JOIN 
+        persona_con_licencia pl JOIN 
+        licencia l) j
+WHERE m.idTipoModalidad = 0
+GROUP BY j.nroLicencia;
+\end{verbatim}

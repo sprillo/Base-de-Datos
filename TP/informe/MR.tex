@@ -2,17 +2,17 @@
 
 A partir del DER, derivamos el siguiente modelo relacional. Lo presentamos directamente en sintaxis SQL.
 
-Algunas de las relaciones N-M del DER ten'ian nombres poco ilustrativos al ser sacados de contexto. Por ejemplo, la relaci'on binaria entre \textit{Siniestro} y \textit{Tipo de Colisi'on} fue llamada \textit{damnifica}, nombre que no tiene mucho sentido aisladamente. Esto representaba un problema, dado que en, el MR, esas relaciones pasan a ser tablas. En estos casos, decidimos transformar el nombre de estas relaciones, usando los nombres de las entidades relacionadas, del siguiente modo. Una relaci'on de nombre $R$ entre dos entidades de nombres $X$ e $Y$, se pasa a llamar $X\_R\_Y$. Por ejemplo, en el caso de la relaci'on \textit{damnifica}, el nombre de la tabla asociada pas'o a ser $siniestro\_damnifica\_tipo\_de\_colisi'on$. En algunos casos, los nombres eran suficientemente autoexplicativos, y no fue necesario hacer este cambio.
+Algunas de las relaciones N-M del DER ten'ian nombres poco ilustrativos al ser sacados de contexto. Por ejemplo, la relaci'on binaria entre \textit{Siniestro} y \textit{Tipo de Colisi'on} fue llamada \textit{damnifica}, nombre que no tiene mucho sentido aisladamente. Esto representaba un problema, dado que en, el MR, esas relaciones pasan a ser tablas. En estos casos, decidimos transformar el nombre de estas relaciones, usando los nombres de las entidades relacionadas, del siguiente modo. Una relaci'on de nombre \textit{R} entre dos entidades de nombres \textit{X} e \textit{Y}, se pasa a llamar \textit{X\_R\_Y}. Por ejemplo, en el caso de la relaci'on \textit{damnifica}, el nombre de la tabla asociada pas'o a ser \textit{siniestro\_damnifica\_tipo\_de\_colision}. En algunos casos, los nombres eran suficientemente autoexplicativos, y no fue necesario hacer este cambio. Incluimos, arriba de cada sentencia \texttt{CREATE TABLE}, la entidad o relaci'on correspondiente a la tabla creada.
 
 \begin{verbatim}
--- Tabla Provincia
+-- entidad Provincia
 CREATE TABLE provincia (
  idProvincia INTEGER NOT NULL,
  nombre VARCHAR(255) NOT NULL,
  PRIMARY KEY(idProvincia)
 );
 
--- Tabla Localidad
+-- entidad Localidad
 CREATE TABLE localidad (
  idLocalidad INTEGER NOT NULL,
  nombre VARCHAR(255) DEFAULT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE localidad (
  FOREIGN KEY(idProvincia) REFERENCES provincia(idProvincia)
 );
 
--- Tabla Calle
+-- entidad Calle
 CREATE TABLE calle (
  idCalle INTEGER NOT NULL,
  nombre VARCHAR(255) DEFAULT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE calle (
  FOREIGN KEY(idLocalidad) REFERENCES localidad(idLocalidad)
 );
 
--- Tabla Direccion
+-- entidad Direccion
 CREATE TABLE direccion (
  idDireccion INTEGER NOT NULL,
  altura INTEGER NOT NULL,
@@ -39,14 +39,14 @@ CREATE TABLE direccion (
  FOREIGN KEY(idCalle) REFERENCES calle(idCalle)
 );
 
--- Tabla Tipo de Lugar
+-- entidad Tipo de Lugar
 CREATE TABLE tipo_de_lugar (
  idTipoLugar INTEGER NOT NULL,
  tipo VARCHAR(255) DEFAULT NULL,
  PRIMARY KEY(idTipoLugar)
 );
 
--- Tabla relacion tiene, entre Calle y Tipo de lugar
+-- relacion tiene, entre Calle y Tipo de Lugar
 CREATE TABLE calle_tiene_tipo_de_lugar (
  idCalle INTEGER NOT NULL,
  idTipoLugar INTEGER NOT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE calle_tiene_tipo_de_lugar (
  FOREIGN KEY(idTipoLugar) REFERENCES tipo_de_lugar(idTipoLugar)
 );
 
--- Tabla Comisaria
+-- entidad Comisaria
 CREATE TABLE comisaria (
  nroComisaria INTEGER NOT NULL,
  nombre VARCHAR(255) DEFAULT NULL,
@@ -66,7 +66,7 @@ CREATE TABLE comisaria (
  FOREIGN KEY(idDireccion) REFERENCES direccion(idDireccion)
 );
 
--- Tabla Denuncia
+-- entidad Denuncia
 CREATE TABLE denuncia (
  nroDenuncia INTEGER NOT NULL,
  descripcion VARCHAR(255) DEFAULT NULL,
@@ -75,21 +75,21 @@ CREATE TABLE denuncia (
  FOREIGN KEY(nroComisaria) REFERENCES comisaria(nroComisaria)
 );
 
--- Tabla Tipo de Colision
+-- entidad Tipo de Colision
 CREATE TABLE tipo_de_colision (
  idTipoColision INTEGER NOT NULL,
  tipo VARCHAR(255) DEFAULT NULL,
  PRIMARY KEY(idTipoColision)
 );
 
--- Tabla Modalidad
+-- entidad Modalidad
 CREATE TABLE modalidad (
  idTipoModalidad INTEGER NOT NULL,
  tipo VARCHAR(255) DEFAULT NULL,
  PRIMARY KEY(idTipoModalidad)
 );
 
--- Tabla Siniestro
+-- entidad Siniestro
 CREATE TABLE siniestro (
  idSiniestro INTEGER NOT NULL,
  fecha DATETIME DEFAULT NULL,
@@ -100,7 +100,7 @@ CREATE TABLE siniestro (
  FOREIGN KEY(idDireccion) REFERENCES direccion(idDireccion)
 );
 
--- Tabla relacion damnifica, entre Siniestro y Tipo de Colision
+-- relacion damnifica, entre Siniestro y Tipo de Colision
 CREATE TABLE siniestro_damnifica_tipo_de_colision (
  idSiniestro INTEGER NOT NULL,
  idTipoColision INTEGER NOT NULL,
@@ -109,7 +109,7 @@ CREATE TABLE siniestro_damnifica_tipo_de_colision (
  FOREIGN KEY(idTipoColision) REFERENCES tipo_de_colision(idTipoColision)
 );
 
--- Tabla relacion formaDe, entre Siniestro y Modalidad
+-- relacion formaDe, entre Siniestro y Modalidad
 CREATE TABLE siniestro_forma_de_modalidad (
  idSiniestro INTEGER NOT NULL,
  idTipoModalidad INTEGER NOT NULL,
@@ -118,14 +118,14 @@ CREATE TABLE siniestro_forma_de_modalidad (
  FOREIGN KEY(idTipoModalidad) REFERENCES modalidad(idTipoModalidad)
 );
 
--- Tabla Pavimento
-CREATE TABLE pavimento (
+-- entidad Tipo de Pavimento
+CREATE TABLE tipo_de_pavimento (
  idPavimento INTEGER NOT NULL,
  descripcion VARCHAR(255) DEFAULT NULL,
  PRIMARY KEY(idPavimento)
 );
 
--- Tabla Estudio
+-- entidad Estudio
 CREATE TABLE estudio (
  idEstudio INTEGER NOT NULL,
  causaProbable VARCHAR(255) DEFAULT NULL,
@@ -139,7 +139,7 @@ CREATE TABLE estudio (
  FOREIGN KEY(idSiniestro) REFERENCES siniestro(idSiniestro)
 );
 
--- Tabla Persona
+-- entidad Persona
 CREATE TABLE persona (
  dni INTEGER NOT NULL,
  nombre VARCHAR(255) NOT NULL,
@@ -148,7 +148,7 @@ CREATE TABLE persona (
  PRIMARY KEY(dni)
 );
 
--- Tabla relacion Testigo, entre Siniestro y Persona
+-- relacion testigo, entre Siniestro y Persona
 CREATE TABLE siniestro_testigo_persona (
  idSiniestro INTEGER NOT NULL,
  dni INTEGER NOT NULL,
@@ -157,7 +157,7 @@ CREATE TABLE siniestro_testigo_persona (
  FOREIGN KEY(dni) REFERENCES persona(dni)
 );
 
--- Tabla relacion Cinturon, entre Estudio y Persona
+-- relacion cinturon, entre Estudio y Persona
 CREATE TABLE estudio_cinturon_persona (
  idEstudio INTEGER NOT NULL,
  dni INTEGER NOT NULL,
@@ -167,14 +167,14 @@ CREATE TABLE estudio_cinturon_persona (
  FOREIGN KEY(dni) REFERENCES persona(dni)
 );
 
--- Tabla Tipo de Delito
+-- entidad Tipo de Delito
 CREATE TABLE tipo_de_delito (
  idTipoDelito INTEGER NOT NULL,
  descripcion VARCHAR(255) DEFAULT NULL,
  PRIMARY KEY(idTipoDelito)
 );
 
--- Tabla Antecedente penal
+-- entidad Antecedente Penal
 CREATE TABLE antecedente_penal (
  idAntecedente INTEGER NOT NULL,
  fecha Date NOT NULL,
@@ -185,14 +185,14 @@ CREATE TABLE antecedente_penal (
  PRIMARY KEY(idAntecedente)
 );
 
--- Tabla Tipo Infraccion
+-- entidad Tipo de Infraccion
 CREATE TABLE tipo_de_infraccion (
  idTipoInfraccion INTEGER NOT NULL,
  descripcion VARCHAR(255) DEFAULT NULL,
  PRIMARY KEY(idTipoInfraccion)
 );
 
--- Tabla Antecedente penal
+-- entidad Infraccion de Transito
 CREATE TABLE infraccion_de_transito (
  idInfraccion INTEGER NOT NULL,
  idDireccion INTEGER NOT NULL,
@@ -202,14 +202,14 @@ CREATE TABLE infraccion_de_transito (
  PRIMARY KEY(idInfraccion)
 );
 
--- Tabla Persona con Licencia
+-- entidad Persona con Licencia
 CREATE TABLE persona_con_licencia (
  dni INTEGER NOT NULL,
  FOREIGN KEY(dni) REFERENCES persona(dni),
  PRIMARY KEY(dni)
 );
 
--- Licencia
+-- entidad Licencia
 CREATE TABLE licencia (
  nroLicencia INTEGER NOT NULL,
  dni INTEGER NOT NULL,
@@ -219,35 +219,35 @@ CREATE TABLE licencia (
  PRIMARY KEY (nroLicencia, dni)
 );
 
--- Tabla Compania de Seguros
+-- entidad Compania de Seguros
 CREATE TABLE compania_de_seguro (
  cuit INTEGER NOT NULL,
  nombre VARCHAR(255) NOT NULL,
  PRIMARY KEY(cuit)
 );
 
--- Tabla Tipo de Cobertura
+-- entidad Tipo de Cobertura
 CREATE TABLE tipo_de_cobertura (
  idTipoCobertura INTEGER NOT NULL,
  descripcion VARCHAR(255) NOT NULL,
  PRIMARY KEY(idTipoCobertura)
 );
 
--- Tabla Tipo Vehiculo
+-- entidad Tipo de Vehiculo
 CREATE TABLE tipo_de_vehiculo (
  idTipoVehiculo INTEGER NOT NULL,
  descripcion VARCHAR(255) NOT NULL,
  PRIMARY KEY(idTipoVehiculo)
 );
 
--- Tabla Categoria Vehiculo
+-- entidad Categoria de Coche
 CREATE TABLE categoria_de_vehiculo (
  idCategoria INTEGER NOT NULL,
  descripcion VARCHAR(255) NOT NULL,
  PRIMARY KEY(idCategoria)
 );
 
--- Tabla Vehiculo
+-- entidad Vehiculo
 CREATE TABLE vehiculo (
  nroPatente CHARACTER(6) NOT NULL,
  fechaFabricacion DATE NOT NULL,
@@ -260,7 +260,7 @@ CREATE TABLE vehiculo (
  PRIMARY KEY(nroPatente)
 );
 
--- Tabla Seguros
+-- entidad Seguro
 CREATE TABLE seguro (
  idSeguro INTEGER NOT NULL,
  cuit INTEGER NOT NULL,
@@ -272,7 +272,7 @@ CREATE TABLE seguro (
  PRIMARY KEY(idSeguro)
 );
 
--- Tabla Cedula
+-- relacion cedula, entre Vehiculo y Persona con Licencia
 CREATE TABLE cedula (
  nroPatente CHARACTER(6) NOT NULL,
  dni INTEGER NOT NULL,
@@ -281,8 +281,8 @@ CREATE TABLE cedula (
  PRIMARY KEY(nroPatente, dni)
 );
 
--- Tabla Protagoniza
-CREATE TABLE protagoniza (
+-- relacion protagoniza, entre Siniesto y Vehiculo
+CREATE TABLE siniestro_protagoniza_vehiculo (
  nroPatente CHARACTER(6) NOT NULL,
  idSiniestro INTEGER NOT NULL,
  FOREIGN KEY(nroPatente) REFERENCES vehiculo(nroPatente),
@@ -290,8 +290,8 @@ CREATE TABLE protagoniza (
  PRIMARY KEY(nroPatente, idSiniestro)
 );
 
--- Tabla Accidente
-CREATE TABLE accidente (
+-- relacion accidente, entre Siniestro, Vehiculo y Persona
+CREATE TABLE siniestro_vehiculo_persona (
  nroPatente CHARACTER(6) NOT NULL,
  idSiniestro INTEGER NOT NULL,
  dni INTEGER NOT NULL,
@@ -301,8 +301,17 @@ CREATE TABLE accidente (
  PRIMARY KEY(nroPatente, idSiniestro)
 );
 
--- Tabla Infraccion
-CREATE TABLE infraccion (
+-- relacion culpable, entre Siniestro y Persona
+CREATE TABLE culpable (
+ idSiniestro INTEGER NOT NULL,
+ dni INETGER NOT NULL,
+ FOREIGN KEY(idSiniestro) REFERENCES siniestro(idSiniestro)
+ FOREIGN KEY(dni) REFERENCES persona(dni),
+ PRIMARY KEY(idSiniestro, dni)
+);
+
+-- relacion infraccion, entre Persona, Vehiculo e Infraccion de Transito
+CREATE TABLE persona_en_vehiculo_comete_infraccion (
  nroPatente CHARACTER(6) NOT NULL,
  dni INTEGER NOT NULL,
  idInfraccion INTEGER NOT NULL,
@@ -311,5 +320,4 @@ CREATE TABLE infraccion (
  FOREIGN KEY(idInfraccion) REFERENCES infraccion_de_transito(idInfraccion), 
  PRIMARY KEY(nroPatente, dni, idInfraccion)
 );
-
 \end{verbatim}
