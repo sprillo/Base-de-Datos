@@ -1,0 +1,47 @@
+alumnos : {
+	lu : STRING
+	nombre : STRING
+	edad : INTEGER
+}
+
+db.alumnos.insert({lu : "616/11" , nombre : "Sebastian" , edad : 22, telefono : [{numero : 47935661} , {numero : 1559938215}], cursos : [{nro : 55 , nombre : "IS2"} , {nro : 54 , nombre : "BD"}]})
+db.alumnos.insert({lu : "783/11" , nombre : "Guido" , edad : 23 , telefono : [{numero : 45544689 }] , cursos : [{nro : 54 , nombre : "BD"} , {nro : 53 , nombre : "PLP"}]})
+db.alumnos.insert({lu : "635/11" , nombre : "Miguel" , edad : 22 , telefono : [{numero : 46964481}] , cursos : [{nro : 55 , nombre : "IS2"} , {nro : 54 , nombre : "BD"}]})
+
+db.alumnos.find({"edad" : {"$gte" : 18, "$lte" : 22}})
+db.alumnos.find({"cursos" : {$elemMatch : { nro : "55" }}})
+
+db.profesores.insert({
+	legajo : 123 ,
+	nombre : "Rosana" ,
+	cargo : "JTP" ,
+	curso : [{nro : 54 , nombre : "BD"}]
+})
+
+db.profesores.insert({
+	legajo : 234 ,
+	nombre : "Pavese" ,
+	cargo : "JTP" ,
+	curso : [{nro : 52 , nombre : "Algo2"}]
+})
+
+db.profesores.insert({
+	legajo : 345 ,
+	nombre : "Dippi" ,
+	cargo : "Profesor" ,
+	curso : [{nro : 52 , nombre : "IS2"}]
+})
+
+
+db.profesores.insert({
+	legajo : 
+	nombre : 
+	cargo : 
+	curso : [{}]
+})
+
+db.profesores.aggregate([{$group : {_id : "$cargo" , total : {$sum : 1}}}])
+
+db.alumnos.aggregate([
+	{$match : {"edad" : {$}}} ,
+])
