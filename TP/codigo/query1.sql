@@ -1,4 +1,4 @@
-SELECT s.fecha, c.nombre, d.altura, lo.nombre, pr.nombre, m.tipo, tc.tipo, svp.culpable
+SELECT s.fecha, c.nombre, d.altura, lo.nombre, pr.nombre, m.tipo, tc.tipo, svp.culpable, count(*)
 
 FROM siniestro_vehiculo_persona svp, 
 		persona p, 
@@ -12,7 +12,8 @@ FROM siniestro_vehiculo_persona svp,
 		localidad lo, 
 		provincia pr, 
 		siniestro_damnifica_tipo_de_colision dam, 
-		tipo_de_colision tc
+		tipo_de_colision tc,
+		vehiculo v
 WHERE l.nroLicencia = 0		-- la licencia del Chano
 -- join entre licencia, persona_con_licencia, persona y siniestro_vehiculo_persona
 AND svp.dni = p.dni
@@ -29,4 +30,7 @@ AND c.idLocalidad = lo.idLocalidad
 AND lo.idProvincia = pr.idProvincia
 -- join entre siniestro, siniestro_damnifica_tipo_de_colision y tipo_de_colision
 AND s.idSiniestro = dam.idSiniestro
-AND dam.idTipoColision = tc.idTipoColision;
+AND dam.idTipoColision = tc.idTipoColision
+-- join con el duenio
+AND v.dni = p.dni
+GROUP BY s.fecha, c.nombre, d.altura, lo.nombre, pr.nombre, m.tipo, tc.tipo, svp.culpable;
