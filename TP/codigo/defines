@@ -10,10 +10,10 @@ idCalleArtilleros 1
 idCalleCabildo 2
 idCalleLibertador 3
 
-idDireccionMendoza 0
-idDireccionArtilleros 1
-idDireccionCabildo 2
-idDireccionLibertador 3
+alturaMendoza 1200
+alturaArtilleros 2081
+alturaCabildo 4000
+alturaLibertador 14000
 
 idTipoLugarCalle 0
 idTipoLugarAvenida 1

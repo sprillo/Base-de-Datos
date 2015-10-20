@@ -14,7 +14,7 @@ CREATE TABLE localidad (
  idLocalidad INTEGER NOT NULL,
  nombre VARCHAR(255) DEFAULT NULL,
  idProvincia INTEGER NOT NULL,
- PRIMARY KEY(idLocalidad),
+ PRIMARY KEY(idLocalidad,idProvincia),
  FOREIGN KEY(idProvincia) REFERENCES provincia(idProvincia)
 );
 INSERT INTO "localidad" VALUES(0,'CABA',0);
@@ -24,26 +24,28 @@ CREATE TABLE calle (
  idCalle INTEGER NOT NULL,
  nombre VARCHAR(255) DEFAULT NULL,
  idLocalidad INTEGER NOT NULL,
- PRIMARY KEY(idCalle),
- FOREIGN KEY(idLocalidad) REFERENCES localidad(idLocalidad)
+ idProvincia INTEGER NOT NULL,
+ PRIMARY KEY(idCalle,idLocalidad,idProvincia),
+ FOREIGN KEY(idLocalidad,idProvincia) REFERENCES localidad(idLocalidad,idProvincia)
 );
-INSERT INTO "calle" VALUES(0,'Mendoza',0);
-INSERT INTO "calle" VALUES(1,'Artilleros',0);
-INSERT INTO "calle" VALUES(2,'Cabildo',0);
-INSERT INTO calle VALUES(3,'Libertador',0);
+INSERT INTO "calle" VALUES(0,'Mendoza',0,0);
+INSERT INTO "calle" VALUES(1,'Artilleros',0,0);
+INSERT INTO "calle" VALUES(2,'Cabildo',0,0);
+INSERT INTO calle VALUES(3,'Libertador',0,0);
 
 -- entidad Direccion
 CREATE TABLE direccion (
- idDireccion INTEGER NOT NULL,
  altura INTEGER NOT NULL,
  idCalle INTEGER NOT NULL,
- PRIMARY KEY(idDireccion),
- FOREIGN KEY(idCalle) REFERENCES calle(idCalle)
+ idLocalidad INTEGER NOT NULL,
+ idProvincia INTEGER NOT NULL,
+ PRIMARY KEY(altura,idCalle,idLocalidad,idProvincia),
+ FOREIGN KEY(idCalle,idLocalidad,idProvincia) REFERENCES calle(idCalle,idLocalidad,idProvincia)
 );
-INSERT INTO "direccion" VALUES(0,1200,0);
-INSERT INTO "direccion" VALUES(1,2081,1);
-INSERT INTO "direccion" VALUES(2,4000,2);
-INSERT INTO direccion VALUES(3,14000,3);
+INSERT INTO "direccion" VALUES(1200,0,0,0);
+INSERT INTO "direccion" VALUES(2081,1,0,0);
+INSERT INTO "direccion" VALUES(4000,2,0,0);
+INSERT INTO direccion VALUES(14000,3,0,0);
 
 -- entidad Tipo de Lugar
 CREATE TABLE tipo_de_lugar (
@@ -74,11 +76,14 @@ INSERT INTO calle_tiene_tipo_de_lugar VALUES(3,1,0,20000);
 CREATE TABLE comisaria (
  nroComisaria INTEGER NOT NULL,
  nombre VARCHAR(255) DEFAULT NULL,
- idDireccion INTEGER NOT NULL,
+ altura INTEGER NOT NULL,
+ idCalle INTEGER NOT NULL,
+ idLocalidad INTEGER NOT NULL,
+ idProvincia INTEGER NOT NULL,
  PRIMARY KEY(nroComisaria),
- FOREIGN KEY(idDireccion) REFERENCES direccion(idDireccion)
+ FOREIGN KEY(altura,idCalle,idLocalidad,idProvincia) REFERENCES direccion(idDireccion,idCalle,idLocalidad,idProvincia)
 );
-INSERT INTO "comisaria" VALUES(51,'Comisaria 51',1);
+INSERT INTO "comisaria" VALUES(51,'Comisaria 51',2081,1,0,0);
 
 -- entidad Denuncia
 CREATE TABLE denuncia (
@@ -112,12 +117,15 @@ CREATE TABLE siniestro (
  fecha DATETIME DEFAULT NULL,
  nroDenuncia INTEGER NOT NULL,
  idDireccion INTEGER NOT NULL,
+ idCalle INTEGER NOT NULL,
+ idLocalidad INTEGER NOT NULL,
+ idProvincia INTEGER NOT NULL,
  PRIMARY KEY(idSiniestro),
  FOREIGN KEY(nroDenuncia) REFERENCES denuncia(nroDenuncia),
- FOREIGN KEY(idDireccion) REFERENCES direccion(idDireccion)
+ FOREIGN KEY(idDireccion,idCalle,idLocalidad,idProvincia) REFERENCES direccion(idDireccion,idCalle,idLocalidad,idProvincia)
 );
-INSERT INTO "siniestro" VALUES(0,'05/08/2015',0,0);
-INSERT INTO siniestro VALUES(1,'06/06/2015',1,3);
+INSERT INTO "siniestro" VALUES(0,'05/08/2015',0,1200,0,0,0);
+INSERT INTO siniestro VALUES(1,'06/06/2015',1,14000,3,0,0);
 
 -- relacion damnifica, entre Siniestro y Tipo de Colision
 CREATE TABLE siniestro_damnifica_tipo_de_colision (
@@ -229,13 +237,16 @@ INSERT INTO "tipo_de_infraccion" VALUES(0,'Exceso de velocidad permitida.');
 -- entidad Infraccion de Transito
 CREATE TABLE infraccion_de_transito (
  idInfraccion INTEGER NOT NULL,
- idDireccion INTEGER NOT NULL,
+ altura INTEGER NOT NULL,
+ idCalle INTEGER NOT NULL,
+ idLocalidad INTEGER NOT NULL,
+ idProvincia INTEGER NOT NULL,
  idTipoInfraccion INTEGER NOT NULL,
- FOREIGN KEY(idDireccion) REFERENCES direccion(idDireccion),
+ FOREIGN KEY(altura,idCalle,idLocalidad,idProvincia) REFERENCES direccion(idDireccion,idCalle,idLocalidad,idProvincia),
  FOREIGN KEY(idTipoInfraccion) REFERENCES tipo_infraccion(idTipoInfraccion),
  PRIMARY KEY(idInfraccion)
 );
-INSERT INTO "infraccion_de_transito" VALUES(0,2,0);
+INSERT INTO "infraccion_de_transito" VALUES(0,4000,2,0,0,0);
 
 -- entidad Persona con Licencia
 CREATE TABLE persona_con_licencia (
