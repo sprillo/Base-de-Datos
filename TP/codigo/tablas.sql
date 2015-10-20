@@ -305,7 +305,7 @@ CREATE TABLE compania_de_seguro (
  nombre VARCHAR(255) NOT NULL,
  PRIMARY KEY(cuit)
 );
-INSERT INTO "compania_de_seguro" VALUES(30663205621,'La Caja');
+INSERT INTO "compania_de_seguro" VALUES(306632,'La Caja');
 
 -- entidad Tipo de Cobertura
 CREATE TABLE tipo_de_cobertura (
@@ -365,7 +365,7 @@ CREATE TABLE seguro (
  FOREIGN KEY(nroPatente) REFERENCES vehiculo(nroPatente),
  PRIMARY KEY(idSeguro)
 );
-INSERT INTO "seguro" VALUES(0,30663205621,0,"ANA123");
+INSERT INTO "seguro" VALUES(0,306632,0,"ANA123");
 
 -- relacion cedula, entre Vehiculo y Persona con Licencia
 CREATE TABLE cedula (
