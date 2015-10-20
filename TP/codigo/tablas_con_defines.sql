@@ -8,6 +8,7 @@ CREATE TABLE provincia (
  PRIMARY KEY(idProvincia)
 );
 INSERT INTO "provincia" VALUES(idProvinciaBuenosAires,'Buenos Aires');
+INSERT INTO provincia VALUES(idProvinciaRioNegro,'Rio Negro');
 
 -- entidad Localidad
 CREATE TABLE localidad (
@@ -18,6 +19,7 @@ CREATE TABLE localidad (
  FOREIGN KEY(idProvincia) REFERENCES provincia(idProvincia)
 );
 INSERT INTO "localidad" VALUES(idLocalidadCABA,'CABA',idProvinciaBuenosAires);
+INSERT INTO localidad VALUES(idLocalidadBariloche,'Bariloche',idProvinciaRioNegro);
 
 -- entidad Calle
 CREATE TABLE calle (
@@ -32,6 +34,8 @@ INSERT INTO "calle" VALUES(idCalleMendoza,'Mendoza',idLocalidadCABA,idProvinciaB
 INSERT INTO "calle" VALUES(idCalleArtilleros,'Artilleros',idLocalidadCABA,idProvinciaBuenosAires);
 INSERT INTO "calle" VALUES(idCalleCabildo,'Cabildo',idLocalidadCABA,idProvinciaBuenosAires);
 INSERT INTO calle VALUES(idCalleLibertador,'Libertador',idLocalidadCABA,idProvinciaBuenosAires);
+INSERT INTO calle VALUES(idCalleBustillo,'Bustillo',idLocalidadBariloche,idProvinciaRioNegro);
+INSERT INTO calle VALUES(idCallePioneros,'Pioneros',idLocalidadBariloche,idProvinciaRioNegro);
 
 -- entidad Direccion
 CREATE TABLE direccion (
@@ -46,6 +50,8 @@ INSERT INTO "direccion" VALUES(alturaMendoza,idCalleMendoza,idLocalidadCABA,idPr
 INSERT INTO "direccion" VALUES(alturaArtilleros,idCalleArtilleros,idLocalidadCABA,idProvinciaBuenosAires);
 INSERT INTO "direccion" VALUES(alturaCabildo,idCalleCabildo,idLocalidadCABA,idProvinciaBuenosAires);
 INSERT INTO direccion VALUES(alturaLibertador,idCalleLibertador,idLocalidadCABA,idProvinciaBuenosAires);
+INSERT INTO direccion VALUES(alturaBustillo,idCalleBustillo,idLocalidadBariloche,idProvinciaRioNegro);
+INSERT INTO direccion VALUES(alturaPioneros,idCallePioneros,idLocalidadBariloche,idProvinciaRioNegro);
 
 -- entidad Tipo de Lugar
 CREATE TABLE tipo_de_lugar (
@@ -56,21 +62,26 @@ CREATE TABLE tipo_de_lugar (
 INSERT INTO "tipo_de_lugar" VALUES(idTipoLugarCalle,'Calle');
 INSERT INTO "tipo_de_lugar" VALUES(idTipoLugarAvenida,'Avenida');
 INSERT INTO "tipo_de_lugar" VALUES(idTipoLugarAutopista,'Autopista');
+INSERT INTO tipo_de_lugar VALUES(idTipoLugarRuta,'Ruta');
 
 -- relacion tiene, entre Calle y Tipo de Lugar
 CREATE TABLE calle_tiene_tipo_de_lugar (
  idCalle INTEGER NOT NULL,
+ idLocalidad INTEGER NOT NULL,
+ idProvincia INTEGER NOT NULL,
  idTipoLugar INTEGER NOT NULL,
  desde INTEGER NOT NULL,
  hasta INTEGER NOT NULL,
- PRIMARY KEY(idCalle, idTipoLugar, desde),
- FOREIGN KEY(idCalle) REFERENCES calle(idCalle),
+ PRIMARY KEY(idCalle, idLocalidad, idProvincia, idTipoLugar, desde),
+ FOREIGN KEY(idCalle, idLocalidad, idProvincia) REFERENCES calle(idCalle,idLocalidad,idProvincia),
  FOREIGN KEY(idTipoLugar) REFERENCES tipo_de_lugar(idTipoLugar)
 );
-INSERT INTO "calle_tiene_tipo_de_lugar" VALUES(idCalleMendoza,idTipoLugarCalle,0,longitudMendoza);
-INSERT INTO "calle_tiene_tipo_de_lugar" VALUES(idCalleArtilleros,idTipoLugarCalle,0,longitudArtilleros);
-INSERT INTO "calle_tiene_tipo_de_lugar" VALUES(idCalleCabildo,idTipoLugarAvenida,0,longitudCabildo);
-INSERT INTO calle_tiene_tipo_de_lugar VALUES(idCalleLibertador,idTipoLugarAvenida,0,longitudLibertador);
+INSERT INTO "calle_tiene_tipo_de_lugar" VALUES(idCalleMendoza,idLocalidadCABA,idProvinciaBuenosAires,idTipoLugarCalle,0,longitudMendoza);
+INSERT INTO "calle_tiene_tipo_de_lugar" VALUES(idCalleArtilleros,idLocalidadCABA,idProvinciaBuenosAires,idTipoLugarCalle,0,longitudArtilleros);
+INSERT INTO "calle_tiene_tipo_de_lugar" VALUES(idCalleCabildo,idLocalidadCABA,idProvinciaBuenosAires,idTipoLugarAvenida,0,longitudCabildo);
+INSERT INTO calle_tiene_tipo_de_lugar VALUES(idCalleLibertador,idLocalidadCABA,idProvinciaBuenosAires,idTipoLugarAvenida,0,longitudLibertador);
+INSERT INTO calle_tiene_tipo_de_lugar VALUES(idCalleBustillo,idLocalidadBariloche,idProvinciaRioNegro,idTipoLugarAvenida,0,longitudBustillo);
+INSERT INTO calle_tiene_tipo_de_lugar VALUES(idCallePioneros,idLocalidadBariloche,idProvinciaRioNegro,idTipoLugarAvenida,0,longitudPioneros);
 
 -- entidad Comisaria
 CREATE TABLE comisaria (
@@ -84,6 +95,7 @@ CREATE TABLE comisaria (
  FOREIGN KEY(altura,idCalle,idLocalidad,idProvincia) REFERENCES direccion(idDireccion,idCalle,idLocalidad,idProvincia)
 );
 INSERT INTO "comisaria" VALUES(nroComisariaComisaria51,'Comisaria 51',alturaArtilleros,idCalleArtilleros,idLocalidadCABA,idProvinciaBuenosAires);
+INSERT INTO comisaria VALUES(nroComisariaComisaria27,'Comisaria 27',alturaPioneros,idCallePioneros,idLocalidadBariloche,idProvinciaBuenosAires);
 
 -- entidad Denuncia
 CREATE TABLE denuncia (
@@ -94,6 +106,7 @@ CREATE TABLE denuncia (
  FOREIGN KEY(nroComisaria) REFERENCES comisaria(nroComisaria)
 );
 INSERT INTO "denuncia" VALUES(nroDenunciaChano,'El chano rompio todo.',nroComisariaComisaria51);
+INSERT INTO denuncia VALUES(nroDenunciaVuelco,'El chano volco su auto sobre Bustillo a la altura del hotel Altuen',nroComisariaComisaria27);
 
 -- entidad Tipo de Colision
 CREATE TABLE tipo_de_colision (
@@ -110,6 +123,7 @@ CREATE TABLE modalidad (
  PRIMARY KEY(idTipoModalidad)
 );
 INSERT INTO "modalidad" VALUES(idTipoModalidadChoque,'Choque');
+INSERT INTO modalidad VALUES(idTipoModalidadVuelco,'Vuelco');
 
 -- entidad Siniestro
 CREATE TABLE siniestro (
@@ -126,6 +140,7 @@ CREATE TABLE siniestro (
 );
 INSERT INTO "siniestro" VALUES(idSiniestroChano,'05/08/2015',nroDenunciaChano,alturaMendoza,idCalleMendoza,idLocalidadCABA,idProvinciaBuenosAires);
 INSERT INTO siniestro VALUES(idSiniestro2,'06/06/2015',nroDenunciaSiniestro2,alturaLibertador,idCalleLibertador,idLocalidadCABA,idProvinciaBuenosAires);
+INSERT INTO siniestro VALUES(idSiniestroVuelco,'05/05/2014',nroDenunciaSiniestroVuelco,alturaBustillo,idCalleBustillo,idLocalidadBariloche,idProvinciaRioNegro);
 
 -- relacion damnifica, entre Siniestro y Tipo de Colision
 CREATE TABLE siniestro_damnifica_tipo_de_colision (
@@ -148,6 +163,7 @@ CREATE TABLE siniestro_forma_de_modalidad (
 );
 INSERT INTO "siniestro_forma_de_modalidad" VALUES(idSiniestroChano,idTipoModalidadChoque);
 INSERT INTO siniestro_forma_de_modalidad VALUES(idSiniestro2,idTipoModalidadChoque);
+INSERT INTO siniestro_forma_de_modalidad VALUES(idSiniestroVuelco,idTipoModalidadVuelco);
 
 -- entidad Tipo de Pavimento
 CREATE TABLE tipo_de_pavimento (
@@ -369,6 +385,7 @@ CREATE TABLE siniestro_vehiculo_persona (
 INSERT INTO "siniestro_vehiculo_persona" VALUES(nroPatenteChano,idSiniestroChano,dniChano,True);
 INSERT INTO siniestro_vehiculo_persona VALUES(nroPatenteChano2,idSiniestro2,dniChano,True);
 INSERT INTO siniestro_vehiculo_persona VALUES(nroPatenteBeto,idSiniestro2,dniBeto,False);
+INSERT INTO siniestro_vehiculo_persona VALUES(nroPatenteChano,idSiniestroVuelco,dniChano,True);
 
 -- relacion infraccion, entre Persona, Vehiculo e Infraccion de Transito
 CREATE TABLE persona_en_vehiculo_comete_infraccion (

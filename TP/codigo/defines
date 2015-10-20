@@ -2,39 +2,52 @@ False 0
 True 1
 
 idProvinciaBuenosAires 0
+idProvinciaRioNegro 1
 
 idLocalidadCABA 0
+idLocalidadBariloche 1
 
 idCalleMendoza 0
 idCalleArtilleros 1
 idCalleCabildo 2
 idCalleLibertador 3
+idCalleBustillo 4
+idCallePioneros 5
 
 alturaMendoza 1200
 alturaArtilleros 2081
 alturaCabildo 4000
 alturaLibertador 14000
+alturaBustillo 7625
+alturaPioneros 5000
 
 idTipoLugarCalle 0
 idTipoLugarAvenida 1
 idTipoLugarAutopista 2
+idTipoLugarRuta 3
 
 longitudMendoza 5000
 longitudArtilleros 1000
 longitudCabildo 10000
 longitudLibertador 20000
+longitudBustillo 12500
+longitudPioneros 20000
 
 nroComisariaComisaria51 51
+nroComisariaComisaria27 27
 
 nroDenunciaChano 0
 nroDenunciaSiniestro2 1
+nroDenunciaSiniestroVuelco 2
 
 idTipoColisionVehicular 0
 
 idTipoModalidadChoque 0
+idTipoModalidadVuelco 1
 
 idSiniestroChano 0
 idSiniestro2 1
+idSiniestroVuelco 2
 
 idTipoPavimentoNormal 0
 
@@ -55,6 +68,7 @@ idInfraccionChano 0
 
 nroLicenciaChano 0
 nroLicenciaBeto 1
+nroDenunciaVuelco 2
 
 cuitLaCaja 30663205621
 
