@@ -3,9 +3,13 @@ True 1
 
 idProvinciaBuenosAires 0
 idProvinciaRioNegro 1
+idProvinciaChaco 2
+idProvinciaMisiones 3
 
 idLocalidadCABA 0
 idLocalidadBariloche 1
+idLocalidadPuertoIguazu 2
+idLocalidadSanIsidro 3
 
 idCalleMendoza 0
 idCalleArtilleros 1
@@ -41,15 +45,22 @@ nroDenunciaSiniestro2 1
 nroDenunciaSiniestroVuelco 2
 
 idTipoColisionVehicular 0
+idTipoColisionPeatonal 1
+idTipoColisionAnimal 2
+idTipoColisionEdilicia 3
 
 idTipoModalidadChoque 0
 idTipoModalidadVuelco 1
+idTipoModalidadIncendio 2
+idTipoModalidadCaidaDeOcupante 3
 
 idSiniestroChano 0
 idSiniestro2 1
 idSiniestroVuelco 2
 
-idTipoPavimentoNormal 0
+idTipoPavimentoFlexible 0
+idTipoPavimentoRigido 1
+idTipoPavimentoCompuesto 2
 
 idEstudioChano 0
 
@@ -59,10 +70,13 @@ dniAna 15151515
 dniBeto 16161616
 
 idTipoDelitoDrogas 0
+idTipoDelitoRobo 1
 
 idAntecedenteChano 0
 
 idTipoInfraccionExcesoVelocidad 0
+idTipoInfraccionCruceSemaforoRojo 1
+idTipoInfraccionContramano 2
 
 idInfraccionChano 0
 
@@ -73,14 +87,17 @@ nroDenunciaVuelco 2
 cuitLaCaja 30663205621
 
 idTipoCoberturaTotal 0
+idTipoCoberturaRobo 1
 
 idTipoVehiculoAuto 0
 idTipoVehiculoCamioneta 1
+idTipoVehiculoCombi 2
+idTipoVehiculoMoto 3
 
 idCategoriaGamaMedia 0
 idCategoriaGamaAlta 1
 
-nroPatenteChano "CHA123"
+nroPatenteChano1 "CHA123"
 nroPatenteChano2 "CHA234"
 nroPatenteChano3 "CHA345"
 nroPatenteAna "ANA123"

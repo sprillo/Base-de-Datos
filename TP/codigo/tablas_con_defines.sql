@@ -9,6 +9,8 @@ CREATE TABLE provincia (
 );
 INSERT INTO "provincia" VALUES(idProvinciaBuenosAires,'Buenos Aires');
 INSERT INTO provincia VALUES(idProvinciaRioNegro,'Rio Negro');
+INSERT INTO provincia VALUES(idProvinciaChaco,'Chaco');
+INSERT INTO provincia VALUES(idProvinciaMisiones,'Misiones');
 
 -- entidad Localidad
 CREATE TABLE localidad (
@@ -20,6 +22,8 @@ CREATE TABLE localidad (
 );
 INSERT INTO "localidad" VALUES(idLocalidadCABA,'CABA',idProvinciaBuenosAires);
 INSERT INTO localidad VALUES(idLocalidadBariloche,'Bariloche',idProvinciaRioNegro);
+INSERT INTO localidad VALUES(idLocalidadSanIsidro,'San Isidro',idProvinciaBuenosAires);
+INSERT INTO localidad VALUES(idLocalidadPuertoIguazu,'Puerto Iguazo',idProvinciaMisiones);
 
 -- entidad Calle
 CREATE TABLE calle (
@@ -115,6 +119,9 @@ CREATE TABLE tipo_de_colision (
  PRIMARY KEY(idTipoColision)
 );
 INSERT INTO "tipo_de_colision" VALUES(idTipoColisionVehicular,'Vehicular');
+INSERT INTO tipo_de_colision VALUES(idTipoColisionPeatonal,'Peatonal');
+INSERT INTO tipo_de_colision VALUES(idTipoColisionAnimal,'Animal');
+INSERT INTO tipo_de_colision VALUES(idTipoColisionEdilicia,'Edilicia');
 
 -- entidad Modalidad
 CREATE TABLE modalidad (
@@ -124,6 +131,8 @@ CREATE TABLE modalidad (
 );
 INSERT INTO "modalidad" VALUES(idTipoModalidadChoque,'Choque');
 INSERT INTO modalidad VALUES(idTipoModalidadVuelco,'Vuelco');
+INSERT INTO modalidad VALUES(idTipoModalidadIncendio,'Incendio');
+INSERT INTO modalidad VALUES(idTipoModalidadCaidaDeOcupante,'Caida de Ocupante');
 
 -- entidad Siniestro
 CREATE TABLE siniestro (
@@ -171,7 +180,9 @@ CREATE TABLE tipo_de_pavimento (
  descripcion VARCHAR(255) DEFAULT NULL,
  PRIMARY KEY(idTipoPavimento)
 );
-INSERT INTO "tipo_de_pavimento" VALUES(idTipoPavimentoNormal,'pavimento normal');
+INSERT INTO "tipo_de_pavimento" VALUES(idTipoPavimentoFlexible,'Flexible');
+INSERT INTO tipo_de_pavimento VALUES(idTipoPavimentoRigido,'Rigido');
+INSERT INTO tipo_de_pavimento VALUES(idTipoPavimentoCompuesto,'Compuesto');
 
 -- entidad Estudio
 CREATE TABLE estudio (
@@ -186,7 +197,7 @@ CREATE TABLE estudio (
  FOREIGN KEY(idTipoPavimento) REFERENCES tipo_de_pavimento(idTipoPavimento),
  FOREIGN KEY(idSiniestro) REFERENCES siniestro(idSiniestro)
 );
-INSERT INTO "estudio" VALUES(idEstudioChano,'El Chano venia pisteando como un campeon en contramano y choco 6 autos.','Buena condicion de via.','De noche, pero buena iluminacion.',False,idTipoPavimentoNormal,idSiniestroChano);
+INSERT INTO "estudio" VALUES(idEstudioChano,'El Chano venia pisteando como un campeon en contramano y choco 6 autos.','Buena condicion de via.','De noche, pero buena iluminacion.',False,idTipoPavimentoCompuesto,idSiniestroChano);
 
 -- entidad Persona
 CREATE TABLE persona (
@@ -229,6 +240,7 @@ CREATE TABLE tipo_de_delito (
  PRIMARY KEY(idTipoDelito)
 );
 INSERT INTO "tipo_de_delito" VALUES(idTipoDelitoDrogas,'Consumo Ilegal de Drogas');
+INSERT INTO tipo_de_delito VALUES(idTipoDelitoRobo,'Robo');
 
 -- entidad Antecedente Penal
 CREATE TABLE antecedente_penal (
@@ -249,6 +261,8 @@ CREATE TABLE tipo_de_infraccion (
  PRIMARY KEY(idTipoInfraccion)
 );
 INSERT INTO "tipo_de_infraccion" VALUES(idTipoInfraccionExcesoVelocidad,'Exceso de velocidad permitida.');
+INSERT INTO tipo_de_infraccion VALUES(idTipoInfraccionCruceSemaforoRojo,'Cruzar semaforo en rojo');
+INSERT INTO tipo_de_infraccion VALUES(idTipoInfraccionContramano,'Conducir en contramano');
 
 -- entidad Infraccion de Transito
 CREATE TABLE infraccion_de_transito (
@@ -300,6 +314,7 @@ CREATE TABLE tipo_de_cobertura (
  PRIMARY KEY(idTipoCobertura)
 );
 INSERT INTO "tipo_de_cobertura" VALUES(idTipoCoberturaTotal,'cobertura total.');
+INSERT INTO tipo_de_cobertura VALUES(idTipoCoberturaRobo,'cobertura frente a robos');
 
 -- entidad Tipo de Vehiculo
 CREATE TABLE tipo_de_vehiculo (
@@ -309,6 +324,8 @@ CREATE TABLE tipo_de_vehiculo (
 );
 INSERT INTO "tipo_de_vehiculo" VALUES(idTipoVehiculoAuto,'Auto');
 INSERT INTO "tipo_de_vehiculo" VALUES(idTipoVehiculoCamioneta,'Camioneta');
+INSERT INTO tipo_de_vehiculo VALUES(idTipoVehiculoCombi,'Combi');
+INSERT INTO tipo_de_vehiculo VALUES(idTipoVehiculoMoto,'Moto');
 
 -- entidad Categoria de Coche
 CREATE TABLE categoria_de_vehiculo (
@@ -331,7 +348,7 @@ CREATE TABLE vehiculo (
  FOREIGN KEY(dni) REFERENCES persona(dni),
  PRIMARY KEY(nroPatente)
 );
-INSERT INTO "vehiculo" VALUES(nroPatenteChano,'01/01/2010',idCategoriaGamaAlta,idTipoVehiculoCamioneta,dniChano);
+INSERT INTO "vehiculo" VALUES(nroPatenteChano1,'01/01/2010',idCategoriaGamaAlta,idTipoVehiculoCamioneta,dniChano);
 INSERT INTO "vehiculo" VALUES(nroPatenteAna,'01/01/2009',idCategoriaGamaMedia,idTipoVehiculoAuto,dniAna);
 INSERT INTO vehiculo VALUES(nroPatenteChano2,'02/02/2010',idCategoriaGamaMedia,idTipoVehiculoAuto,dniChano);
 INSERT INTO vehiculo VALUES(nroPatenteChano3,'03/03/2010',idCategoriaGamaMedia,idTipoVehiculoAuto,dniChano);
@@ -358,7 +375,7 @@ CREATE TABLE cedula (
  FOREIGN KEY(dni) REFERENCES persona_con_licencia(dni),
  PRIMARY KEY(nroPatente, dni)
 );
-INSERT INTO "cedula" VALUES(nroPatenteChano,dniChano);
+INSERT INTO "cedula" VALUES(nroPatenteChano1,dniChano);
 INSERT INTO "cedula" VALUES(nroPatenteAna,dniAna);
 
 -- relacion protagoniza, entre Siniesto y Vehiculo
@@ -382,10 +399,10 @@ CREATE TABLE siniestro_vehiculo_persona (
  FOREIGN KEY(dni) REFERENCES persona(dni), 
  PRIMARY KEY(nroPatente, idSiniestro)
 );
-INSERT INTO "siniestro_vehiculo_persona" VALUES(nroPatenteChano,idSiniestroChano,dniChano,True);
+INSERT INTO "siniestro_vehiculo_persona" VALUES(nroPatenteChano1,idSiniestroChano,dniChano,True);
 INSERT INTO siniestro_vehiculo_persona VALUES(nroPatenteChano2,idSiniestro2,dniChano,True);
 INSERT INTO siniestro_vehiculo_persona VALUES(nroPatenteBeto,idSiniestro2,dniBeto,False);
-INSERT INTO siniestro_vehiculo_persona VALUES(nroPatenteChano,idSiniestroVuelco,dniChano,True);
+INSERT INTO siniestro_vehiculo_persona VALUES(nroPatenteChano1,idSiniestroVuelco,dniChano,True);
 
 -- relacion infraccion, entre Persona, Vehiculo e Infraccion de Transito
 CREATE TABLE persona_en_vehiculo_comete_infraccion (
@@ -397,6 +414,6 @@ CREATE TABLE persona_en_vehiculo_comete_infraccion (
  FOREIGN KEY(idInfraccion) REFERENCES infraccion_de_transito(idInfraccion), 
  PRIMARY KEY(nroPatente, dni, idInfraccion)
 );
-INSERT INTO "persona_en_vehiculo_comete_infraccion" VALUES(nroPatenteChano,dniChano,idInfraccionChano);
+INSERT INTO "persona_en_vehiculo_comete_infraccion" VALUES(nroPatenteChano1,dniChano,idInfraccionChano);
 
 COMMIT;

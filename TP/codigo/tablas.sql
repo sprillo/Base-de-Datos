@@ -9,6 +9,8 @@ CREATE TABLE provincia (
 );
 INSERT INTO "provincia" VALUES(0,'Buenos Aires');
 INSERT INTO provincia VALUES(1,'Rio Negro');
+INSERT INTO provincia VALUES(2,'Chaco');
+INSERT INTO provincia VALUES(3,'Misiones');
 
 -- entidad Localidad
 CREATE TABLE localidad (
@@ -20,6 +22,8 @@ CREATE TABLE localidad (
 );
 INSERT INTO "localidad" VALUES(0,'CABA',0);
 INSERT INTO localidad VALUES(1,'Bariloche',1);
+INSERT INTO localidad VALUES(3,'San Isidro',0);
+INSERT INTO localidad VALUES(2,'Puerto Iguazo',3);
 
 -- entidad Calle
 CREATE TABLE calle (
@@ -115,6 +119,9 @@ CREATE TABLE tipo_de_colision (
  PRIMARY KEY(idTipoColision)
 );
 INSERT INTO "tipo_de_colision" VALUES(0,'Vehicular');
+INSERT INTO tipo_de_colision VALUES(1,'Peatonal');
+INSERT INTO tipo_de_colision VALUES(2,'Animal');
+INSERT INTO tipo_de_colision VALUES(3,'Edilicia');
 
 -- entidad Modalidad
 CREATE TABLE modalidad (
@@ -124,6 +131,8 @@ CREATE TABLE modalidad (
 );
 INSERT INTO "modalidad" VALUES(0,'Choque');
 INSERT INTO modalidad VALUES(1,'Vuelco');
+INSERT INTO modalidad VALUES(2,'Incendio');
+INSERT INTO modalidad VALUES(3,'Caida de Ocupante');
 
 -- entidad Siniestro
 CREATE TABLE siniestro (
@@ -171,7 +180,9 @@ CREATE TABLE tipo_de_pavimento (
  descripcion VARCHAR(255) DEFAULT NULL,
  PRIMARY KEY(idTipoPavimento)
 );
-INSERT INTO "tipo_de_pavimento" VALUES(0,'pavimento normal');
+INSERT INTO "tipo_de_pavimento" VALUES(0,'Flexible');
+INSERT INTO tipo_de_pavimento VALUES(1,'Rigido');
+INSERT INTO tipo_de_pavimento VALUES(2,'Compuesto');
 
 -- entidad Estudio
 CREATE TABLE estudio (
@@ -186,7 +197,7 @@ CREATE TABLE estudio (
  FOREIGN KEY(idTipoPavimento) REFERENCES tipo_de_pavimento(idTipoPavimento),
  FOREIGN KEY(idSiniestro) REFERENCES siniestro(idSiniestro)
 );
-INSERT INTO "estudio" VALUES(0,'El Chano venia pisteando como un campeon en contramano y choco 6 autos.','Buena condicion de via.','De noche, pero buena iluminacion.',0,0,0);
+INSERT INTO "estudio" VALUES(0,'El Chano venia pisteando como un campeon en contramano y choco 6 autos.','Buena condicion de via.','De noche, pero buena iluminacion.',0,2,0);
 
 -- entidad Persona
 CREATE TABLE persona (
@@ -229,6 +240,7 @@ CREATE TABLE tipo_de_delito (
  PRIMARY KEY(idTipoDelito)
 );
 INSERT INTO "tipo_de_delito" VALUES(0,'Consumo Ilegal de Drogas');
+INSERT INTO tipo_de_delito VALUES(1,'Robo');
 
 -- entidad Antecedente Penal
 CREATE TABLE antecedente_penal (
@@ -249,6 +261,8 @@ CREATE TABLE tipo_de_infraccion (
  PRIMARY KEY(idTipoInfraccion)
 );
 INSERT INTO "tipo_de_infraccion" VALUES(0,'Exceso de velocidad permitida.');
+INSERT INTO tipo_de_infraccion VALUES(1,'Cruzar semaforo en rojo');
+INSERT INTO tipo_de_infraccion VALUES(2,'Conducir en contramano');
 
 -- entidad Infraccion de Transito
 CREATE TABLE infraccion_de_transito (
@@ -300,6 +314,7 @@ CREATE TABLE tipo_de_cobertura (
  PRIMARY KEY(idTipoCobertura)
 );
 INSERT INTO "tipo_de_cobertura" VALUES(0,'cobertura total.');
+INSERT INTO tipo_de_cobertura VALUES(1,'cobertura frente a robos');
 
 -- entidad Tipo de Vehiculo
 CREATE TABLE tipo_de_vehiculo (
@@ -309,6 +324,8 @@ CREATE TABLE tipo_de_vehiculo (
 );
 INSERT INTO "tipo_de_vehiculo" VALUES(0,'Auto');
 INSERT INTO "tipo_de_vehiculo" VALUES(1,'Camioneta');
+INSERT INTO tipo_de_vehiculo VALUES(2,'Combi');
+INSERT INTO tipo_de_vehiculo VALUES(3,'Moto');
 
 -- entidad Categoria de Coche
 CREATE TABLE categoria_de_vehiculo (
