@@ -139,13 +139,13 @@ CREATE TABLE siniestro (
  idSiniestro INTEGER NOT NULL,
  fecha DATETIME DEFAULT NULL,
  nroDenuncia INTEGER NOT NULL,
- idDireccion INTEGER NOT NULL,
+ altura INTEGER NOT NULL,
  idCalle INTEGER NOT NULL,
  idLocalidad INTEGER NOT NULL,
  idProvincia INTEGER NOT NULL,
  PRIMARY KEY(idSiniestro),
  FOREIGN KEY(nroDenuncia) REFERENCES denuncia(nroDenuncia),
- FOREIGN KEY(idDireccion,idCalle,idLocalidad,idProvincia) REFERENCES direccion(idDireccion,idCalle,idLocalidad,idProvincia)
+ FOREIGN KEY(altura,idCalle,idLocalidad,idProvincia) REFERENCES direccion(altura,idCalle,idLocalidad,idProvincia)
 );
 INSERT INTO "siniestro" VALUES(0,'05/08/2015',0,1200,0,0,0);
 INSERT INTO siniestro VALUES(1,'06/06/2015',1,14000,3,0,0);
@@ -159,6 +159,7 @@ CREATE TABLE siniestro_damnifica_tipo_de_colision (
  FOREIGN KEY(idSiniestro) REFERENCES siniestro(idSiniestro),
  FOREIGN KEY(idTipoColision) REFERENCES tipo_de_colision(idTipoColision)
 );
+INSERT INTO "siniestro_damnifica_tipo_de_colision" VALUES(2,0);
 INSERT INTO "siniestro_damnifica_tipo_de_colision" VALUES(0,0);
 INSERT INTO siniestro_damnifica_tipo_de_colision VALUES(1,0);
 
@@ -375,6 +376,8 @@ CREATE TABLE cedula (
  FOREIGN KEY(dni) REFERENCES persona_con_licencia(dni),
  PRIMARY KEY(nroPatente, dni)
 );
+INSERT INTO "cedula" VALUES("CHA345",28282828);
+INSERT INTO "cedula" VALUES("CHA234",28282828);
 INSERT INTO "cedula" VALUES("CHA123",28282828);
 INSERT INTO "cedula" VALUES("ANA123",15151515);
 
