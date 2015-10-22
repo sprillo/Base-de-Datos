@@ -4,5 +4,5 @@ FROM (modalidad m NATURAL JOIN
 		siniestro_vehiculo_persona svp NATURAL JOIN 
 		persona_con_licencia pl NATURAL JOIN 
 		licencia l) j
-WHERE m.idTipoModalidad = 0
+WHERE m.idTipoModalidad = 1
 GROUP BY j.nroLicencia;
