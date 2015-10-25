@@ -1,4 +1,4 @@
---PRAGMA foreign_keys=OFF;
+PRAGMA foreign_keys=ON;
 BEGIN TRANSACTION;
 
 -- entidad Provincia
@@ -96,10 +96,10 @@ CREATE TABLE comisaria (
  idLocalidad INTEGER NOT NULL,
  idProvincia INTEGER NOT NULL,
  PRIMARY KEY(nroComisaria),
- FOREIGN KEY(altura,idCalle,idLocalidad,idProvincia) REFERENCES direccion(idDireccion,idCalle,idLocalidad,idProvincia)
+ FOREIGN KEY(altura,idCalle,idLocalidad,idProvincia) REFERENCES direccion(altura,idCalle,idLocalidad,idProvincia)
 );
 INSERT INTO "comisaria" VALUES(51,'Comisaria 51',2081,1,0,0);
-INSERT INTO comisaria VALUES(27,'Comisaria 27',5000,5,1,0);
+INSERT INTO comisaria VALUES(27,'Comisaria 27',5000,5,1,1);
 
 -- entidad Denuncia
 CREATE TABLE denuncia (
@@ -110,6 +110,7 @@ CREATE TABLE denuncia (
  FOREIGN KEY(nroComisaria) REFERENCES comisaria(nroComisaria)
 );
 INSERT INTO "denuncia" VALUES(0,'El chano rompio todo.',51);
+INSERT INTO "denuncia" VALUES(1,'Accidente porque se le pincho una rueda.',51);
 INSERT INTO denuncia VALUES(2,'El chano volco su auto sobre Bustillo a la altura del hotel Altuen',27);
 
 -- entidad Tipo de Colision
@@ -226,13 +227,14 @@ INSERT INTO "siniestro_testigo_persona" VALUES(0,20202020);
 -- relacion cinturon, entre Estudio y Persona
 CREATE TABLE estudio_cinturon_persona (
  idEstudio INTEGER NOT NULL,
+ idSiniestro INTEGER NOT NULL,
  dni INTEGER NOT NULL,
  si_o_no BOOLEAN NOT NULL,
  PRIMARY KEY(idEstudio, dni),
- FOREIGN KEY(idEstudio) REFERENCES estudio(idEstudio),
+ FOREIGN KEY(idEstudio, idSiniestro) REFERENCES estudio(idEstudio, idSiniestro),
  FOREIGN KEY(dni) REFERENCES persona(dni)
 );
-INSERT INTO "estudio_cinturon_persona" VALUES(0,28282828,0);
+INSERT INTO "estudio_cinturon_persona" VALUES(0,0, 28282828,0);
 
 -- entidad Tipo de Delito
 CREATE TABLE tipo_de_delito (
@@ -273,8 +275,8 @@ CREATE TABLE infraccion_de_transito (
  idLocalidad INTEGER NOT NULL,
  idProvincia INTEGER NOT NULL,
  idTipoInfraccion INTEGER NOT NULL,
- FOREIGN KEY(altura,idCalle,idLocalidad,idProvincia) REFERENCES direccion(idDireccion,idCalle,idLocalidad,idProvincia),
- FOREIGN KEY(idTipoInfraccion) REFERENCES tipo_infraccion(idTipoInfraccion),
+ FOREIGN KEY(altura,idCalle,idLocalidad,idProvincia) REFERENCES direccion(altura,idCalle,idLocalidad,idProvincia),
+ FOREIGN KEY(idTipoInfraccion) REFERENCES tipo_de_infraccion(idTipoInfraccion),
  PRIMARY KEY(idInfraccion)
 );
 INSERT INTO "infraccion_de_transito" VALUES(0,4000,2,0,0,0);
@@ -287,6 +289,7 @@ CREATE TABLE persona_con_licencia (
 );
 INSERT INTO "persona_con_licencia" VALUES(28282828);
 INSERT INTO "persona_con_licencia" VALUES(16161616);
+INSERT INTO "persona_con_licencia" VALUES(15151515);
 
 -- entidad Licencia
 CREATE TABLE licencia (
@@ -299,6 +302,7 @@ CREATE TABLE licencia (
 );
 INSERT INTO "licencia" VALUES(0,28282828,'01/01/2015','01/01/2016');
 INSERT INTO "licencia" VALUES(1,16161616,'01/01/2015','01/01/2016');
+INSERT INTO "licencia" VALUES(3,15151515,'06/06/2015','06/06/2016');
 
 -- entidad Compania de Seguros
 CREATE TABLE compania_de_seguro (
@@ -362,7 +366,7 @@ CREATE TABLE seguro (
  idTipoCobertura INTEGER NOT NULL,
  nroPatente INTEGER NOT NULL,
  FOREIGN KEY(cuit) REFERENCES compania_de_seguro(cuit),
- FOREIGN KEY(idTipoCobertura) REFERENCES cobertura(idTipoCobertura),
+ FOREIGN KEY(idTipoCobertura) REFERENCES tipo_de_cobertura(idTipoCobertura),
  FOREIGN KEY(nroPatente) REFERENCES vehiculo(nroPatente),
  PRIMARY KEY(idSeguro)
 );
