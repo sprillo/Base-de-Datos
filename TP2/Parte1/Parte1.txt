@@ -1,3 +1,6 @@
+------------------------------- QUERY 1 --------------------------------
+-- Los empleados que atendieron clientes mayores de edad.
+
 -- Definicion de la tabla empleados
 empleados : {
 	nroLegajo : INTEGER
@@ -11,19 +14,158 @@ empleados : {
 db.empleados.insert({
 	nroLegajo : 1,
 	nombre : "empleado1",
-	atiende : [	{fecha : "01/01/2015", cliente : {dni : "11111111", nombre : "cliente1", edad : 70}},
-				{fecha : "01/02/2015", cliente : {dni : "22222222", nombre : "cliente2", edad : 60}}]
+	atiende : [	{fecha : "01/01/2015", cliente : {dni : "11111111", nombre : "cliente1", edad : 18}},
+				{fecha : "01/02/2015", cliente : {dni : "22222222", nombre : "cliente2", edad : 17}}]
 })
 
 db.empleados.insert({
 	nroLegajo : 2,
 	nombre : "empleado2",
-	atiende : [{fecha : "02/02/2015", cliente : {dni : "22222222", nombre : "cliente2", edad : 60}}]
+	atiende : [{fecha : "02/02/2015", cliente : {dni : "22222222", nombre : "cliente2", edad : 17}}]
+})
+
+
+db.empleados.insert({
+	nroLegajo : 3,
+	nombre : "empleado3",
+	atiende : []
+})
+
+db.empleados.insert({
+	nroLegajo : 4,
+	nombre : "empleado4",
+	atiende : []
 })
 
 -- Query 1
--- Devuelve todos los empleados tales que algun atiende.cliente.edad sea >= 65
+-- Devuelve todos los empleados tales que algun atiende.cliente.edad sea >= 18
 db.empleados.find(
-	{"atiende.cliente.edad" : {$gte : 65}},
+	{"atiende.cliente.edad" : {$gte : 18}},
 	{nroLegajo : 1, nombre : 1}
 )
+
+-- Otra forma de hacerlo:
+db.empleados.find(
+	{"atiende" : {$elemMatch : {"cliente.edad" : {$gte : 18}}}},
+	{nroLegajo : 1, nombre : 1}
+)
+
+------------------------------- QUERY 2 --------------------------------
+-- Los articulos mas vendidos.
+
+-- Definicion de la tabla articulos
+articulos{
+	codigo : STRING
+	nombre : STRING
+	ventas : [{dni : STRING, nombre : STRING, edad : INTEGER}]
+}
+
+db.articulos.insert({
+	codigo : "1",
+	nombre : "articulo1",
+	ventas : [{dni : "11111111", nombre : "cliente1", edad : 18}, {dni : "22222222", nombre : "cliente2", edad : 17}]
+})
+
+db.articulos.insert({
+	codigo : "2",
+	nombre : "articulo2",
+	ventas : [{dni : "11111111", nombre : "cliente1", edad : 18}]
+})
+
+-- Query 2
+
+db.articulos.aggregate([
+	{$project : {"cant_ventas" : {$size : "$ventas"}}},
+	{$sort : {"cant_ventas" : -1}},
+	{$match : {"cant_ventas" : "cant_ventas en el primer documento de la coleccion esta..."}}
+])
+
+db.articulos.aggregate([
+	{$project : {"cant_ventas" : {$size : "$ventas"}}},
+	{$sort : {"cant_ventas" : -1}},
+])
+
+------------------------------- QUERY 3 --------------------------------
+
+-- Definicion de la tabla sectores
+sectores{
+	codigoSector : INTEGER
+	trabaja : [{tarea : {idTarea : INTEGER, descripcion : STRING} , empleado : {legajo : INTEGER, nombre : STRING}}]
+}
+
+db.sectores.insert({
+	codigoSector : 1,
+	trabaja : [	{tarea : {idTarea : 1, descripcion : "Ventas"} , empleado : {legajo : 1, nombre : "empleado1"}},
+				{tarea : {idTarea : 1, descripcion : "Ventas"} , empleado : {legajo : 2, nombre : "empleado2"}},
+				{tarea : {idTarea : 1, descripcion : "Ventas"} , empleado : {legajo : 3, nombre : "empleado3"}}]
+})
+
+db.sectores.insert({
+	codigoSector : 2,
+	trabaja : [	{tarea : {idTarea : 1, descripcion : "Ventas"} , empleado : {legajo : 1, nombre : "empleado1"}},
+				{tarea : {idTarea : 1, descripcion : "Ventas"} , empleado : {legajo : 2, nombre : "empleado2"}},
+				{tarea : {idTarea : 1, descripcion : "Ventas"} , empleado : {legajo : 3, nombre : "empleado3"}},
+				{tarea : {idTarea : 1, descripcion : "Ventas"} , empleado : {legajo : 4, nombre : "empleado4"}}]
+})
+
+-- Query 3
+
+db.sectores.find(
+	{trabaja : {$size : 3}}
+)
+
+------------------------------- QUERY 4 --------------------------------
+-- El empleado que trabaja en mas sectores.
+
+-- Hack usando unwind
+
+db.sectores.aggregate([
+	{$project : {empleado : "$trabaja.empleado"}},
+	{$unwind : "$empleado"},
+	{$group :{
+		_id : "$empleado",
+		cant_empleado : {$sum : 1}
+	}},
+	{$sort : {cant_empleado : -1}},
+	{$limit : 1}
+])
+
+------------------------------- QUERY 5 --------------------------------
+-- Ranking de los clientes con mayor cantidad de compras.
+
+-- La tabla de articulos era:
+articulos{
+	codigo : STRING
+	nombre : STRING
+	ventas : [{dni : STRING, nombre : STRING, edad : INTEGER}]
+}
+
+-- Query 5
+-- De vuelta ago el hack de usar unwind
+
+db.articulos.aggregate([
+	{$unwind : "$ventas"},
+	{$group :{
+		_id : "$ventas",
+		cant_compras : {$sum : 1}
+	}},
+	{$sort : {cant_compras : -1}}
+])
+
+------------------------------- QUERY 6 --------------------------------
+-- Cantidad de compras realizadas por clientes de misma edad.
+
+-- La tabla de articulos era:
+articulos{
+	codigo : STRING
+	nombre : STRING
+	ventas : [{dni : STRING, nombre : STRING, edad : INTEGER}]
+}
+
+db.articulos.aggregate([
+	{$unwind : "$ventas"},
+	{$group :{
+		_id : "$ventas.edad",
+		cant_compras : {$sum : 1}
+	}}
+])
