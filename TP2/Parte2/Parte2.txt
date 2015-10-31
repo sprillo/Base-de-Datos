@@ -1,0 +1,69 @@
+-- Para cargar los JSONs:
+mongoimport --jsonArray -d test -c disposiciones < disposiciones_2012.json
+mongoimport --jsonArray -d test -c disposiciones < disposiciones_2013.json
+mongoimport --jsonArray -d test -c disposiciones < disposiciones_2014.json
+
+------------------------------- QUERY 1 --------------------------------
+-- Devolver la cantidad de disposiciones tipo resoluciones que se hayan realizado en Abril del 2013.
+
+var m = function(){
+	emit(this["FechaDisposicion"],1)
+}
+
+var r = function(key,values){
+	return Array.sum(values)
+}
+
+db.disposiciones.mapReduce(m,r,{query : {FechaDisposicion : {$regex : /^2013-04-/} , Tipo : "Resoluciones"}, out : "map_res"})
+db.map_res.find()
+
+------------------------------- QUERY 2 --------------------------------
+-- Devolver la cantidad de disposiciones por cada tipo definido.
+
+var m = function(){
+	emit(this["Tipo"],1)
+}
+
+var r = function(key,values){
+	return Array.sum(values)
+}
+
+db.disposiciones.mapReduce(m,r,{query : {}, out : "map_res"})
+db.map_res.find()
+
+------------------------------- QUERY 3 --------------------------------
+-- Devolver la fecha mas citada para todos los informes. Descartar las fechas embebidas en descripcion.
+
+-- (Asumo que es la FechaBoja, pero podria ser que queramos tambien la FechaDisposicion. El tema es que la FechaDisposicion no tiene el mismo formato todos los años, asi que hay que poner un if)
+
+var m = function(){
+	emit(this["FechaBOJA"],1)
+}
+
+var r = function(key,values){
+	return Array.sum(values)
+}
+
+db.disposiciones.mapReduce(m,r,{query : {}, out : "map_res"})
+db.map_res.find().sort({value : -1}).limit(1)
+
+------------------------------- QUERY 4 --------------------------------
+-- Devolver la mayor cantidad de paginas utilizadas por cada tipo de disposicion.
+
+var m = function(){
+	emit(this["Tipo"],this["PaginaFinal"] - this["PaginaInicial"] + 1)
+}
+
+-- No supe como sacar el maximo de un arreglo de forma trivial... (tipo Array.max(values) o algo asi, pero no anda)
+var r = function(key,values){
+	res = values[0]
+	for (var i=1; i < values.length; i++){
+		if(res < values[i]){
+			res = values[i]
+		}
+	}
+	return res
+}
+
+db.disposiciones.mapReduce(m,r,{query : {}, out : "map_res"})
+db.map_res.find()
