@@ -74,6 +74,7 @@ db.articulos.insert({
 
 -- Query 2
 
+-- Esta es la query que no me sale... El pseudocodigo de lo que quiero hacer es este, pero no se que poner en el $match
 db.articulos.aggregate([
 	{$project : {"cant_ventas" : {$size : "$ventas"}}},
 	{$sort : {"cant_ventas" : -1}},
@@ -118,6 +119,7 @@ db.sectores.find(
 -- El empleado que trabaja en mas sectores.
 
 -- Hack usando unwind
+-- Se puede hacer sin unwind si se pone una coleccion "empleado_y_sus_sectores"
 
 db.sectores.aggregate([
 	{$project : {empleado : "$trabaja.empleado"}},
@@ -141,7 +143,8 @@ articulos{
 }
 
 -- Query 5
--- De vuelta ago el hack de usar unwind
+-- De vuelta hago el hack usando unwind
+-- Se puede sacar el unwind si se pone una coleccion "cliente_y_sus_compras"
 
 db.articulos.aggregate([
 	{$unwind : "$ventas"},
@@ -161,6 +164,8 @@ articulos{
 	nombre : STRING
 	ventas : [{dni : STRING, nombre : STRING, edad : INTEGER}]
 }
+
+-- Se puede hacer sin unwind usando la misma coleccion que en la query 5: "cliente_y_sus_compras"
 
 db.articulos.aggregate([
 	{$unwind : "$ventas"},
