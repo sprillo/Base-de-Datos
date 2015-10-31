@@ -45,6 +45,7 @@ var r = function(key,values){
 }
 
 db.disposiciones.mapReduce(m,r,{query : {}, out : "map_res"})
+-- Esto es medio turbio, porque para responder la query, basicamente pido todos los pares (fecha,veces) y despues de hacer el map reduce me quedo con la que mas veces aparece. (Capaz se puede hacer directo, pero no se)
 db.map_res.find().sort({value : -1}).limit(1)
 
 ------------------------------- QUERY 4 --------------------------------
