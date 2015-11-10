@@ -61,19 +61,19 @@ db.empleados.find(
 articulos{
 	codigo : STRING
 	nombre : STRING
-	ventas : [{dni : STRING, nombre : STRING, edad : INTEGER}]
+	ventas : [{dni : STRING}]
 }
 
 db.articulos.insert({
 	codigo : "1",
 	nombre : "articulo1",
-	ventas : [{dni : "11111111", nombre : "cliente1", edad : 18}, {dni : "22222222", nombre : "cliente2", edad : 17}]
+	ventas : [{dni : "11111111"}, {dni : "22222222"}]
 })
 
 db.articulos.insert({
 	codigo : "2",
 	nombre : "articulo2",
-	ventas : [{dni : "11111111", nombre : "cliente1", edad : 18}]
+	ventas : [{dni : "11111111"}]
 })
 
 -- Query 2
@@ -94,23 +94,26 @@ db.articulos.aggregate([
 
 -- Definicion de la tabla sectores
 sectores{
-	codigoSector : INTEGER
-	trabaja : [{tarea : {idTarea : INTEGER, descripcion : STRING} , empleado : {legajo : INTEGER, nombre : STRING}}]
+	cod_sector : INTEGER
+	articulos : [{codigo : STRING}]
+	trabaja : [{nro_legajo : INTEGER, id_tarea : INTEGER}]
 }
 
 db.sectores.insert({
 	codigoSector : 1,
-	trabaja : [	{tarea : {idTarea : 1, descripcion : "Ventas"} , empleado : {legajo : 1, nombre : "empleado1"}},
-				{tarea : {idTarea : 1, descripcion : "Ventas"} , empleado : {legajo : 2, nombre : "empleado2"}},
-				{tarea : {idTarea : 1, descripcion : "Ventas"} , empleado : {legajo : 3, nombre : "empleado3"}}]
+	articulos : [{codigo : "1"}],
+	trabaja : [	{nro_legajo : 1, id_tarea : 1},
+				{nro_legajo : 2, id_tarea : 1},
+				{nro_legajo : 3, id_tarea : 1},
+				{nro_legajo : 4, id_tarea : 1}]
 })
 
 db.sectores.insert({
 	codigoSector : 2,
-	trabaja : [	{tarea : {idTarea : 1, descripcion : "Ventas"} , empleado : {legajo : 1, nombre : "empleado1"}},
-				{tarea : {idTarea : 1, descripcion : "Ventas"} , empleado : {legajo : 2, nombre : "empleado2"}},
-				{tarea : {idTarea : 1, descripcion : "Ventas"} , empleado : {legajo : 3, nombre : "empleado3"}},
-				{tarea : {idTarea : 1, descripcion : "Ventas"} , empleado : {legajo : 4, nombre : "empleado4"}}]
+	articulos : [{codigo : "2"}],
+	trabaja : [	{nro_legajo : 1, id_tarea : 1},
+				{nro_legajo : 2, id_tarea : 1},
+				{nro_legajo : 3, id_tarea : 1}]
 })
 
 -- Query 3
