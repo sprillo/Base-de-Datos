@@ -3,51 +3,55 @@
 
 -- Definicion de la tabla empleados
 empleados : {
-	nroLegajo : INTEGER
+	nro_legajo : INTEGER
 	nombre : STRING
-	atiende : {
-		[{fecha : DATE , cliente : {dni : STRING, nombre : STRING, Edad : INTEGER}}]
-	}
+	clientes_atendidos : [{dni : STRING, edad : INTEGER, fecha : DATETIME}]
+	sectores_donde_trabaja : [{cod_sector : INTEGER, id_tarea : INTEGER}]
 }
 
 -- Populo la tabla empleados
 db.empleados.insert({
-	nroLegajo : 1,
+	nro_legajo : 1,
 	nombre : "empleado1",
-	atiende : [	{fecha : "01/01/2015", cliente : {dni : "11111111", nombre : "cliente1", edad : 18}},
-				{fecha : "01/02/2015", cliente : {dni : "22222222", nombre : "cliente2", edad : 17}}]
+	clientes_atendidos : [	{dni : "11111111", edad : 18, fecha : "01/01/2015"},
+							{dni : "22222222", edad : 17, fecha : "01/02/2015"}],
+	sectores_donde_trabaja : [{cod_sector : 1, id_tarea : 1}]
 })
 
 db.empleados.insert({
-	nroLegajo : 2,
+	nro_legajo : 2,
 	nombre : "empleado2",
-	atiende : [{fecha : "02/02/2015", cliente : {dni : "22222222", nombre : "cliente2", edad : 17}}]
+	clientes_atendidos : [ {dni : "22222222", edad : 17, fecha : "02/02/2015"} ],
+	sectores_donde_trabaja : [{cod_sector : 1, id_tarea : 1}]
 })
 
 
 db.empleados.insert({
-	nroLegajo : 3,
+	nro_legajo : 3,
 	nombre : "empleado3",
-	atiende : []
+	clientes_atendidos : [],
+	sectores_donde_trabaja : [{cod_sector : 1, id_tarea : 1}]
 })
 
 db.empleados.insert({
-	nroLegajo : 4,
+	nro_legajo : 4,
 	nombre : "empleado4",
-	atiende : []
+	clientes_atendidos : [],
+	sectores_donde_trabaja : [{cod_sector : 1, id_tarea : 1}]
 })
+
 
 -- Query 1
 -- Devuelve todos los empleados tales que algun atiende.cliente.edad sea >= 18
 db.empleados.find(
-	{"atiende.cliente.edad" : {$gte : 18}},
-	{nroLegajo : 1, nombre : 1}
+	{"clientes_atendidos.edad" : {$gte : 18}},
+	{nro_legajo : 1, nombre : 1}
 )
 
 -- Otra forma de hacerlo:
 db.empleados.find(
-	{"atiende" : {$elemMatch : {"cliente.edad" : {$gte : 18}}}},
-	{nroLegajo : 1, nombre : 1}
+	{"clientes_atendidos" : {$elemMatch : {"edad" : {$gte : 18}}}},
+	{nro_legajo : 1, nombre : 1}
 )
 
 ------------------------------- QUERY 2 --------------------------------
