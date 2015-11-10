@@ -82,19 +82,30 @@ db.articulos.insert({
 
 -- Query 2
 
+db.articulos.aggregate([
+	{$project : {"cant_ventas" : {$size : "$ventas"} , nombre : 1, codigo : 1}},
+	{$sort : {"cant_ventas" : -1}},
+	{$out : "articulos_por_compras"}
+])
+
+db.articulos_por_compras.find(
+	{cant_ventas : "$0.cant_ventas"}
+)
+
 -- Esta es la query que no me sale... El pseudocodigo de lo que quiero hacer es este, pero no se que poner en el $match
 db.articulos.aggregate([
-	{$project : {"cant_ventas" : {$size : "$ventas"}}},
+	{$project : {"cant_ventas" : {$size : "$ventas"} , nombre : 1, codigo : 1}},
 	{$sort : {"cant_ventas" : -1}},
 	{$match : {"cant_ventas" : "cant_ventas en el primer documento de la coleccion esta..."}}
 ])
 
 db.articulos.aggregate([
-	{$project : {"cant_ventas" : {$size : "$ventas"}}},
+	{$project : {"cant_ventas" : {$size : "$ventas"} , nombre : 1, codigo : 1}},
 	{$sort : {"cant_ventas" : -1}},
 ])
 
 ------------------------------- QUERY 3 --------------------------------
+-- Los sectores donde trabaja exactamente 3 empleados. Puede haber un empleado que contabiliza para varios sectores.
 
 -- Definicion de la tabla sectores
 sectores{
@@ -123,7 +134,8 @@ db.sectores.insert({
 -- Query 3
 
 db.sectores.find(
-	{trabaja : {$size : 3}}
+	{trabaja : {$size : 3}},
+	{cod_sector : 1}
 )
 
 ------------------------------- QUERY 4 --------------------------------
@@ -179,8 +191,6 @@ db.clientes.aggregate([
 
 ------------------------------- QUERY 6 --------------------------------
 -- Cantidad de compras realizadas por clientes de misma edad.
-
--- Se puede hacer sin unwind usando la misma coleccion que en la query 5: "cliente_y_sus_compras"
 
 db.clientes.aggregate([
 	{$project : {cant_compras : {$size : "$compro_articulos"} , nombre : 1, dni : 1, edad : 1}},
