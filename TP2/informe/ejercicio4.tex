@@ -1,8 +1,27 @@
 \section{Ejercicio 4}
 
-Las bases de datos NoSQL de la familia de columnas agrupan la informacion, no por filas como las bases de datos SQL comunes, sino por columnas. Esto permite realizar queries sobre la informacion agrupada por las columnas de forma muy rapida.
+Las bases de datos NoSQL del tipo \textit{column family} almacenan la informaci'on, no por filas como las bases de datos SQL tradicionales, sino por columnas. Esto permite realizar queries que requieren acceder a grandes cantidades de datos eficientemente. Esta eficiencia se basa en dos hip'otesis. La primera es que, en general, las consultas s'olo requieren un subconjuntos de la totalidad de las columnas de una tabla, con lo cual resulta conveniente poder restrigirse s'olo a las columnas necesarias. La segunda es que, cuando la cantidad de datos de la respuesta es grande, tendremos que leer casi todos los valores de una columna, por lo que resulta 'util que est'en almacenados consecutivamente.
+
+Una base de datos de este tipo se compone de \textit{familias de columnas}, que son el concepto an'alogo a las tablas en una base de datos SQL. Cada familia de columnas se compone de varias \textit{claves de fila} (simbolizadas con K), cuyo an'alogo en SQL son las claves primarias, y asociada a cada una de estas claves hay \textit{columnas} (simbolizadas con C) con sus respectivos valores. Por ejemplo, una base de datos column family de alumnos es:
+
+\begin{verbatim}
+Alumnos = {
+     635/11 = {nombre: "Miguel", edad: "22", email: "miguel@gmail.com"}
+     616/11 = {nombre: "Sebastian", edad: "22"}
+     783/11 = {nombre: "Guido", edad: "23", email: "guido@gmail.com"}
+}
+\end{verbatim}
+
+En este caso, las claves de fila son los strings 635/11, 616/11 y 783/11, que representan las LU. Dentro de cada uno, hay hasta tres columnas, \texttt{nombre}, \texttt{edad} y \texttt{email}.
+
+Finalmente, debemos mencionar que asociado a cada clave de fila tambi'en suele almacenarse un timestamp, que es utilizado para determinar el tiempo de expiraci'on de los datos.
 
 \subsection{Query: Los empleados que atendieron clientes mayores de edad}
+
+\begin{itemize}
+	\item K: NroLegajo de empleado
+	\item C: Edad de cliente atendido
+\end{itemize}
 
 Unica fila, por columnas uso a empleados, por keys si atendio a alguien mayor de edad (actualizo cuando corresponda)
 
