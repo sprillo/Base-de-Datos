@@ -1,58 +1,169 @@
 \section{Ejercicio 1}
 
-En este ejercicio diseñamos una base de datos NoSQL de tipo documentos con la capacidad de responder rapidamente a varias consultas. Para ello, empleamos desnormalizacion, diseñando documentos adecuados para las consultas.
+En este ejercicio dise\~namos una base de datos NoSQL de tipo documentos con la capacidad de responder rapidamente a varias consultas. Para ello, empleamos desnormalizaci'on, dise\~nando documentos adecuados para las consultas.
 
-\subsection{Query 1}
-Debemos poder responder rapidamente cuales son los empleados que atendieron clientes mayores de edad. Para ello, tendremos una tabla \textbf{empleados}, con los siguientes campos:
+\subsection{Desnormalizaci'on}
+
+Desnormalizamos el esquema, de la forma tradicional. Cada entidad tiene un documento asociado. Las relaciones 1:N se incluyen en el documento asociado al lado 1. Las relaciones N:M se incluyen a ambos lados de la relaci'on.
+
+\subsubsection{Documento \texttt{empleados}}
 
 \begin{verbatim}
-empleados : {
-	nro_legajo : INTEGER
-	nombre : STRING
-	clientes_atendidos : [{dni : STRING, edad : INTEGER, fecha : DATETIME}]
-	sectores_donde_trabaja : [{cod_sector : INTEGER, id_tarea : INTEGER}]
+empleados {
+    nro_legajo : INTEGER
+    nombre : STRING
+    clientes_atendidos : [{dni : STRING, edad : INTEGER, fecha : DATETIME}]
+    sectores_donde_trabaja : [{cod_sector : INTEGER, id_tarea : INTEGER}]
 }
 \end{verbatim}
 
-Insertemos algunos empleado a la tabla:
+Observar que en \texttt{clientes\_atendidos} nos guardamos, adem'as del atributo identificatorio \texttt{dni} y el atributo de relaci'on \texttt{fecha}, la \texttt{edad} de los clientes atendidos. Este atributo ser'a necesario para responder una de las consultas, posteriormente. 
+
+Insertamos algunos documentos:
 
 \begin{verbatim}
 db.empleados.insert({
-	nro_legajo : 1,
-	nombre : "empleado1",
-	clientes_atendidos : [	{dni : "11111111", edad : 18, fecha : "01/01/2015"},
-							{dni : "22222222", edad : 17, fecha : "01/02/2015"}],
-	sectores_donde_trabaja : [{cod_sector : 1, id_tarea : 1} , 	{cod_sector : 2, cod_tarea : 1}]
+    nro_legajo : 1,
+    nombre : "empleado1",
+    clientes_atendidos : [	{dni : "11111111", edad : 18, fecha : "01/01/2015"},
+                           {dni : "22222222", edad : 17, fecha : "01/02/2015"}],
+    sectores_donde_trabaja : [{cod_sector : 1, id_tarea : 1} , 	{cod_sector : 2, cod_tarea : 1}]
 })
 
 db.empleados.insert({
-	nro_legajo : 2,
-	nombre : "empleado2",
-	clientes_atendidos : [ {dni : "22222222", edad : 17, fecha : "02/02/2015"} ],
-	sectores_donde_trabaja : [{cod_sector : 1, id_tarea : 1}, 	{cod_sector : 2, cod_tarea : 1}]
+    nro_legajo : 2,
+    nombre : "empleado2",
+    clientes_atendidos : [ {dni : "22222222", edad : 17, fecha : "02/02/2015"} ],
+    sectores_donde_trabaja : [{cod_sector : 1, id_tarea : 1}, 	{cod_sector : 2, cod_tarea : 1}]
 })
 
 db.empleados.insert({
-	nro_legajo : 3,
-	nombre : "empleado3",
-	clientes_atendidos : [{dni : "33333333", edad : 19, fecha : "01/03/2015"}],
-	sectores_donde_trabaja : [{cod_sector : 1, id_tarea : 1}, 	{cod_sector : 2, cod_tarea : 1}]
+    nro_legajo : 3,
+    nombre : "empleado3",
+    clientes_atendidos : [{dni : "33333333", edad : 19, fecha : "01/03/2015"}],
+    sectores_donde_trabaja : [{cod_sector : 1, id_tarea : 1}, 	{cod_sector : 2, cod_tarea : 1}]
 })
 
 db.empleados.insert({
-	nro_legajo : 4,
-	nombre : "empleado4",
-	clientes_atendidos : [],
-	sectores_donde_trabaja : [{cod_sector : 1, id_tarea : 1}]
+    nro_legajo : 4,
+    nombre : "empleado4",
+    clientes_atendidos : [],
+    sectores_donde_trabaja : [{cod_sector : 1, id_tarea : 1}]
 })
 \end{verbatim}
 
-De esta manera, la query se responde rapidamente con la siguiente consulta:
+\subsubsection{Documento \texttt{articulos}}
+
+\begin{verbatim}
+articulos {
+    codigo : STRING
+    nombre : STRING
+    ventas : [{dni : STRING}]
+}
+\end{verbatim}
+
+Insertamos algunos documentos:
+
+\begin{verbatim}
+db.articulos.insert({
+    codigo : "1",
+    nombre : "articulo1",
+    ventas : [{dni :	 "11111111"}, {dni : "22222222"}]
+})
+
+db.articulos.insert({
+    codigo : "2",
+    nombre : "articulo2",
+    ventas : [{dni : "11111111"}, {dni : "33333333"}]
+})
+
+db.articulos.insert({
+    codigo : "3",
+    nombre : "articulo3",
+    ventas : [{dni : "33333333"}]
+})
+\end{verbatim}
+
+\subsubsection{Documento \texttt{sectores}}
+
+\begin{verbatim}
+sectores{
+    cod_sector : INTEGER
+    articulos : [{codigo : STRING}]
+    trabaja : [{nro_legajo : INTEGER, id_tarea : INTEGER}]
+}
+\end{verbatim}
+
+Insertamos algunos documentos:
+
+\begin{verbatim}
+db.sectores.insert({
+    cod_sector : 1,
+    articulos : [{codigo : "1"}],
+    trabaja : [	{nro_legajo : 1, id_tarea : 1},
+               {nro_legajo : 2, id_tarea : 1},
+               {nro_legajo : 3, id_tarea : 1},
+               {nro_legajo : 4, id_tarea : 1}]
+})
+
+db.sectores.insert({
+    cod_sector : 2,
+    articulos : [{codigo : "2"}],
+    trabaja : [	{nro_legajo : 1, id_tarea : 1},
+               {nro_legajo : 2, id_tarea : 1},
+               {nro_legajo : 3, id_tarea : 1}]
+})
+\end{verbatim}
+
+\subsubsection{Documento \texttt{clientes}}
+
+\begin{verbatim}
+clientes{
+    dni : STRING
+    nombre : STRING,
+    edad : INTEGER,
+    atendido_por : [{nro_legajo : INTEGER, fecha : DATETIME}],
+    compro_articulos : [{codigo : INTEGER}]
+}
+\end{verbatim}
+
+Insertamos algunos documentos:
+
+\begin{verbatim}
+db.clientes.insert({
+    dni : "11111111",
+    nombre : "cliente1",
+    edad : 18,
+    atendido_por : [{nro_legajo : 1, fecha : "01/01/2015"}],
+    compro_articulos : [{codigo : "1"} , {codigo : "2"}]
+})
+
+db.clientes.insert({
+    dni : "22222222",
+    nombre : "cliente2",
+    edad : 17,
+    atendido_por : [{nro_legajo : 1, fecha : "01/02/2015"} , {nro_legajo : 2, 
+                                                              fecha : "02/02/2015"}],
+    compro_articulos : [{codigo : "1"}]
+})
+
+db.clientes.insert({
+    dni : "33333333",
+    nombre : "cliente3",
+    edad : 19,
+    atendido_por : [{nro_legajo : 1, fecha : "01/03/2015"}],
+    compro_articulos : [{codigo : "2"} , {codigo : "3"}]
+})
+\end{verbatim}
+
+\subsection{Consultas}
+
+\subsubsection{Los empleados que atendieron clientes mayores de edad}
 
 \begin{verbatim}
 db.empleados.find(
-	{"clientes_atendidos.edad" : {$gte : 18}},
-	{nro_legajo : 1, nombre : 1}
+    {"clientes_atendidos.edad" : {$gte : 18}},
+    {nro_legajo : 1, nombre : 1}
 )
 \end{verbatim}
 
@@ -60,8 +171,8 @@ Equivalenemente, podriamos pedir:
 
 \begin{verbatim}
 db.empleados.find(
-	{"clientes_atendidos" : {$elemMatch : {"edad" : {$gte : 18}}}},
-	{nro_legajo : 1, nombre : 1}
+    {"clientes_atendidos" : {$elemMatch : {"edad" : {$gte : 18}}}},
+    {nro_legajo : 1, nombre : 1}
 )
 \end{verbatim}
 
@@ -72,100 +183,39 @@ La query nos retorna, como deseamos:
 { "_id" : ObjectId("56420cfd92d300ad159887dc"), "nro_legajo" : 3, "nombre" : "empleado3" }
 \end{verbatim}
 
-\subsection{Query 2}
-Debemos poder conocer los articulos mas vendidos. Para ello, definimos una tabla articulo con los siguientes campos:
-
-\begin{verbatim}
-articulos{
-	codigo : STRING
-	nombre : STRING
-	ventas : [{dni : STRING}]
-}
-\end{verbatim}
-
-De esta manera, la longitus de la lista ventas nos dice cuantas veces fue vendido un articulo. Populemos la tabla de articulos con los siguientes ejemplo:
-
-\begin{verbatim}
-db.articulos.insert({
-	codigo : "1",
-	nombre : "articulo1",
-	ventas : [{dni :	 "11111111"}, {dni : "22222222"}]
-})
-
-db.articulos.insert({
-	codigo : "2",
-	nombre : "articulo2",
-	ventas : [{dni : "11111111"}, {dni : "33333333"}]
-})
-
-db.articulos.insert({
-	codigo : "3",
-	nombre : "articulo3",
-	ventas : [{dni : "33333333"}]
-})
-\end{verbatim}
-
-De esta manera, la siguiente query responde nuestra consulta:
+\subsubsection{Los art'iculos m'as vendidos}
 
 \begin{verbatim}
 db.articulos.aggregate([
-	{$project : {"cant_ventas" : {$size : "$ventas"} , nombre : 1, codigo : 1}},
-	{$sort : {"cant_ventas" : -1}},
+    {$project : {"cant_ventas" : {$size : "$ventas"} , nombre : 1, codigo : 1}},
+    {$sort : {"cant_ventas" : -1}},
 ])
 \end{verbatim}
 
 La respuesta a esta consulta es:
 
 \begin{verbatim}
-{ "_id" : ObjectId("56420d1e92d300ad159887de"), "codigo" : "1", "nombre" : "articulo1", "cant_ventas" : 2 }
-{ "_id" : ObjectId("56420d1e92d300ad159887df"), "codigo" : "2", "nombre" : "articulo2", "cant_ventas" : 2 }
-{ "_id" : ObjectId("56420d1e92d300ad159887e0"), "codigo" : "3", "nombre" : "articulo3", "cant_ventas" : 1 }
+{ "_id" : ObjectId("56420d1e92d300ad159887de"), "codigo" : "1", "nombre" : "articulo1",
+    "cant_ventas" : 2 }
+{ "_id" : ObjectId("56420d1e92d300ad159887df"), "codigo" : "2", "nombre" : "articulo2",
+    "cant_ventas" : 2 }
+{ "_id" : ObjectId("56420d1e92d300ad159887e0"), "codigo" : "3", "nombre" : "articulo3",
+    "cant_ventas" : 1 }
 \end{verbatim}
 
-Asi, vemos que los articulos mas vendidos son los de codigo 1 y 2, cada uno con 2 ventas.
+As'i, vemos que los articulos mas vendidos son los de codigo 1 y 2, cada uno con 2 ventas.
 
-\subsection{Query 3}
-Debemos poder conocer los sectores donde trabaja exactamente 3 empleados. Para ello, definimos el documento \textbf{sectores} que tiene la informacion sobre cada sector, incluyendo los empleados que trabajan en el.
 
-\begin{verbatim}
-sectores{
-	cod_sector : INTEGER
-	articulos : [{codigo : STRING}]
-	trabaja : [{nro_legajo : INTEGER, id_tarea : INTEGER}]
-}
-\end{verbatim}
-
-Populemos la tabla de empleados:
-
-\begin{verbatim}
-db.sectores.insert({
-	cod_sector : 1,
-	articulos : [{codigo : "1"}],
-	trabaja : [	{nro_legajo : 1, id_tarea : 1},
-				{nro_legajo : 2, id_tarea : 1},
-				{nro_legajo : 3, id_tarea : 1},
-				{nro_legajo : 4, id_tarea : 1}]
-})
-
-db.sectores.insert({
-	cod_sector : 2,
-	articulos : [{codigo : "2"}],
-	trabaja : [	{nro_legajo : 1, id_tarea : 1},
-				{nro_legajo : 2, id_tarea : 1},
-				{nro_legajo : 3, id_tarea : 1}]
-})
-\end{verbatim}
-
-De esta manera, la query queda:
+\subsubsection{Los sectores donde trabajan exactamente 3 empleados}
 
 \begin{verbatim}
 db.sectores.find(
-	{trabaja : {$size : 3}},
-	{cod_sector : 1}
+    {trabaja : {$size : 3}},
+    {cod_sector : 1}
 )
 \end{verbatim}
 
-Si la corremos, obtenemos:
+La respuesta a esta consulta es:
 
 \begin{verbatim}
 { "_id" : ObjectId("56420d9e92d300ad159887e2"), "cod_sector" : 2 }
@@ -173,95 +223,57 @@ Si la corremos, obtenemos:
 
 Efectivamente, el sector 2 contiene exactamente 3 trabajadores.
 
-\subsection{Query 4}
-Debemos conocer el empleado que trabaja en mas sectores. Esto es facil, usando los documentos ya definidos:
+
+\subsubsection{El empleado que trabaja en m'as sectores}
 
 \begin{verbatim}
 db.empleados.aggregate([
-	{$project : {cant_sectores : {$size : "$sectores_donde_trabaja"} , nombre : 1, nro_legajo : 1}},
-	{$sort : {cant_sectores : -1}},
-	{$limit : 1}
+    {$project : {cant_sectores : {$size : "$sectores_donde_trabaja"} , nombre : 1, nro_legajo : 1}},
+    {$sort : {cant_sectores : -1}},
+    {$limit : 1}
 ])
 \end{verbatim}
 
-La respuesta es:
+La respuesta a esta consulta es:
 
 \begin{verbatim}
-{ "_id" : ObjectId("56420cfd92d300ad159887da"), "nro_legajo" : 1, "nombre" : "empleado1", "cant_sectores" : 2 }
+{ "_id" : ObjectId("56420cfd92d300ad159887da"), "nro_legajo" : 1, "nombre" : "empleado1",
+    "cant_sectores" : 2 }
 \end{verbatim}
 
 Si bien los empleados 2 y 3 tambien trabajan en dos sectores, solo se nos pide dar uno solo, asi que desempatamos arbitrariamente.
 
-\subsection{Query 5}
-Esta query pide el ranking de los clientes con mayor cantidad de compras. Para ello, definimos los documentos \textbf{cliente}, que tienen los siguientes atributos:
-
-\begin{verbatim}
-clientes{
-	dni : STRING
-	nombre : STRING,
-	edad : INTEGER,
-	atendido_por : [{nro_legajo : INTEGER, fecha : DATETIME}],
-	compro_articulos : [{codigo : INTEGER}]
-}
-\begin{verbatim}
-
-Insertamos algunos clientes:
-
-\begin{verbatim}
-db.clientes.insert({
-	dni : "11111111",
-	nombre : "cliente1",
-	edad : 18,
-	atendido_por : [{nro_legajo : 1, fecha : "01/01/2015"}],
-	compro_articulos : [{codigo : "1"} , {codigo : "2"}]
-})
-
-db.clientes.insert({
-	dni : "22222222",
-	nombre : "cliente2",
-	edad : 17,
-	atendido_por : [{nro_legajo : 1, fecha : "01/02/2015"} , {nro_legajo : 2, fecha : "02/02/2015"}],
-	compro_articulos : [{codigo : "1"}]
-})
-
-db.clientes.insert({
-	dni : "33333333",
-	nombre : "cliente3",
-	edad : 19,
-	atendido_por : [{nro_legajo : 1, fecha : "01/03/2015"}],
-	compro_articulos : [{codigo : "2"} , {codigo : "3"}]
-})
-\end{verbatim}
-
-La query queda:
+\subsubsection{Ranking de los clientes con mayor cantidad de compras}
 
 \begin{verbatim}
 db.clientes.aggregate([
-	{$project : {cant_compras : {$size : "$compro_articulos"} , nombre : 1, dni : 1}},
-	{$sort : {cant_compras : -1}}
+    {$project : {cant_compras : {$size : "$compro_articulos"} , nombre : 1, dni : 1}},
+    {$sort : {cant_compras : -1}}
 ])
 \end{verbatim}
 
-El resultado es:
+La respuesta a esta consulta es:
 
 \begin{verbatim}
-{ "_id" : ObjectId("56420df292d300ad159887e3"), "dni" : "11111111", "nombre" : "cliente1", "cant_compras" : 2 }
-{ "_id" : ObjectId("56420df392d300ad159887e5"), "dni" : "33333333", "nombre" : "cliente3", "cant_compras" : 2 }
-{ "_id" : ObjectId("56420df292d300ad159887e4"), "dni" : "22222222", "nombre" : "cliente2", "cant_compras" : 1 }
+{ "_id" : ObjectId("56420df292d300ad159887e3"), "dni" : "11111111", "nombre" : "cliente1",
+    "cant_compras" : 2 }
+{ "_id" : ObjectId("56420df392d300ad159887e5"), "dni" : "33333333", "nombre" : "cliente3",
+    "cant_compras" : 2 }
+{ "_id" : ObjectId("56420df292d300ad159887e4"), "dni" : "22222222", "nombre" : "cliente2",
+    "cant_compras" : 1 }
 \end{verbatim}
 
 Como vemos, los clientes aparecen ordenamos de mayor a menos cantidad de compras.
 
-\subsection{Query 6}
-Nos piden la cantidad de compras realizadas por clientes de misma edad. Esta query puede ser respondida con los documentos ya creados anteriormente facilmente:
+\subsubsection{Cantidad de compras realizadas por clientes de misma edad}
 
 \begin{verbatim}
 db.clientes.aggregate([
-	{$project : {cant_compras : {$size : "$compro_articulos"} , nombre : 1, dni : 1, edad : 1}},
-	{$group :{
-		_id : "$edad",
-		total_compras : {$sum : "$cant_compras"}
-	}}
+    {$project : {cant_compras : {$size : "$compro_articulos"} , nombre : 1, dni : 1, edad : 1}},
+    {$group :{
+        _id : "$edad",
+        total_compras : {$sum : "$cant_compras"}
+    }}
 ])
 \end{verbatim}
 
@@ -273,4 +285,4 @@ El resultado de la query es:
 { "_id" : 18, "total_compras" : 2 }
 \end{verbatim}
 
-De esta manera, creamos un diseño de documentos que, mediante documentos adecuados y redundancia, permite responder rapidamente a las queries pedidas.
+En definitiva, este es un diseño de documentos que, mediante documentos adecuados y redundancia, permite responder rapidamente a todas las queries pedidas.
