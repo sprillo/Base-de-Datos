@@ -2,32 +2,92 @@
 
 Las bases de datos NoSQL del tipo \textit{column family} almacenan la informaci'on, no por filas como las bases de datos SQL tradicionales, sino por columnas. Esto permite realizar queries que requieren acceder a grandes cantidades de datos eficientemente. Esta eficiencia se basa en dos hip'otesis. La primera es que, en general, las consultas s'olo requieren un subconjuntos de la totalidad de las columnas de una tabla, con lo cual resulta conveniente poder restrigirse s'olo a las columnas necesarias. La segunda es que, cuando la cantidad de datos de la respuesta es grande, tendremos que leer casi todos los valores de una columna, por lo que resulta 'util que est'en almacenados consecutivamente.
 
-Una base de datos de este tipo se compone de \textit{familias de columnas}, que son el concepto an'alogo a las tablas en una base de datos SQL. Cada familia de columnas se compone de varias \textit{claves de fila} (simbolizadas con K), cuyo an'alogo en SQL son las claves primarias, y asociada a cada una de estas claves hay \textit{columnas} (simbolizadas con C) con sus respectivos valores. Por ejemplo, una base de datos column family de alumnos es:
+Una base de datos de este tipo se compone de \textit{familias de columnas}. Cada familia de columnas se compone de varias \textit{claves de fila} (simbolizadas con K), y asociada a cada una de estas claves hay \textit{columnas} (simbolizadas con C) con sus respectivos valores. Finalmente, asociado a cada clave de fila tambi'en suele almacenarse un timestamp, que es utilizado para determinar el tiempo de expiraci'on de los datos.
 
-\begin{verbatim}
-Alumnos = {
-     635/11 = {nombre: "Miguel", edad: "22", email: "miguel@gmail.com"}
-     616/11 = {nombre: "Sebastian", edad: "22"}
-     783/11 = {nombre: "Guido", edad: "23", email: "guido@gmail.com"}
-}
-\end{verbatim}
+Para dise\~nar bases de datos de este tipo, creamos, para cada query, una o m'as familias de columnas que sean capaces de responder a la consulta. Esto implica que los datos almacenados son estrictamente los requeridos para responder a las consultas.
 
-En este caso, las claves de fila son los strings 635/11, 616/11 y 783/11, que representan las LU. Dentro de cada uno, hay hasta tres columnas, \texttt{nombre}, \texttt{edad} y \texttt{email}.
+\subsection{Consultas}
 
-Finalmente, debemos mencionar que asociado a cada clave de fila tambi'en suele almacenarse un timestamp, que es utilizado para determinar el tiempo de expiraci'on de los datos.
+\subsubsection{Los empleados que atendieron clientes mayores de edad}
 
-\subsection{Query: Los empleados que atendieron clientes mayores de edad}
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\texttt{idRow} & K\\
+\hline
+\texttt{legajo\_empleado\_que\_atendio\_mayor} & C $\uparrow$\\
+\hline
+\end{tabular}
+\end{center}
 
-\begin{itemize}
-	\item K: NroLegajo de empleado
-	\item C: Edad de cliente atendido
-\end{itemize}
+En este caso, tenemos una clave de fila \textit{dummy}, \texttt{idRow}, en la cual se almacenar'an una secuencia de columnas \texttt{legajo\_empleado\_que\_atendio\_mayor}. Cada valor de una columna \texttt{legajo\_empleado\_que\_atendio\_mayor} es el identificador de un empleado que atendi'o a una persona mayor de edad.
 
-Unica fila, por columnas uso a empleados, por keys si atendio a alguien mayor de edad (actualizo cuando corresponda)
+La actualizaci'on de esta familia es sencilla. Cada vez que se realiza una venta, debemos verificar si el cliente es mayor de edad, en cuyo caso insertamos en la familia al empleado que lo atendi'o, siempre que no estuviera en la familia de antemano.
 
-\subsection{Query: Los articulos mas vendidos}
+\subsubsection{Los art'iculos m'as vendidos}
 
-De vuelta una unica fila, una colmna que sea la cantidad de ventas (ordenada por cantidad decreciente) y la cantidad efectivamente de las mismas.
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\texttt{codigo\_articulo} & K\\
+\hline
+\texttt{cantidad\_vendida} & ++\\
+\hline
+\end{tabular}
+\end{center}
 
-\subsection{Query: Los sectores donde trabaja exactamente 3 empleados. Puede haber un empleado que contabiliza para varios sectores}
+A cada art'iculo le asociamos un contador \texttt{cantidad\_vendida}. Con esta informaci'on es f'acil extraer aquellos art'iculos cuyo valor del contador sea m'aximo.
 
+La actualizaci'on consiste en incrementar el contador de un art'iculo, cada vez que es vendido.
+
+\subsubsection{Los sectores donde trabaja exactamente 3 empleados}
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\texttt{codigo\_sector} & K\\
+\hline
+\texttt{legajo\_empleado\_del\_sector} & C $\uparrow$\\
+\hline
+\end{tabular}
+\end{center}
+
+Para cada sector, almacenamos todos los empleados que trabajan all'i. Determinar aquellos sectores donde trabajan exactamente 3 empleados consiste en determinar cu'ales tienen exactamente 3 columnas.
+
+\subsubsection{El empleado que trabaja en m'as sectores}
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\texttt{legajo\_empleado} & K\\
+\hline
+\texttt{codigo\_sector\_donde\_trabaja} & C $\uparrow$\\
+\hline
+\end{tabular}
+\end{center}
+
+\subsubsection{Ranking de los clientes con mayor cantidad de compras}
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\texttt{dni\_cliente} & K\\
+\hline
+\texttt{cantidad\_compras} & ++\\
+\hline
+\end{tabular}
+\end{center}
+
+\subsubsection{Cantidad de compras realizadas por clientes de misma edad}
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\texttt{edad\_cliente} & K\\
+\hline
+\texttt{cantidad\_compras} & ++\\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Sharding}
