@@ -19,4 +19,4 @@ Ejecutar las consultas MapReduce
 Desde mongo, ejecutar:
 	load("p2/mapreds.js")
 
-Luego, copiar cada query de los archivos queries_p2.txt en la consola de mongo, y ejecutarla.
+Luego, copiar cada query del archivo queries_p2.txt en la consola de mongo, y ejecutarla.

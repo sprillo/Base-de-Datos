@@ -1,5 +1,5 @@
 var map1 = function(){
-	emit(this["FechaDisposicion"],1)
+	emit(this["Tipo"],1)
 }
 
 var reduce1 = function(key,values){

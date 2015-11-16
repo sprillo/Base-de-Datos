@@ -1,1 +1,154 @@
 \section{Ejercicio 2}
+
+\subsection{Consultas}
+
+\subsubsection{Cantidad de disposiciones tipo \textit{resoluciones} que se hayan realizado en Abril de 2013}
+
+\begin{verbatim}
+var map1 = function(){
+    emit(this["Tipo"],1)
+}
+
+var reduce1 = function(key,values){
+    return Array.sum(values)
+}
+
+db.disposiciones.mapReduce(map1,reduce1,{query : {FechaDisposicion : {$regex : /^2013-04-/},
+ Tipo : "Resoluciones"}, out : "map_res"})
+db.map_res.find()
+\end{verbatim}
+
+El resultado de esta consulta es:
+
+\begin{verbatim}
+{ "_id" : "Resoluciones", "value" : 642 }
+\end{verbatim}
+
+\subsubsection{Cantidad de disposiciones por cada tipo definido}
+
+\begin{verbatim}
+var map2 = function(){
+    emit(this["Tipo"],1)
+}
+
+var reduce2 = function(key,values){
+    return Array.sum(values)
+}
+
+db.disposiciones.mapReduce(map2,reduce2,{query : {}, out : "map_res"})
+db.map_res.find()
+\end{verbatim}
+
+El resultado de esta consulta es:
+
+\begin{verbatim}
+{ "_id" : "", "value" : 3 }
+{ "_id" : "Acuerdos", "value" : 2790 }
+{ "_id" : "Acuerdos del Consejo de Gobierno", "value" : 160 }
+{ "_id" : "Anuncios", "value" : 17226 }
+{ "_id" : "Candidaturas", "value" : 1 }
+{ "_id" : "Certificaciones", "value" : 72 }
+{ "_id" : "Circular", "value" : 1 }
+{ "_id" : "Conflictos Positivos", "value" : 6 }
+{ "_id" : "Correcciones de Erratas", "value" : 59 }
+{ "_id" : "Correcciones de Errores", "value" : 321 }
+{ "_id" : "Correcciones de erratas", "value" : 8 }
+{ "_id" : "Correcciones de errores", "value" : 44 }
+{ "_id" : "Corrección de errores", "value" : 1 }
+{ "_id" : "Correción de errores", "value" : 1 }
+{ "_id" : "Cuestiones de Inconstitucionalidad", "value" : 1 }
+{ "_id" : "Decretos", "value" : 828 }
+{ "_id" : "Decretos Legislativos", "value" : 5 }
+{ "_id" : "Decretos del Presidente", "value" : 13 }
+{ "_id" : "Decretos-leyes", "value" : 15 }
+{ "_id" : "Edictos", "value" : 3223 }
+{ "_id" : "Instrucciones", "value" : 2 }
+{ "_id" : "Leyes", "value" : 12 }
+{ "_id" : "Notificaciones", "value" : 768 }
+{ "_id" : "Orden", "value" : 4 }
+{ "_id" : "Otros", "value" : 45 }
+{ "_id" : "Reales Decretos", "value" : 5 }
+{ "_id" : "Recursos de Inconstitucionalidad", "value" : 7 }
+{ "_id" : "Requisitorias", "value" : 2 }
+{ "_id" : "Resoluciones", "value" : 13956 }
+{ "_id" : "Órdenes", "value" : 2061 }
+{ "_id" : "Órdenes de Comision Delegada", "value" : 2 }
+\end{verbatim}
+
+\subsubsection{Fecha m'as citada para todos los informes}
+
+\begin{verbatim}
+var map3 = function(){
+    emit(this["FechaBOJA"],1)
+}
+
+var reduce3 = function(key,values){
+    return Array.sum(values)
+}
+
+db.disposiciones.mapReduce(map3,reduce3,{query : {}, out : "map_res"})
+db.map_res.find().sort({value : -1}).limit(1)
+\end{verbatim}
+
+El resultado de esta consulta es:
+
+\begin{verbatim}
+{ "_id" : "01/08/2012", "value" : 242 }
+\end{verbatim}
+
+\subsubsection{M'axima cantidad de p'aginas utilizadas por cada tipo de disposici'on}
+
+\begin{verbatim}
+var map4 = function(){
+    emit(this["Tipo"],this["PaginaFinal"] - this["PaginaInicial"] + 1)
+}
+
+var reduce4 = function(key,values){
+    res = values[0]
+    for (var i=1; i < values.length; i++){
+        if(res < values[i]){
+            res = values[i]
+        }
+    }
+    return res
+}
+
+db.disposiciones.mapReduce(map4,reduce4,{query : {}, out : "map_res"})
+db.map_res.find()
+\end{verbatim}
+
+El resultado de esta consulta es:
+
+\begin{verbatim}
+{ "_id" : "", "value" : 16 }
+{ "_id" : "Acuerdos", "value" : 12 }
+{ "_id" : "Acuerdos del Consejo de Gobierno", "value" : 83 }
+{ "_id" : "Anuncios", "value" : 393 }
+{ "_id" : "Candidaturas", "value" : 68 }
+{ "_id" : "Certificaciones", "value" : 47 }
+{ "_id" : "Circular", "value" : 3 }
+{ "_id" : "Conflictos Positivos", "value" : 1 }
+{ "_id" : "Correcciones de Erratas", "value" : 174 }
+{ "_id" : "Correcciones de Errores", "value" : 99 }
+{ "_id" : "Correcciones de erratas", "value" : 10 }
+{ "_id" : "Correcciones de errores", "value" : 5 }
+{ "_id" : "Corrección de errores", "value" : 1 }
+{ "_id" : "Correción de errores", "value" : 1 }
+{ "_id" : "Cuestiones de Inconstitucionalidad", "value" : 1 }
+{ "_id" : "Decretos", "value" : 492 }
+{ "_id" : "Decretos Legislativos", "value" : 37 }
+{ "_id" : "Decretos del Presidente", "value" : 3 }
+{ "_id" : "Decretos-leyes", "value" : 139 }
+{ "_id" : "Edictos", "value" : 48 }
+{ "_id" : "Instrucciones", "value" : 3 }
+{ "_id" : "Leyes", "value" : 194 }
+{ "_id" : "Notificaciones", "value" : 11 }
+{ "_id" : "Orden", "value" : 7 }
+{ "_id" : "Otros", "value" : 65 }
+{ "_id" : "Reales Decretos", "value" : 1 }
+{ "_id" : "Recursos de Inconstitucionalidad", "value" : 1 }
+{ "_id" : "Requisitorias", "value" : 1 }
+{ "_id" : "Resoluciones", "value" : 454 }
+{ "_id" : "Órdenes", "value" : 634 }
+{ "_id" : "Órdenes de Comision Delegada", "value" : 2 }
+\end{verbatim}
