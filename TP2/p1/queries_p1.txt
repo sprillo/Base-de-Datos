@@ -1,0 +1,44 @@
+------------------------------- QUERY 1 --------------------------------
+db.empleados.find(
+	{"clientes_atendidos.edad" : {$gte : 18}},
+	{nro_legajo : 1, nombre : 1}
+)
+
+------------------------------- QUERY 2 --------------------------------
+db.articulos.aggregate([
+	{$project : {"cant_ventas" : {$size : "$ventas"} , nombre : 1, codigo : 1}},
+	{$sort : {"cant_ventas" : -1}},
+	{$out : "articulos_por_compras"}
+])
+
+db.articulos_por_compras.find(
+	{cant_ventas : "$0.cant_ventas"}
+)
+
+------------------------------- QUERY 3 --------------------------------
+db.sectores.find(
+	{trabaja : {$size : 3}},
+	{cod_sector : 1}
+)
+
+------------------------------- QUERY 4 --------------------------------
+db.empleados.aggregate([
+	{$project : {cant_sectores : {$size : "$sectores_donde_trabaja"} , nombre : 1, nro_legajo : 1}},
+	{$sort : {cant_sectores : -1}},
+	{$limit : 1}
+])
+
+------------------------------- QUERY 5 --------------------------------
+db.clientes.aggregate([
+	{$project : {cant_compras : {$size : "$compro_articulos"} , nombre : 1, dni : 1}},
+	{$sort : {cant_compras : -1}}
+])
+
+------------------------------- QUERY 6 --------------------------------
+db.clientes.aggregate([
+	{$project : {cant_compras : {$size : "$compro_articulos"} , nombre : 1, dni : 1, edad : 1}},
+	{$group :{
+		_id : "$edad",
+		total_compras : {$sum : "$cant_compras"}
+	}}
+])

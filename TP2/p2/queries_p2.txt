@@ -1,0 +1,15 @@
+------------------------------- QUERY 1 --------------------------------
+db.disposiciones.mapReduce(map1,reduce1,{query : {FechaDisposicion : {$regex : /^2013-04-/} , Tipo : "Resoluciones"}, out : "map_res"})
+db.map_res.find()
+
+------------------------------- QUERY 2 --------------------------------
+db.disposiciones.mapReduce(map2,reduce2,{query : {}, out : "map_res"})
+db.map_res.find()
+
+------------------------------- QUERY 3 --------------------------------
+db.disposiciones.mapReduce(map3,reduce3,{query : {}, out : "map_res"})
+db.map_res.find().sort({value : -1}).limit(1)
+
+------------------------------- QUERY 4 --------------------------------
+db.disposiciones.mapReduce(map4,reduce4,{query : {}, out : "map_res"})
+db.map_res.find()
