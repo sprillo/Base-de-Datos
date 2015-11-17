@@ -56,6 +56,9 @@ Para cada sector, almacenamos todos los empleados que trabajan all'i. Determinar
 
 \subsubsection{El empleado que trabaja en m'as sectores}
 
+Aqui podemos saber para un empledo todos los sectores donde trabaj'o, 
+asi que tambi'en sabemos la cantidad.
+
 \begin{center}
 \begin{tabular}{|c|c|}
 \hline
@@ -66,7 +69,67 @@ Para cada sector, almacenamos todos los empleados que trabajan all'i. Determinar
 \end{tabular}
 \end{center}
 
+La desventaja de esta implementaci'on
+es que debemos revisar todos los empleados de la base de datos. En la
+siguiente alternativa tratamos de solucionar eso agregando una tabla.
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\texttt{row\_id} & K\\
+\hline
+\texttt{cantidad\_sectores\_trabaja} & C $\uparrow$\\
+\hline
+\texttt{empleados} & \\
+\hline
+\end{tabular}
+\end{center}
+
+Entonces al agregar para un empleado un nuevo sector donde trabajo, 
+primero nos fijamos si en la primera tabla aparece dicho sector, si es asi
+no actualizamos nada. Sino, sea $e$ el id el numero de legajo del empleado
+y sea $s$ el nuevo sector y $n$ la cantidad de anterior donde trabajaba.
+Tengo que remover a $e$ de aquellos que trabajaban en $n$ seccionesy agregarlo en
+$n+1$. Adem'as, hay que actualizar la primera tabla.\\
+
+Mateniendo esta relaci'on solo tenemos que ver la primera columna de 
+$cantidad\_sectores\_trabaja$ y tomar alg'un empleado.
+
+
 \subsubsection{Ranking de los clientes con mayor cantidad de compras}
+
+Este es realmente muy similar al caso anterior. Podr'iamos decir, tal vez, 
+que puede haber muchas cantidades de compras por usuario, pero esto no deber'ia
+ser un problema. Proponemos:
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\texttt{dni\_usuario} & K\\
+\hline
+\texttt{ids\_compras\_realizadas} & C $\uparrow$\\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\texttt{row\_id} & K\\
+\hline
+\texttt{cantidad\_compras\_realizadas} & C $\uparrow$\\
+\hline
+\texttt{empleados} & \\
+\hline
+\end{tabular}
+\end{center}
+
+Notar que en las primeras columnas tenemos, justamente, los clientes que 
+mas compraron.
+
+
+En cambio, si no nos interesa cuales fueron exactamente las compras y podemos recorrer
+toda la base de datos, las siguiente alternativa resulta razonable:
 
 \begin{center}
 \begin{tabular}{|c|c|}
@@ -78,7 +141,13 @@ Para cada sector, almacenamos todos los empleados que trabajan all'i. Determinar
 \end{tabular}
 \end{center}
 
+Es decir, un contador de cantidad de compras por cliente.
+
 \subsubsection{Cantidad de compras realizadas por clientes de misma edad}
+
+Asumiendo que no necesitamos los clientes, sino solo la cantidad, podemos
+tener la siguiente implementaci'on que es basicamente un contador por 
+edad posible de cliente.
 
 \begin{center}
 \begin{tabular}{|c|c|}
