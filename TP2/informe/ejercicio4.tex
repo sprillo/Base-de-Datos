@@ -131,7 +131,7 @@ Es decir, un contador de cantidad de compras por cliente.
 
 \subsubsection{Cantidad de compras realizadas por clientes de misma edad}
 
-Asumiendo que no necesitamos los clientes, sino solo la cantidad, podemos tener la siguiente implementaci'on que es basicamente un contador por edad posible de cliente.
+Asumiendo que no necesitamos los clientes, sino solo la cantidad, podemos tener la siguiente implementaci'on, que es basicamente un contador por edad posible de cliente.
 
 \begin{center}
 \begin{tabular}{|c|c|}
@@ -161,3 +161,7 @@ Hadoop tiene ciertas caracter'isticas que impactan en la ejecuci'on de consultas
 Para realizar las consultas MapReduce del Ejercicio 2 para column oriented, primero deber'iamos generar una o varias tablas, que contengan toda la informaci'on que queremos consultar. En este caso, deber'iamos generar un dise\~no orientado a columnas, para los archivos JSON. Esto es lo 'unico que cambia, puesto, las consultas MapReduce son an'alogas. La clave de una emisi'on de MapReduce es una clave de fila (K) columna (C) cualquiera y el valor asociado a esta clave es alguna funci'on del resto de los valores de la fila.
 
 \subsection{Sharding}
+
+Cassandra provee un mecanismo de sharding sobre un cluster de nodos, mediante hashing. Cada registro insertado se almacena en una serie de nodos dado por el hashing de una clave del registro. Para determinar a qu'e nodo corresponde cierto valor del hash, se disponen los nodos formando un anillo, de modo tal que cada porci'on del anillo le corresponde a un nodo y a cierto rango de valores de hash.
+
+Al utilizar sharding por hash, tenemos asegurada la uniformidad en la distribuci'on de los datos, siempre y cuando sepamos que el atributo que se est'a hasheando tambi'en aparece con una distribuci'on uniforme. En el caso del Ejercicio 3, el atributo \texttt{codigo\_postal} se asume que tiene distribuci'on uniforme (se generan en forma aleatoria), con lo cual la carga de los shards estar'a balanceada. Del mismo modo, si se hace sharding por un atributo \texttt{\_id}, generado aleatoriamente, obtendremos una uniforme distribuci'on de la carga.
