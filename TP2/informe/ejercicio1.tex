@@ -156,6 +156,18 @@ db.clientes.insert({
 })
 \end{verbatim}
 
+\subsubsection{Documento \texttt{tareas}}
+
+Si bien este documento no es estrictamente necesario para poder responder a las consultas, incluimos su definici'on por completitud.
+
+\begin{verbatim}
+tareas{
+    id_tarea : INT,
+    descripcion : STRING,
+    empleados_realizandola : [{nro_legajo : INTEGER, cod_sector: INTEGER}]
+}
+\end{verbatim}
+
 \subsection{Consultas}
 
 \subsubsection{Los empleados que atendieron clientes mayores de edad}

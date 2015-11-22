@@ -56,8 +56,7 @@ Para cada sector, almacenamos todos los empleados que trabajan all'i. Determinar
 
 \subsubsection{El empleado que trabaja en m'as sectores}
 
-Aqui podemos saber para un empledo todos los sectores donde trabaj'o, 
-asi que tambi'en sabemos la cantidad.
+Aqui podemos saber para un empledo todos los sectores donde trabaj'o, asi que tambi'en sabemos la cantidad.
 
 \begin{center}
 \begin{tabular}{|c|c|}
@@ -69,9 +68,7 @@ asi que tambi'en sabemos la cantidad.
 \end{tabular}
 \end{center}
 
-La desventaja de esta implementaci'on
-es que debemos revisar todos los empleados de la base de datos. En la
-siguiente alternativa tratamos de solucionar eso agregando una tabla.
+La desventaja de esta implementaci'on es que debemos revisar todos los empleados de la base de datos. En la siguiente soluci'on alternativa remendamos eso agregando una tabla.
 
 \begin{center}
 \begin{tabular}{|c|c|}
@@ -85,22 +82,14 @@ siguiente alternativa tratamos de solucionar eso agregando una tabla.
 \end{tabular}
 \end{center}
 
-Entonces al agregar para un empleado un nuevo sector donde trabajo, 
-primero nos fijamos si en la primera tabla aparece dicho sector, si es asi
-no actualizamos nada. Sino, sea $e$ el id el numero de legajo del empleado
-y sea $s$ el nuevo sector y $n$ la cantidad de anterior donde trabajaba.
-Tengo que remover a $e$ de aquellos que trabajaban en $n$ seccionesy agregarlo en
-$n+1$. Adem'as, hay que actualizar la primera tabla.\\
+Entonces al agregar para un empleado un nuevo sector donde trabajo, primero nos fijamos si en la primera tabla aparece dicho sector. Si es asi no actualizamos nada. Sino, sea $e$ el id el numero de legajo del empleado, $s$ el nuevo sector y $n$ la cantidad de anterior donde trabajaba.
+Debemos remover a $e$ de aquellos que trabajaban en $n$ secciones y agregarlo en $n + 1$. Adem'as, hay que actualizar la primera tabla.
 
-Mateniendo esta relaci'on solo tenemos que ver la primera columna de 
-$cantidad\_sectores\_trabaja$ y tomar alg'un empleado.
-
+Mateniendo esta relaci'on solo tenemos que ver la primera columna de $cantidad\_sectores\_trabaja$ y tomar alg'un empleado.
 
 \subsubsection{Ranking de los clientes con mayor cantidad de compras}
 
-Este es realmente muy similar al caso anterior. Podr'iamos decir, tal vez, 
-que puede haber muchas cantidades de compras por usuario, pero esto no deber'ia
-ser un problema. Proponemos:
+Este es realmente muy similar al caso anterior. Podr'iamos decir, tal vez, que puede haber muchas cantidades de compras por usuario, pero esto no deber'ia ser un problema. Proponemos:
 
 \begin{center}
 \begin{tabular}{|c|c|}
@@ -124,12 +113,9 @@ ser un problema. Proponemos:
 \end{tabular}
 \end{center}
 
-Notar que en las primeras columnas tenemos, justamente, los clientes que 
-mas compraron.
+Notar que en las primeras columnas tenemos, justamente, los clientes que m'as compraron.
 
-
-En cambio, si no nos interesa cuales fueron exactamente las compras y podemos recorrer
-toda la base de datos, las siguiente alternativa resulta razonable:
+En cambio, si no nos interesa cuales fueron exactamente las compras y podemos recorrer toda la base de datos, las siguiente alternativa resulta razonable:
 
 \begin{center}
 \begin{tabular}{|c|c|}
@@ -145,9 +131,7 @@ Es decir, un contador de cantidad de compras por cliente.
 
 \subsubsection{Cantidad de compras realizadas por clientes de misma edad}
 
-Asumiendo que no necesitamos los clientes, sino solo la cantidad, podemos
-tener la siguiente implementaci'on que es basicamente un contador por 
-edad posible de cliente.
+Asumiendo que no necesitamos los clientes, sino solo la cantidad, podemos tener la siguiente implementaci'on, que es basicamente un contador por edad posible de cliente.
 
 \begin{center}
 \begin{tabular}{|c|c|}
@@ -159,4 +143,25 @@ edad posible de cliente.
 \end{tabular}
 \end{center}
 
+\subsection{Consultas MapReduce}
+
+El motor de bases de datos column-family Cassandra soporta MapReduce desde abril de 2010. Adem'as provee la posibilidad de integrarse con Apache Hadoop, herramienta que permite realizar procesamientos distribuidos de datos, y que incorpora un motor de consultas MapReduce. Esto hace que la forma de pensar las consultas MapReduce depende de la interfaz que provee Hadoop, y no de la clase de bases de datos que vamos.
+
+Hadoop tiene ciertas caracter'isticas que impactan en la ejecuci'on de consultas MapReduce. Algunas de ellas son:
+
+\begin{itemize}
+
+\item \textbf{Escalabilidad.} Es capaz de majear vol'umenes de datos importantes, al nivel de miles de nodos, cada uno con una carga de varios terabytes de informaci'on.
+
+\item \textbf{Usabilidad.} Es muy simple de usar, el programador solo debe escribir los procedimientos realcionados con map-reduce.
+
+\item \textbf{Resistencia a fallos.} Ante la caida de un nodo el sistema puede seguir operando.
+\end{itemize}
+
+Para realizar las consultas MapReduce del Ejercicio 2 para column oriented, primero deber'iamos generar una o varias tablas, que contengan toda la informaci'on que queremos consultar. En este caso, deber'iamos generar un dise\~no orientado a columnas, para los archivos JSON. Esto es lo 'unico que cambia, puesto, las consultas MapReduce son an'alogas. La clave de una emisi'on de MapReduce es una clave de fila (K) columna (C) cualquiera y el valor asociado a esta clave es alguna funci'on del resto de los valores de la fila.
+
 \subsection{Sharding}
+
+Cassandra provee un mecanismo de sharding sobre un cluster de nodos, mediante hashing. Cada registro insertado se almacena en una serie de nodos dado por el hashing de una clave del registro. Para determinar a qu'e nodo corresponde cierto valor del hash, se disponen los nodos formando un anillo, de modo tal que cada porci'on del anillo le corresponde a un nodo y a cierto rango de valores de hash.
+
+Al utilizar sharding por hash, tenemos asegurada la uniformidad en la distribuci'on de los datos, siempre y cuando sepamos que el atributo que se est'a hasheando tambi'en aparece con una distribuci'on uniforme. En el caso del Ejercicio 3, el atributo \texttt{codigo\_postal} se asume que tiene distribuci'on uniforme (se generan en forma aleatoria), con lo cual la carga de los shards estar'a balanceada. Del mismo modo, si se hace sharding por un atributo \texttt{\_id}, generado aleatoriamente, obtendremos una uniforme distribuci'on de la carga.
