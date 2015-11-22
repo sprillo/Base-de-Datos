@@ -16,7 +16,9 @@ Seguimos las sugerencias del enunciado y analizamos los efectos de usar sharding
 	\end{center}
 \end{figure}
 
-Recordemos que el atributo usado de clave para los shards es el codigo postal, que es un entero de hasta 6 d'igitos. Como podemos apreciar, cuando hacemos sharding hasheando el codigo postal, la distribuci'on de los datos a lo largo de los shards tiende a estar bien balanceada. Por el contrario, si no se hashea el codigo postal, mongo empieza cargando fuertemente dos shards, y luego empiezan a tener mas participacion otros. Esto se debe a que la forma de determinar qu'e documentos van a qu'e shards cuando la clave no se hashea est'a determinado por rangos del c'odigo postal, que mongo no conoce a priori y debe ir estimando. Una vez que la cantidad de datos crece, mongo puede inferir que la distribuci'on en uniforme entre cero y un millon y la carga se empieza a equilibrar al darle rangos equitativos de responsabilidad a cada shard. Pero al principio, la distribuci'on es extremadamente dispareja.
+Recordemos que el atributo usado de clave para los shards simples es el codigo postal, que es un entero de hasta 6 d'igitos. Cuando se usa un hash para shardear, se lo hace sobre el atributo \_id.
+
+Como podemos apreciar, cuando hacemos sharding hasheando, la distribuci'on de los datos a lo largo de los shards tiende a estar bien balanceada. Por el contrario, si no se usa hash y en cambio se emplea el codigo postal directamente, mongo empieza cargando fuertemente dos shards, y recien despues de un rato empiezan a tener participacion los dem'as shards. Esto se debe a que la forma de determinar qu'e documentos van a qu'e shards cuando se shardea por c'odigo postal se determina en base a interavlos contiguos de esta variable, que mongo no conoce a priori y debe ir estimando. Una vez que la cantidad de datos crece, mongo puede inferir que la distribuci'on del codigo postal es en uniforme entre cero y un millon y la carga se empieza a equilibrar entre los shards. A'un as'i, la carga nunca se empareja tanto como cuando hasheamos.
 
 \subsection{Caracter'isticas de un buen atributo para sharding}
 
