@@ -1,5 +1,23 @@
 \section{Ejercicio 3}
 
+\subsection{Ejemplo de sharding en Mongo}
+
+Seguimos las sugerencias del enunciado y analizamos los efectos de usar sharding simple o hasheado en una base de datos en la que insertamos iterativamente tandas de a 20000 registros, para un total de 25 tandas. A continuaci'on mostramos los gr'aficos de carga de los shards a lo largo de las iteraciones:
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.6]{imagenes/siete_shards_simple.png}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.6]{imagenes/siete_shards_hashed.png}
+	\end{center}
+\end{figure}
+
+Recordemos que el atributo usado de clave para los shards es el codigo postal, que es un entero de hasta 6 d'igitos. Como podemos apreciar, cuando hacemos sharding hasheando el codigo postal, la distribuci'on de los datos a lo largo de los shards tiende a estar bien balanceada. Por el contrario, si no se hashea el codigo postal, mongo empieza cargando fuertemente dos shards, y luego empiezan a tener mas participacion otros. Esto se debe a que la forma de determinar qu'e documentos van a qu'e shards cuando la clave no se hashea est'a determinado por rangos del c'odigo postal, que mongo no conoce a priori y debe ir estimando. Una vez que la cantidad de datos crece, mongo puede inferir que la distribuci'on en uniforme entre cero y un millon y la carga se empieza a equilibrar al darle rangos equitativos de responsabilidad a cada shard. Pero al principio, la distribuci'on es extremadamente dispareja.
+
 \subsection{Caracter'isticas de un buen atributo para sharding}
 
 Para que un atributo sea un buen candidato para aplicar la t'ecnica de sharding, debe ser tal que al particionar los datos por ese atributo, las clases que se formen sean de tama\~nos similares. Esto permite que la carga sobre los shards est'e bien distribu'ida, no s'olo en t'erminos del vol'umen de cada shard, sino tambi'en en el sentido de que los accesos y escrituras sean uniformes. Bajo estas condiciones obtendremos una mejor performance de I/O. Espec'ificamente, la latencia y el tiempo de respuesta de los mismos ser'an bajos, gracias a que evitamos cuellos de botella.
