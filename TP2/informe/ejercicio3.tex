@@ -2,7 +2,7 @@
 
 \subsection{Ejemplo de sharding en Mongo}
 
-Seguimos las sugerencias del enunciado y analizamos los efectos de usar sharding simple o hasheado en una base de datos en la que insertamos iterativamente tandas de a 20000 registros, para un total de 25 tandas. A continuaci'on mostramos los gr'aficos de carga de los shards a lo largo de las iteraciones:
+Seguimos las sugerencias del enunciado y analizamos los efectos de usar sharding simple o hasheado en una base de datos en la que insertamos iterativamente tandas de 20000 registros, y un total de 25 tandas. A continuaci'on mostramos los gr'aficos de carga de los shards a lo largo de las iteraciones:
 
 \begin{figure}[H]
 	\begin{center}
@@ -18,7 +18,7 @@ Seguimos las sugerencias del enunciado y analizamos los efectos de usar sharding
 
 Recordemos que el atributo usado de clave para los shards simples es el codigo postal, que es un entero de hasta 6 d'igitos. Cuando se usa un hash para shardear, se lo hace sobre el atributo \_id.
 
-Como podemos apreciar, cuando hacemos sharding hasheando, la distribuci'on de los datos a lo largo de los shards tiende a estar bien balanceada. Por el contrario, si no se usa hash y en cambio se emplea el codigo postal directamente, mongo empieza cargando fuertemente dos shards, y recien despues de un rato empiezan a tener participacion los dem'as shards. Esto se debe a que la forma de determinar qu'e documentos van a qu'e shards cuando se shardea por c'odigo postal se determina en base a interavlos contiguos de esta variable, que mongo no conoce a priori y debe ir estimando. Una vez que la cantidad de datos crece, mongo puede inferir que la distribuci'on del codigo postal es en uniforme entre cero y un millon y la carga se empieza a equilibrar entre los shards. A'un as'i, la carga nunca se empareja tanto como cuando hasheamos.
+Como podemos apreciar, cuando hacemos sharding hasheando, la distribuci'on de los datos a lo largo de los shards tiende a estar bien balanceada. Por el contrario, si no se usa hash y en cambio se emplea el codigo postal directamente, mongo empieza cargando fuertemente dos shards, y recien despues de un rato empiezan a tener participacion los dem'as shards. Esto se debe a que la forma de determinar qu'e documentos van a qu'e shards cuando se shardea por c'odigo postal se determina en base a intervalos contiguos de esta variable, que mongo no conoce a priori y debe ir estimando. Una vez que la cantidad de datos crece, mongo puede inferir que la distribuci'on del codigo postal es en uniforme entre cero y un millon y la carga se empieza a equilibrar entre los shards. A'un as'i, la carga nunca se empareja tanto como cuando hasheamos.
 
 \subsection{Caracter'isticas de un buen atributo para sharding}
 
@@ -26,7 +26,7 @@ Para que un atributo sea un buen candidato para aplicar la t'ecnica de sharding,
 
 Para ilustrar esto, pensemos en un mal ejemplo de sharding. Consideremos una base de datos que contenga los datos de los alumnos del Departamento de Computaci'on de la facultad. Si hacemos sharding sobre el atributo \emph{g'enero}, tendremos dos shards completamente asim'etricos en su tama\~no. Claramente, la enorme mayor'ia de los accesos ser'an sobre el shard de alumnos de sexo masculino, lo cual tiene un obvio impacto en la performance.
 
-Vale la pena mencionar que el sharding puede ser de utilidad no s'olo para asegurar balanceo de carga. En ciertos sistemas, son habituales las consultas que necesitan revisar 'unicamente un subconjunto de todo el universo de elementos. En estos casos, es 'util hacer sharding de modo tal de que uno de estos subconjuntos que nos interesan est'en separados en shards. Tomemos como ejemplo un base de datos de una red social, en la cual se hace sharding por el pa'is de residencia de las personas. En este caso, podremos optimizar la consulta \textit{amigos de una persona}, puesto que, en general, la mayor parte de los amigos de una persona est'an geogr'aficamente cerca.
+Vale la pena mencionar que el sharding puede ser de utilidad no s'olo para asegurar balanceo de carga. En ciertos sistemas, son frecuentes consultas que necesitan revisar 'unicamente ciert subconjunto de todo el universo de elementos. En estos casos, es 'util hacer sharding de modo tal de que uno de estos subconjuntos que nos interesan est'en separados en shards. Tomemos como ejemplo una base de datos de una red social, en la cual se hace sharding por el pa'is de residencia de las personas. En este caso, podremos optimizar la consulta \textit{amigos de una persona}, puesto que, en general, la mayor parte de los amigos de una persona est'an geogr'aficamente cerca.
 
 \subsection{Ejemplos de sharding}
 
@@ -35,9 +35,9 @@ Algunos ejemplos de una buena elecci'on de un atributo para hacer sharding son l
 \begin{enumerate}
 	\item Sharding por atributo \emph{g'enero} en una base de datos del padr'on electoral de un pa'is.
 	\item Sharding por atributo \emph{pa'is de residencia} en una base de datos de personas de una red social.
-	\item Sharding por atributo \emph{a\~no de nacimiento} en una base de datos de personas nacidas durante cierto per'iodo de tiempo, fijo. Por ejemplo, durante la dictadura de 1976.
+	\item Sharding por atributo \emph{a\~no de nacimiento} en una base de datos de personas nacidas durante cierto per'iodo de tiempo, fijo. Por ejemplo, durante la dictadura de 1976; esto podr'ia ser 'util para registrar a todas aquellas personas nacidas durante dicho per'iodo.
 \end{enumerate}
 
 Se puede ver que en los tres casos, la proporci'on de los grupos en los que clasificamos es aproximadamente la misma, y que, a priori, no deber'ia haber ninguna tendencia de acceso a un shard en particular.
 
-Una alternativa siempre 'util es hacer sharding utilizando hashing. Esto significa tomar un atributo cuya distribuci'on sea m'as o menos uniforme (por ejemplo, un atributo identificatorio o un n'umero de tel'efono), y shardear utilizando el hasheo del atributo. 
+Una alternativa siempre 'util es hacer sharding utilizando hashing. Esto significa tomar un atributo cuya distribuci'on sea m'as o menos uniforme (por ejemplo, un atributo identificatorio o un n'umero de tel'efono), y shardear utilizando la aplicaci'on de la funci'on de hash sobre el atributo. 
