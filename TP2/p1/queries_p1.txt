@@ -6,14 +6,9 @@ db.empleados.find(
 
 ------------------------------- QUERY 2 --------------------------------
 db.articulos.aggregate([
-	{$project : {"cant_ventas" : {$size : "$ventas"} , nombre : 1, codigo : 1}},
-	{$sort : {"cant_ventas" : -1}},
-	{$out : "articulos_por_compras"}
+	{$project : {"cant_ventas" : {$size: "$ventas"} , nombre : 1, codigo : 1}},
+	{$sort : {"cant_ventas" : -1}}
 ])
-
-db.articulos_por_compras.find(
-	{cant_ventas : "$0.cant_ventas"}
-)
 
 ------------------------------- QUERY 3 --------------------------------
 db.sectores.find(
