@@ -1,6 +1,8 @@
 png(filename = "siete_shards_simple.png", width = 480, height = 480);
 
-simple = read.table("plot2.dat",sep=" ",header = FALSE)
+library("ggplot2")
+
+simple = read.table("data.txt",sep=" ",header = FALSE)
 simple$V2 = as.factor(simple$V2)
 g = ggplot(data = simple, aes(x = simple$V1, y = simple$V3)) +
     geom_line(aes(group=simple$V2,color=simple$V2)) +

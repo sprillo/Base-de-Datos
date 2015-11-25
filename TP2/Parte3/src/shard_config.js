@@ -1,29 +1,29 @@
 use admin
 
-db.runCommand({addshard:"localhost:21111", name:"shard21111"});
-db.runCommand({addshard:"localhost:21112", name:"shard21112"});
-db.runCommand({addshard:"localhost:21113", name:"shard21113"});
-db.runCommand({addshard:"localhost:21114", name:"shard21114"});
-db.runCommand({addshard:"localhost:21115", name:"shard21115"});
-db.runCommand({addshard:"localhost:21116", name:"shard21116"});
-db.runCommand({addshard:"localhost:21117", name:"shard21117"});
+db.runCommand({addshard:"localhost:43234", name:"shard43234"});
+db.runCommand({addshard:"localhost:43235", name:"shard43235"});
+db.runCommand({addshard:"localhost:43236", name:"shard43236"});
+db.runCommand({addshard:"localhost:43237", name:"shard43237"});
+db.runCommand({addshard:"localhost:43238", name:"shard43238"});
+db.runCommand({addshard:"localhost:43239", name:"shard43239"});
+db.runCommand({addshard:"localhost:43240", name:"shard43240"});
 
 use test_sharding
 sh.enableSharding("test_sharding")
 
-db.people.ensureIndex({"zipcode": 1})
-sh.shardCollection("test_sharding.people", {"zipcode": 1})
+db.people.ensureIndex({"_id": "hashed"})
+sh.shardCollection("test_sharding.people", {"_id": "hashed"})
 
-load("ej3ingresoDatos.js")
+load("crear_inserts.js")
 
 use admin
-db.runCommand({removeShard: "shard21111"})
-db.runCommand({removeShard: "shard21112"})
-db.runCommand({removeShard: "shard21113"})
-db.runCommand({removeShard: "shard21114"})
-db.runCommand({removeShard: "shard21115"})
-db.runCommand({removeShard: "shard21116"})
-db.runCommand({removeShard: "shard21117"})
+db.runCommand({removeShard: "shard43234"})
+db.runCommand({removeShard: "shard43235"})
+db.runCommand({removeShard: "shard43236"})
+db.runCommand({removeShard: "shard43237"})
+db.runCommand({removeShard: "shard43238"})
+db.runCommand({removeShard: "shard43239"})
+db.runCommand({removeShard: "shard43240"})
 
 use test_sharding
 db.dropDatabase()

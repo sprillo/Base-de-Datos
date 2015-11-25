@@ -1,17 +1,12 @@
-
-function randomZipCode (beginningOfInterval, widthOfInterval){
-	return Math.floor(beginningOfInterval + (Math.random() * widthOfInterval));
-}
-
-function populatePeople (amountRegisters, repetitions, maxZipCode){
-	for (var j = 0; j < repetitions; j += 1) {
-		for (var i = 0; i < amountRegisters; i++) {
+function crear_inserts(tamanio_tanda, tandas){
+	for (var j = 0; j < tandas; j += 1) {
+		for (var i = 0; i < tamanio_tanda; i++) {
 			var toInsert={};				
 			toInsert.name = "FakeNameFakeNameFakeNameFakeNameFakeNameFakeNameFakeName";
 			toInsert.password = "FakePasswordFakePasswordFakePasswordFakePasswordFakePassword";
-			toInsert.zipcode = randomZipCode(0, maxZipCode - 1);
-			toInsert.gender = "Female";
-			toInsert.age = 15;
+			toInsert.zipcode = Math.random() % 1000000;
+			toInsert.gender = "M";
+			toInsert.age = 50;
 			toInsert.creationDate = new Date(2015, 10, 15);	
 			db.people.insert(toInsert);
 		}
@@ -20,6 +15,4 @@ function populatePeople (amountRegisters, repetitions, maxZipCode){
 	}
 }
 
-// 25 intervalos pues 25 * 32000 = 800000
-// pongan hasta 50 intervalos
-populatePeople(32000, 25, 1000000);
+crear_inserts(32000, 25);
